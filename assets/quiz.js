@@ -6,7 +6,10 @@
  *
  * CONFIG
  *   unit          number  — used in the heading and the report filename
- *   session       number  — same; use 'checkpoint' for a unit checkpoint
+ *   cycle         number  — which cycle within the unit; omit for a unit checkpoint
+ *   stage         string  — 'probe' | 'check' | 'checkpoint'. Drives the start-screen
+ *                           framing: a probe is meant to beat him somewhere, a check is
+ *                           meant to go his way, and they must not be framed alike.
  *   title         string  — page heading
  *   subtitle      string  — optional line under the heading
  *   confidence    bool    — show the "how sure are you?" tags per problem
@@ -57,13 +60,30 @@
   // explicit that written reflection gets left blank, so this stays one tap per row.
   var OWNERSHIP_TAGS = ['I own this', 'Getting there', 'Not yet'];
 
-  // Said aloud by the parent and shown before the climb starts, every session.
-  var CLIMB_FRAMING = [
-    'Nobody summits clean.',
-    'Finding where it gets hard is the whole point — that is the result we want.',
-    'Hints cost nothing. Using one is a move, not a mistake.',
-    'There is no timer. Take as long as you take.'
-  ];
+  // Said aloud by the parent and shown before the quiz starts, every time. A probe and a
+  // check are pitched differently and must be framed differently — a check he expects to
+  // fail teaches him nothing about whether the lesson worked.
+  var FRAMING = {
+    probe: {
+      heading: 'This is a climb',
+      lines: [
+        'Nobody summits clean.',
+        'Finding where it gets hard is the whole point — that is the result we want.',
+        'Hints cost nothing. Using one is a move, not a mistake.',
+        'There is no timer. Take as long as you take.'
+      ]
+    },
+    check: {
+      heading: 'This one should go your way',
+      lines: [
+        'This covers what the lesson just went through — you should be able to clear it.',
+        'If something still fights back, that is worth knowing: it means the lesson missed, not that you did.',
+        'Hints are still here and still cost nothing.',
+        'There is no timer. Take as long as you take.'
+      ]
+    }
+  };
+  FRAMING.checkpoint = FRAMING.probe;
 
   /* ---------------------------------------------------------------- answers */
 
@@ -153,7 +173,14 @@
     var cfg = config || {};
     var chips = cfg.stuckChips || DEFAULT_STUCK_CHIPS;
     var root = document.getElementById('quiz');
-    var storeKey = 'mathjourney:u' + cfg.unit + ':s' + cfg.session;
+
+    // "unit1_cycle2_probe", or "unit1_checkpoint" when there is no cycle. Used for the
+    // autosave key, the report heading and the download filename, so all three agree.
+    var stage = cfg.stage || 'probe';
+    var slug = 'unit' + cfg.unit + (cfg.cycle ? '_cycle' + cfg.cycle : '') + '_' + stage;
+    var label = 'Unit ' + cfg.unit + (cfg.cycle ? ' · Cycle ' + cfg.cycle : '') +
+                ' · ' + stage.charAt(0).toUpperCase() + stage.slice(1);
+    var storeKey = 'mathjourney:' + slug;
 
     var state = problems.map(function () {
       return { answer: '', hints: 0, stuck: [], note: '', confidence: '' };
@@ -228,10 +255,11 @@
       var frag = document.createDocumentFragment();
 
       var card = el('div', { class: 'card' });
+      var framing = FRAMING[cfg.stage] || FRAMING.probe;
       card.appendChild(el('p', { class: 'eyebrow', text: 'Before you start' }));
-      card.appendChild(el('h2', { text: 'This is a climb' }));
+      card.appendChild(el('h2', { text: framing.heading }));
       var ul = el('ul', { class: 'framing' });
-      CLIMB_FRAMING.forEach(function (line) { ul.appendChild(el('li', { text: line })); });
+      framing.lines.forEach(function (line) { ul.appendChild(el('li', { text: line })); });
       card.appendChild(ul);
       card.appendChild(el('p', {
         class: 'hint-note',
@@ -487,7 +515,7 @@
 
     function reportText() {
       var lines = [];
-      lines.push('MATH JOURNEY — Unit ' + cfg.unit + ', Session ' + cfg.session);
+      lines.push('MATH JOURNEY — ' + label);
       if (cfg.title) lines.push(cfg.title);
       lines.push('Date: ' + today());
       lines.push('Score: ' + score() + ' / ' + problems.length);
@@ -538,7 +566,7 @@
       var area = el('textarea', { id: 'report', rows: '18', readonly: 'readonly' });
       area.value = reportText();
 
-      var filename = 'report_unit' + cfg.unit + '_session' + cfg.session + '_' + today() + '.txt';
+      var filename = 'report_' + slug + '_' + today() + '.txt';
 
       var copyBtn = el('button', {
         class: 'btn btn-primary', text: 'Copy report',

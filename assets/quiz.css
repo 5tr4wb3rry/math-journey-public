@@ -94,6 +94,27 @@ h3 { font-size: 1rem; margin: 0 0 .5rem; }
 .playbook-list strong { font-family: "Space Grotesk", system-ui, sans-serif; }
 .playbook-list span { color: var(--ink-soft); }
 
+/* ---- lessons ---- */
+
+.card ol, .card ul { margin: .5rem 0 0; padding-left: 1.3rem; }
+.card ol > li { margin-bottom: 1rem; }
+
+.card details {
+  margin-top: .5rem;
+  border-left: 3px solid var(--line);
+  padding-left: .8rem;
+}
+.card details > summary {
+  cursor: pointer;
+  font-size: .9rem;
+  color: var(--accent);
+  list-style: none;
+}
+.card details > summary::-webkit-details-marker { display: none; }
+.card details > summary::before { content: '▸ '; }
+.card details[open] > summary::before { content: '▾ '; }
+.card details > summary + * { display: block; margin-top: .4rem; color: var(--ink-soft); }
+
 /* ---- progress rail ---- */
 
 .rail { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.25rem; }
