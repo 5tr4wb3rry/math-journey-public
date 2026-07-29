@@ -313,6 +313,8 @@ button {
 }
 
 .report-actions { display: flex; gap: .6rem; flex-wrap: wrap; margin: 1rem 0 .75rem; align-items: center; }
+/* the mail button is an <a>, so it needs the button metrics restored */
+.report-actions a.btn { text-decoration: none; display: inline-block; line-height: 1.4; }
 .copied { color: var(--good); font-size: .9rem; }
 
 .hidden { display: none !important; }

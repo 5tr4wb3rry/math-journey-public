@@ -603,6 +603,42 @@
       return lines.join('\n');
     }
 
+    /* A mail body has to fit in a URL — browsers and mail clients start dropping
+     * mailto: links somewhere around 2000 characters. The full report fits for a check
+     * but not for a unit assessment, so build a short version when it has to. */
+    function mailBody() {
+      var full = reportText();
+      if (encodeURIComponent(full).length < 1800) return full;
+
+      var lines = [];
+      lines.push('MATH JOURNEY — ' + label);
+      lines.push('Date: ' + today());
+      lines.push('Score: ' + score() + ' / ' + problems.length);
+      lines.push('');
+      lines.push('--- Topic results (this is the lesson queue) ---');
+      verdictsFor(problems, state, graded).forEach(function (v) {
+        lines.push('  ' + v.verdict.toUpperCase().padEnd(11) +
+          v.right + '/' + v.total + '  ' + v.topic +
+          (v.guessed ? '  [' + v.guessed + ' guessed]' : ''));
+      });
+      lines.push('');
+      lines.push('--- Per problem ---');
+      problems.forEach(function (p, i) {
+        var s = state[i];
+        lines.push('  ' + (i + 1) + '. ' + (graded(i) ? 'right' : 'WRONG') +
+          '  said "' + (answered(i) ? s.answer : '(blank)') + '"' +
+          (s.hints ? ', ' + s.hints + ' hint' + (s.hints === 1 ? '' : 's') : '') +
+          (cfg.confidence && s.confidence ? ', ' + s.confidence : ''));
+      });
+      lines.push('');
+      lines.push('Hardest problem: ' + (reflection.hardest || '—'));
+      if (reflection.note) lines.push('In his words:    ' + reflection.note);
+      lines.push('');
+      lines.push('(Shortened to fit in an email. The downloaded .txt has the full detail:');
+      lines.push('stuck-tags, notes, and his ownership verdict per topic.)');
+      return lines.join('\n');
+    }
+
     function refreshReport() {
       var box = document.getElementById('report');
       if (box) box.value = reportText();
@@ -613,7 +649,7 @@
       card.appendChild(el('h2', { text: 'Send this back' }));
       card.appendChild(el('p', {
         class: 'lede',
-        text: 'Copy it or download it, then hand it over. It has every answer, every hint used, and what he said about it.'
+        text: 'Email it, download it, or copy it. It has every answer, every hint used, and what he said about it.'
       }));
 
       var status = el('span', { class: 'copied' });
@@ -622,8 +658,19 @@
 
       var filename = 'report_' + slug + '_' + today() + '.txt';
 
+      /* Opens the device's mail app with the report already written. The To field is
+       * left EMPTY on purpose: this page is world-readable, and an address published
+       * here would be scraped. The mail app fills the recipient from contacts. */
+      var mailBtn = el('a', {
+        class: 'btn btn-primary',
+        href: 'mailto:?subject=' + encodeURIComponent('Math Journey — ' + label + ' — ' + today()) +
+              '&body=' + encodeURIComponent(mailBody()),
+        text: 'Send to parent',
+        onclick: function () { status.textContent = 'Opening your email…'; }
+      });
+
       var copyBtn = el('button', {
-        class: 'btn btn-primary', text: 'Copy report',
+        class: 'btn', text: 'Copy report',
         onclick: function () {
           var text = area.value;
           var done = function () { status.textContent = 'Copied.'; };
@@ -658,7 +705,7 @@
         }
       });
 
-      card.appendChild(el('div', { class: 'report-actions' }, [copyBtn, downloadBtn, status]));
+      card.appendChild(el('div', { class: 'report-actions' }, [mailBtn, downloadBtn, copyBtn, status]));
       card.appendChild(area);
       return card;
     }
