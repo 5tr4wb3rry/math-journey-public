@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check · Choosing vs. arranging; combinations — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <nav class="sitenav">
+      <a href="../index.html#lessons">← All lessons</a>
+      <a href="choosing-vs-arranging-combinations.html">Back to the lesson</a>
+      <a class="here" href="#">Check</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Check · Choosing vs. arranging; combinations</p>
+      <h1>Choosing vs. arranging; combinations</h1>
+      <p class="lede">
+        This covers the lesson you just read, and nothing else. You should be able to
+        clear it — if something still fights back, that tells us the lesson missed.
+      </p>
+    </header>
+
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+      unit: 1,
+      stage: 'check',
+      slug: 'check_choosing-vs-arranging-combinations',
+      topicLabel: "Choosing vs. arranging; combinations",
+      title: "Choosing vs. arranging; combinations",
+      confidence: true
+    };
+
+    var PROBLEMS = [
+      {
+            "question": "From 7 people, how many different committees of 3 can be formed?",
+            "answers": [
+                  "35"
+            ],
+            "hints": [
+                  "Does swapping two members give you a different committee?",
+                  "It does not, so this is choosing, not arranging.",
+                  "Count the ordered picks, then divide by the shuffles of the 3 you chose."
+            ],
+            "topic": "Choosing vs. arranging; combinations",
+            "level": "core"
+      },
+      {
+            "question": "From those same 7 people, how many ways are there to pick a president, a treasurer and a secretary?",
+            "answers": [
+                  "210"
+            ],
+            "hints": [
+                  "Does swapping two of them give you a different outcome here?",
+                  "It does — the roles are distinct, so order matters now.",
+                  "Count the ordered picks and do not divide."
+            ],
+            "topic": "Choosing vs. arranging; combinations",
+            "level": "stretch"
+      },
+      {
+            "question": "Fifteen people each shake hands once with everyone else. How many handshakes happen?",
+            "answers": [
+                  "105"
+            ],
+            "hints": [
+                  "Is a handshake ordered?",
+                  "You shaking my hand is not a second, separate handshake.",
+                  "Every pair of people gives exactly one handshake."
+            ],
+            "topic": "Choosing vs. arranging; combinations",
+            "level": "stretch"
+      }
+];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>

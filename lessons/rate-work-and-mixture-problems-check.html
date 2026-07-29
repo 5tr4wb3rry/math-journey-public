@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check · Rate, work, and mixture problems — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <nav class="sitenav">
+      <a href="../index.html#lessons">← All lessons</a>
+      <a href="rate-work-and-mixture-problems.html">Back to the lesson</a>
+      <a class="here" href="#">Check</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Check · Rate, work, and mixture problems</p>
+      <h1>Rate, work, and mixture problems</h1>
+      <p class="lede">
+        This covers the lesson you just read, and nothing else. You should be able to
+        clear it — if something still fights back, that tells us the lesson missed.
+      </p>
+    </header>
+
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+      unit: 1,
+      stage: 'check',
+      slug: 'check_rate-work-and-mixture-problems',
+      topicLabel: "Rate, work, and mixture problems",
+      title: "Rate, work, and mixture problems",
+      confidence: true
+    };
+
+    var PROBLEMS = [
+      {
+            "question": "Two pipes fill a tank in 20 hours and 30 hours. Working together, how many hours do they take?",
+            "answers": [
+                  "12"
+            ],
+            "hints": [
+                  "Times do not add. Turn each one into a rate first.",
+                  "1/20 + 1/30 is the combined rate, in tanks per hour.",
+                  "That sum is a rate. The question asked for hours, so flip it back."
+            ],
+            "topic": "Rate, work, and mixture problems",
+            "level": "core"
+      },
+      {
+            "question": "A tap fills a barrel in 5 hours; a leak empties it in 20 hours. With both running, how many hours to fill it?",
+            "answers": [
+                  "20/3"
+            ],
+            "hints": [
+                  "The leak works against you, so it enters with a minus sign.",
+                  "1/5 − 1/20 gives the net rate.",
+                  "Flip the net rate to get a time. The answer is not a whole number."
+            ],
+            "topic": "Rate, work, and mixture problems",
+            "level": "stretch"
+      },
+      {
+            "question": "A alone takes 15 hours. A and B together take 6 hours. How many hours does B alone take?",
+            "answers": [
+                  "10"
+            ],
+            "hints": [
+                  "Turn both given times into rates before doing anything else.",
+                  "B's rate is the combined rate minus A's rate.",
+                  "You will have B's rate. Flip it to get B's time."
+            ],
+            "topic": "Rate, work, and mixture problems",
+            "level": "stretch"
+      }
+];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>

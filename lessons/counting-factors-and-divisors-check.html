@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check · Counting factors and divisors — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <nav class="sitenav">
+      <a href="../index.html#lessons">← All lessons</a>
+      <a href="counting-factors-and-divisors.html">Back to the lesson</a>
+      <a class="here" href="#">Check</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Check · Counting factors and divisors</p>
+      <h1>Counting factors and divisors</h1>
+      <p class="lede">
+        This covers the lesson you just read, and nothing else. You should be able to
+        clear it — if something still fights back, that tells us the lesson missed.
+      </p>
+    </header>
+
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+      unit: 1,
+      stage: 'check',
+      slug: 'check_counting-factors-and-divisors',
+      topicLabel: "Counting factors and divisors",
+      title: "Counting factors and divisors",
+      confidence: true
+    };
+
+    var PROBLEMS = [
+      {
+            "question": "How many zeros does 75! end in?",
+            "math": "75!",
+            "answers": [
+                  "18"
+            ],
+            "hints": [
+                  "Zeros come from pairs of 2 and 5, and the 5s are scarcer. Start by counting multiples of 5.",
+                  "75 ÷ 5 = 15. But some of those numbers carry more than one 5.",
+                  "Sweep again for multiples of 25, then stop when the next power passes 75."
+            ],
+            "topic": "Counting factors and divisors",
+            "level": "core"
+      },
+      {
+            "question": "How many zeros does 150! end in?",
+            "math": "150!",
+            "answers": [
+                  "37"
+            ],
+            "hints": [
+                  "Same sweeps as before, but this time the powers of 5 go further.",
+                  "You will need multiples of 5, of 25, and of 125.",
+                  "Stop at 625, which is larger than 150."
+            ],
+            "topic": "Counting factors and divisors",
+            "level": "stretch"
+      },
+      {
+            "question": "How many divisors does 1080 have?",
+            "math": "1080",
+            "answers": [
+                  "32"
+            ],
+            "hints": [
+                  "Break it into primes first.",
+                  "1080 = 2³ × 3³ × 5. Now think about how a divisor is built.",
+                  "Each prime's exponent gives you one more choice than the exponent itself — then multiply the choices."
+            ],
+            "topic": "Counting factors and divisors",
+            "level": "stretch"
+      }
+];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>

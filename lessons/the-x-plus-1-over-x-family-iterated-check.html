@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check · The x + 1/x family, iterated — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <nav class="sitenav">
+      <a href="../index.html#lessons">← All lessons</a>
+      <a href="the-x-plus-1-over-x-family-iterated.html">Back to the lesson</a>
+      <a class="here" href="#">Check</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Check · The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)</p>
+      <h1>The x + 1/x family, iterated</h1>
+      <p class="lede">
+        This covers the lesson you just read, and nothing else. You should be able to
+        clear it — if something still fights back, that tells us the lesson missed.
+      </p>
+    </header>
+
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+      unit: 1,
+      stage: 'check',
+      slug: 'check_the-x-plus-1-over-x-family-iterated',
+      topicLabel: "The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)",
+      title: "The x + 1/x family, iterated",
+      confidence: true
+    };
+
+    var PROBLEMS = [
+      {
+            "question": "If x + 1/x = 6, what is x² + 1/x²?",
+            "math": "x + 1/x = 6",
+            "answers": [
+                  "34"
+            ],
+            "hints": [
+                  "Square both sides.",
+                  "Squaring the left gives three terms, not two.",
+                  "The middle term is 2·x·(1/x), which is just 2. Subtract it."
+            ],
+            "topic": "The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)",
+            "level": "core"
+      },
+      {
+            "question": "Same x + 1/x = 6. Now find x⁴ + 1/x⁴.",
+            "math": "x + 1/x = 6",
+            "answers": [
+                  "1154"
+            ],
+            "hints": [
+                  "You already built one rung. Use it.",
+                  "Apply the same squaring move to the result you just got, not to the 6.",
+                  "Square that result, then subtract 2 again."
+            ],
+            "topic": "The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)",
+            "level": "stretch"
+      },
+      {
+            "question": "If x + 1/x = 8, what is x³ + 1/x³?",
+            "math": "x + 1/x = 8",
+            "answers": [
+                  "488"
+            ],
+            "hints": [
+                  "An odd power does not come from squaring. Try cubing instead.",
+                  "Cubing the left gives x³ + 1/x³ plus a leftover that contains x + 1/x.",
+                  "The leftover is 3(x + 1/x), and you know that value."
+            ],
+            "topic": "The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)",
+            "level": "stretch"
+      }
+];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>
