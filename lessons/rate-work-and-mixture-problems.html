@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rate, work, and mixture problems — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Lesson · Rate, work, and mixture problems</p>
+    <h1>Rates add. Times don't.</h1>
+    <p class="lede">
+      One sentence carries almost this entire topic. Once you believe it, the problems stop
+      being about pipes and painters and become bookkeeping.
+    </p>
+  </header>
+
+  <section class="card">
+    <h2>Start here</h2>
+    <pre class="math">One pipe fills a pool in 4 hours.
+Another fills the same pool in 6 hours.
+Running together, how long do they take?</pre>
+    <p>
+      The tempting answers are 10 hours and 5 hours. Both are wrong, and it is worth being
+      precise about why, because the reason points straight at the method.
+    </p>
+    <p>
+      10 hours is adding the times. But two pipes running together must be
+      <em>faster</em> than either alone — you cannot add help and get a slower result. Any
+      answer above 4 is impossible before you calculate anything.
+    </p>
+    <p>
+      5 hours is the average. Also impossible, for the same reason: it is slower than the
+      4-hour pipe working by itself.
+    </p>
+    <div class="hint">
+      <span class="label">Free sanity check</span>
+      <span>Working together must beat the fastest worker alone. The answer here has to be
+      under 4 hours. That single observation kills most wrong answers before you commit
+      to them.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Why times refuse to add</h2>
+    <p>
+      Times are not the thing that combines. If you work for 4 hours and I work for 6, the
+      job did not take 10 hours — we were working at the same time.
+    </p>
+    <p>
+      What genuinely combines is <strong>how much gets done per hour</strong>. That is the
+      rate, and rates do add: in one hour, the pool receives what the first pipe delivers
+      <em>plus</em> what the second delivers.
+    </p>
+    <pre class="math">pipe A: fills the pool in 4 hours  →  rate = 1/4 of a pool per hour
+pipe B: fills the pool in 6 hours  →  rate = 1/6 of a pool per hour
+
+together: 1/4 + 1/6 = 3/12 + 2/12 = 5/12 of a pool per hour</pre>
+    <p>
+      A time in hours becomes a rate in pools-per-hour by flipping it. That flip is the
+      only real move in the topic — and it has to happen twice.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Flipping back</h2>
+    <p>
+      5/12 is a genuine result, but read what it is: <em>5/12 of a pool per hour</em>. The
+      question did not ask for a fraction of a pool. It asked for hours.
+    </p>
+    <pre class="math">rate     = 5/12 pools per hour
+time     = 1 ÷ (5/12)  =  12/5 hours  =  2.4 hours</pre>
+    <div class="hint">
+      <span class="label">Easy to miss</span>
+      <span>Stopping at 5/12. The arithmetic is finished but the question is not answered
+      — 5/12 is a speed, and the question wants a duration. Flipping in gets you the rate;
+      you have to flip back out to get the time.</span>
+    </div>
+    <p>
+      Check it against the sanity test: 2.4 hours is under 4, so it survives. And the units
+      confirm it — pools ÷ (pools per hour) leaves hours.
+    </p>
+    <pre class="math">The shape of every problem in this family:
+
+  times  →  flip  →  rates  →  add  →  flip  →  time
+                                        ↑
+                        this last flip is the one that gets dropped</pre>
+  </section>
+
+  <section class="card">
+    <h2>A second one, all the way through</h2>
+    <pre class="math">A tap fills a tank in 3 hours; a drain empties it in 6 hours.
+Both open, how long to fill?
+
+fill rate  = 1/3 tank per hour
+drain rate = 1/6 tank per hour, but it works AGAINST you → subtract
+
+net = 1/3 − 1/6 = 2/6 − 1/6 = 1/6 tank per hour
+time = 1 ÷ (1/6) = 6 hours</pre>
+    <p>
+      Anything working against the job enters with a minus sign. Everything else is
+      identical.
+    </p>
+
+    <h3>Working backwards</h3>
+    <pre class="math">A alone takes 6 hours. A and B together take 2 hours. How long does B alone take?
+
+together rate = 1/2   (this is a rate, from flipping the 2 hours)
+A's rate      = 1/6
+B's rate      = 1/2 − 1/6 = 3/6 − 1/6 = 2/6 = 1/3
+
+B alone: 1 ÷ (1/3) = 3 hours</pre>
+    <p>
+      Same three flips. Notice that "2 hours" had to become a rate before it was usable —
+      that is the first flip doing its job in the opposite direction.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Your turn</h2>
+    <ol>
+      <li>
+        Two pipes fill a tank in 2 hours and 3 hours. Together?
+        <details><summary>Answer</summary><span>6/5 hours, or 1.2 hours. Rates: 1/2 + 1/3 = 5/6 per hour; flip back to get 6/5. Under 2, so it passes the sanity check.</span></details>
+      </li>
+      <li>
+        Two machines take 5 hours and 20 hours. Together?
+        <details><summary>Answer</summary><span>4 hours. 1/5 + 1/20 = 4/20 + 1/20 = 5/20 = 1/4 per hour; flip to get 4.</span></details>
+      </li>
+      <li>
+        A tap fills a bath in 10 minutes; the plug leaks it empty in 15 minutes. Tap on, plug out — how long to fill?
+        <details><summary>Answer</summary><span>30 minutes. 1/10 − 1/15 = 3/30 − 2/30 = 1/30 per minute; flip to get 30.</span></details>
+      </li>
+      <li>
+        Three identical pumps each drain a pond in 9 hours. All three together?
+        <details><summary>Answer</summary><span>3 hours. Three rates of 1/9 give 3/9 = 1/3 per hour; flip to get 3.</span></details>
+      </li>
+      <li>
+        Harder: A and B together take 4 hours. A alone takes 12 hours. A works alone for 6 hours, then B joins. How much longer to finish?
+        <details><summary>Answer</summary><span>2 hours more. B's rate is 1/4 − 1/12 = 1/6. In 6 hours alone, A does 6 × 1/12 = 1/2 the job, leaving 1/2. Together they do 1/4 per hour, so the remaining half takes (1/2) ÷ (1/4) = 2 hours.</span></details>
+      </li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What the check will ask</h2>
+    <p class="lede" style="margin-bottom:0">
+      Combined-work problems where the answer is a time, including one with something
+      working against the job and one running backwards from a combined time. Different
+      numbers throughout. Before submitting any of them, say out loud whether the answer is
+      plausible.
+    </p>
+  </section>
+
+</div>
+</body>
+</html>

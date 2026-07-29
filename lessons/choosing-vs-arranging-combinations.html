@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Choosing vs. arranging; combinations — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Lesson · Choosing vs. arranging; combinations</p>
+    <h1>When the order is decided for you</h1>
+    <p class="lede">
+      Counting problems split into two kinds: ones where rearranging gives you something
+      new, and ones where it doesn't. Telling them apart is most of the work, and some
+      problems disguise which kind they are.
+    </p>
+  </header>
+
+  <section class="card">
+    <h2>Start here</h2>
+    <pre class="math">How many 3-digit numbers have digits that strictly increase?
+(148 counts. 155 does not — the digits must go strictly up.)</pre>
+    <p>
+      This does not look like a choosing problem. It looks like you have to build numbers
+      digit by digit, and the constraint links each digit to the one before it, so the
+      usual "9 choices then 8 choices then 7" machinery jams immediately.
+    </p>
+    <p>Then one observation dissolves it.</p>
+  </section>
+
+  <section class="card">
+    <h2>The observation</h2>
+    <p>
+      Pick any three different digits — say 4, 1, 8. How many strictly increasing numbers
+      can you build from exactly those three?
+    </p>
+    <pre class="math">148  ✓ increasing
+184  ✗    418  ✗    481  ✗    814  ✗    841  ✗</pre>
+    <p>
+      Exactly one. The six arrangements exist, but the constraint permits only one of them.
+      <strong>Choosing the digits decides the order.</strong> There is no separate ordering
+      step, because "increasing" is a rule with a single solution.
+    </p>
+    <p>
+      So the question is no longer "how many numbers can I build" but "how many sets of
+      three digits are there" — and those are the same count.
+    </p>
+    <div class="hint">
+      <span class="label">The tell</span>
+      <span>When a constraint forces a unique arrangement of whatever you pick, the problem
+      is a choosing problem wearing an arranging costume.</span>
+    </div>
+    <p>Which digits are available? Not 0 — a 3-digit number cannot start with 0, and in an
+    increasing number 0 would have to come first, being smallest. So the pool is 1 to 9.</p>
+    <pre class="math">choose 3 digits from 9, order irrelevant  =  C(9,3)</pre>
+  </section>
+
+  <section class="card">
+    <h2>Choosing and arranging, side by side</h2>
+    <p>
+      Arranging counts ordered outcomes. Choosing counts unordered ones. They differ by
+      exactly the number of orderings you decided not to distinguish.
+    </p>
+    <pre class="math">ARRANGE 3 of 9, order matters:   9 × 8 × 7 = 504
+CHOOSE  3 of 9, order ignored:   504 ÷ 6 = 84
+
+The 6 is 3! — the number of ways to shuffle any 3 chosen digits.</pre>
+    <p>Written as a formula:</p>
+    <pre class="math">C(n, k) = n! / ( k! · (n−k)! )
+
+C(9,3) = 9! / (3! · 6!) = (9 × 8 × 7) / (3 × 2 × 1) = 504 / 6 = 84</pre>
+    <p><strong>So there are 84 such numbers.</strong></p>
+    <div class="hint">
+      <span class="label">Easy to miss</span>
+      <span>Counting the arrangements and forgetting to divide, or dividing by the wrong
+      thing. The divisor is always k! — the shuffles of the k things you picked — never n!.</span>
+    </div>
+    <p>Sanity check on a size you can verify by hand:</p>
+    <pre class="math">2-digit strictly increasing numbers, digits from 1–9:
+C(9,2) = (9 × 8)/2 = 36
+
+Count directly: starting 1 → 12…19 is 8
+                starting 2 → 23…29 is 7
+                …
+                starting 8 → 89     is 1
+8 + 7 + 6 + 5 + 4 + 3 + 2 + 1 = 36  ✓</pre>
+  </section>
+
+  <section class="card">
+    <h2>The decreasing case is not a mirror</h2>
+    <p>
+      Strictly <em>decreasing</em> 3-digit numbers look symmetric, but the digit pool
+      differs — and this is where a careless mirror argument goes wrong.
+    </p>
+    <p>
+      Now 0 is allowed. In a decreasing number 0 lands at the end, never the front, so it
+      breaks nothing: 320 is a perfectly good decreasing 3-digit number.
+    </p>
+    <pre class="math">choose 3 digits from 0–9  =  C(10,3) = (10 × 9 × 8)/6 = 120</pre>
+    <p>
+      84 increasing versus 120 decreasing. The asymmetry is entirely down to whether 0 can
+      play — worth pausing on, because it is the kind of detail a symmetry argument hides.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Your turn</h2>
+    <ol>
+      <li>
+        How many 4-digit numbers have strictly increasing digits?
+        <details><summary>Answer</summary><span>126 — C(9,4) = (9×8×7×6)/(4×3×2×1) = 3024/24. Same reasoning: pick 4 digits from 1–9 and the order is forced.</span></details>
+      </li>
+      <li>
+        Twelve people each shake hands once with everyone else. How many handshakes?
+        <details><summary>Answer</summary><span>66 — C(12,2) = (12×11)/2. A handshake is unordered: you shaking my hand is not a second handshake.</span></details>
+      </li>
+      <li>
+        From 8 people, how many ways to pick a committee of 3?
+        <details><summary>Answer</summary><span>56 — C(8,3) = (8×7×6)/6.</span></details>
+      </li>
+      <li>
+        From those same 8 people, how many ways to pick a president, a treasurer and a secretary?
+        <details><summary>Answer</summary><span>336 — here the roles make order matter, so it is 8 × 7 × 6 with no dividing. Note 336 = 56 × 6: the same committees, each assignable to roles in 3! ways.</span></details>
+      </li>
+      <li>
+        Harder: how many 3-digit numbers have digits in non-decreasing order, so that repeats like 155 and 111 are allowed?
+        <details><summary>Answer</summary><span>165. Repeats break the "choose a set" trick, because a set cannot hold 1 twice. Instead decide <em>how many</em> of each digit 1–9 you take, with the counts summing to 3. That is the stars-and-bars count C(3 + 9 − 1, 3) = C(11,3) = 165. Sanity check: 165 is larger than the 84 strictly increasing ones, as it must be, since every strictly increasing number is also non-decreasing.</span></details>
+      </li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What the check will ask</h2>
+    <p class="lede" style="margin-bottom:0">
+      One problem where a constraint forces the order and you have to notice, and one where
+      order genuinely matters so dividing would be wrong. Different numbers throughout.
+    </p>
+  </section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The x + 1/x family, iterated — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Lesson · The x + 1/x family, iterated</p>
+    <h1>Climbing a ladder you built yourself</h1>
+    <p class="lede">
+      There is a family of problems that hand you x + 1/x and ask for a much bigger power.
+      You are never told what x is, and you never need it. The interesting part is what
+      happens when you have to use the same move twice.
+    </p>
+  </header>
+
+  <section class="card">
+    <h2>Start here</h2>
+    <pre class="math">If x + 1/x = 4, what is x⁴ + 1/x⁴?</pre>
+    <p>
+      You could try to find x. Doing so means solving x² − 4x + 1 = 0, which gives
+      2 ± √3 — irrational, ugly, and then you would have to raise it to the fourth power.
+      That road is open and it is terrible.
+    </p>
+    <p>
+      The other road never finds x at all. It builds a ladder: from the first power to the
+      second, then from the second to the fourth. Each rung is the same move.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>The move</h2>
+    <p>Square both sides and watch what appears in the middle.</p>
+    <pre class="math">(x + 1/x)²  =  x² + 2·x·(1/x) + 1/x²
+            =  x² + 2 + 1/x²</pre>
+    <p>
+      The middle term is the whole point of this family. x times 1/x is 1, so 2·x·(1/x) is
+      just 2 — a plain number, no x in it. Rearranging:
+    </p>
+    <pre class="math">x² + 1/x²  =  (x + 1/x)² − 2</pre>
+    <p>With x + 1/x = 4:</p>
+    <pre class="math">x² + 1/x² = 4² − 2 = 16 − 2 = 14</pre>
+    <div class="hint">
+      <span class="label">Why the middle term vanishes so neatly</span>
+      <span>Because x and 1/x are reciprocals, their product is exactly 1. That is the
+      only reason this family works at all — it would not happen for x + y.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>The second rung — where it gets interesting</h2>
+    <p>
+      Now you want x⁴ + 1/x⁴, and you already have x² + 1/x² = 14. Here is the key idea:
+      <strong>x⁴ + 1/x⁴ stands in the same relationship to x² + 1/x² as x² + 1/x² does to
+      x + 1/x.</strong> Let u = x². Then 1/u = 1/x², and you are asking for u² + 1/u²
+      given u + 1/u. Same problem. Same move.
+    </p>
+    <pre class="math">(x² + 1/x²)²  =  x⁴ + 2·x²·(1/x²) + 1/x⁴
+              =  x⁴ + 2 + 1/x⁴
+
+so   x⁴ + 1/x⁴  =  (x² + 1/x²)² − 2</pre>
+    <p>Apply it to the 14 you just built:</p>
+    <pre class="math">x⁴ + 1/x⁴ = 14² − 2 = 196 − 2 = 194</pre>
+    <div class="hint">
+      <span class="label">Easy to miss</span>
+      <span>Squaring the <em>original</em> 4 again instead of the <em>result</em> 14. The
+      second rung starts from where the first rung left you, not from the ground. Each
+      squaring doubles the exponent: 1 → 2 → 4. To reach the 4th power you square twice,
+      and the second squaring acts on 14.</span>
+    </div>
+    <p>Written as one chain, so the shape is visible:</p>
+    <pre class="math">x + 1/x   = 4
+x² + 1/x² = 4²  − 2 = 14
+x⁴ + 1/x⁴ = 14² − 2 = 194</pre>
+  </section>
+
+  <section class="card">
+    <h2>The cube is a different rung</h2>
+    <p>
+      Odd powers do not come from squaring, so the ladder needs a different step. Cube
+      instead:
+    </p>
+    <pre class="math">(x + 1/x)³  =  x³ + 3x²·(1/x) + 3x·(1/x²) + 1/x³
+            =  x³ + 3x + 3/x + 1/x³
+            =  x³ + 1/x³ + 3(x + 1/x)
+
+so   x³ + 1/x³  =  (x + 1/x)³ − 3(x + 1/x)</pre>
+    <p>With x + 1/x = 4:</p>
+    <pre class="math">x³ + 1/x³ = 4³ − 3·4 = 64 − 12 = 52</pre>
+    <p>
+      Note the leftover here is not a plain number — it is 3(x + 1/x), which you happen to
+      know. Different rung, different leftover; same principle of subtracting whatever the
+      expansion added.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>The ladder, in one place</h2>
+    <pre class="math">Let s = x + 1/x.
+
+x² + 1/x² = s² − 2
+x³ + 1/x³ = s³ − 3s
+x⁴ + 1/x⁴ = (x² + 1/x²)² − 2   ← built from the rung below, not from s</pre>
+    <p>
+      Memorising the third line as a formula in s is possible but pointless. Building it
+      from the rung below is the same work and never goes wrong.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Your turn</h2>
+    <ol>
+      <li>
+        If x + 1/x = 5, what is x² + 1/x²?
+        <details><summary>Answer</summary><span>23 — that is 5² − 2.</span></details>
+      </li>
+      <li>
+        Same x + 1/x = 5: now find x⁴ + 1/x⁴.
+        <details><summary>Answer</summary><span>527 — square the 23 from the rung below and subtract 2: 529 − 2.</span></details>
+      </li>
+      <li>
+        If x + 1/x = 3, what is x³ + 1/x³?
+        <details><summary>Answer</summary><span>18 — that is 3³ − 3·3 = 27 − 9.</span></details>
+      </li>
+      <li>
+        If x + 1/x = 2, what is x⁴ + 1/x⁴?
+        <details><summary>Answer</summary><span>2 — since 2² − 2 = 2, then 2² − 2 = 2 again. Worth noticing: here x is actually 1, so every power is 1 + 1 = 2. The method agrees with the obvious answer.</span></details>
+      </li>
+      <li>
+        Harder: if x + 1/x = 3, what is x⁶ + 1/x⁶?
+        <details><summary>Answer</summary><span>322. Two routes, both fine. Square the cube: x³ + 1/x³ = 18, then 18² − 2 = 322. Or cube the square: x² + 1/x² = 7, then 7³ − 3·7 = 343 − 21 = 322. They must agree, and checking that they do is a free way to catch a slip.</span></details>
+      </li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What the check will ask</h2>
+    <p class="lede" style="margin-bottom:0">
+      A two-step climb to a fourth or sixth power from a value of x + 1/x you have not seen
+      here, and at least one where you must decide which rung to build first. Different
+      numbers throughout.
+    </p>
+  </section>
+
+</div>
+</body>
+</html>
