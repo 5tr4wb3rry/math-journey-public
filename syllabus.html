@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mathematical Journey — Syllabus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* House palette — kept identical to public/assets/quiz.css so the syllabus and the
+   quizzes read as one site. Warm paper, faint grid. Change both files together. */
+:root{--paper:#F7F3EA;--grid:#ECE6DB;--ink:#241F18;--ink-soft:#5D5445;--marker:#1F5F5B;--marker-soft:#E2EFED;--green:#2F6B3A;--green-soft:#E3F0E3;--amber:#B4531F;--amber-soft:#FBE9DD;--card:#FFFDF8;--line:#DED4C0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'IBM Plex Sans',sans-serif;color:var(--ink);background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;display:flex;justify-content:center;padding:40px 16px 80px;line-height:1.6}
+.doc{width:100%;max-width:820px}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;line-height:1.3}
+h1{font-size:30px;margin-bottom:6px}
+h2{font-size:21px;margin:0 0 14px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+p{margin-bottom:10px;font-size:15px}
+.sub{color:var(--ink-soft);font-size:14px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-bottom:22px;box-shadow:0 1px 0 var(--line)}
+.badge{display:inline-block;font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;background:var(--marker-soft);color:var(--marker);border-radius:999px;padding:4px 12px;font-weight:500;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;margin:8px 0 4px;font-size:14px}
+th{font-family:'Space Grotesk',sans-serif;text-align:left;font-weight:500;border-bottom:2px solid var(--ink);padding:6px 8px}
+td{border-bottom:1px dashed var(--line);padding:7px 8px;vertical-align:top}
+td.st{white-space:nowrap;width:130px}
+.s{font-family:'Space Grotesk',sans-serif;font-size:12px;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;padding:3px 10px;font-weight:500}
+.s-none{background:#EFE8DA;color:var(--ink-soft)}
+.s-prog{background:var(--amber-soft);color:var(--amber)}
+.s-cov{background:var(--marker-soft);color:var(--marker)}
+.s-mast{background:var(--green-soft);color:var(--green)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 0}
+.toc a{display:inline-block;padding:6px 12px;border-radius:8px;font-size:14px;color:var(--marker);text-decoration:none}
+.toc a:hover{background:var(--marker-soft)}
+@media(max-width:560px){section{padding:20px}td.st{width:auto}}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<section id="top">
+  <div class="badge">Mathematical journey</div>
+  <h1>Syllabus — the whole territory</h1>
+  <p class="sub">Every topic on the road from algebra to differential equations, with where we stand on each. This map changes only when something is learned or the destination itself changes. What we're actually doing next lives in the learning plan.</p>
+  <div class="legend">
+    <span class="s s-none">not started</span>
+    <span class="s s-prog">in progress</span>
+    <span class="s s-cov">covered</span>
+    <span class="s s-mast">mastered</span>
+  </div>
+  <p class="sub" style="margin-top:12px"><b>Covered</b> = met it and can use it. <b>Mastered</b> = used it correctly, unprompted, on a problem that didn't announce it — including under checkpoint conditions.</p>
+  <div class="toc" style="margin-top:10px">
+    <a href="#alg">Algebra</a> · <a href="#count">Counting &amp; probability</a> · <a href="#nt">Number theory</a> ·
+    <a href="#fn">Functions &amp; graphs</a> · <a href="#geo">Geometry</a> · <a href="#calc">Toward calculus</a> · <a href="#meta">Problem-solving craft</a>
+  </div>
+</section>
+
+<section id="alg">
+  <h2>Algebra</h2>
+  <table>
+    <tr><th>Topic</th><th>Status</th></tr>
+    <tr><td>Variables, expressions, evaluating and translating</td><td class="st"><span class="s s-mast">mastered</span></td></tr>
+    <tr><td>Linear equations, one unknown (all forms)</td><td class="st"><span class="s s-mast">mastered</span></td></tr>
+    <tr><td>Sign discipline with negatives and powers</td><td class="st"><span class="s s-cov">covered</span></td></tr>
+    <tr><td>Squaring identities: (a±b)², sum &amp; product → a²+b²</td><td class="st"><span class="s s-mast">mastered</span></td></tr>
+    <tr><td>Symmetric expressions in three variables</td><td class="st"><span class="s s-cov">covered</span></td></tr>
+    <tr><td>The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)</td><td class="st"><span class="s s-prog">in progress</span></td></tr>
+    <tr><td>Difference of squares; factoring as un-multiplying</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Cubes: sum and difference; the cube identities</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Exponent laws, including zero and negative exponents</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Substitution as a simplifying weapon</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Systems of two equations: substitution, elimination</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Word problems: age, money, consecutive numbers</td><td class="st"><span class="s s-cov">covered</span></td></tr>
+    <tr><td>Rate, work, and mixture problems</td><td class="st"><span class="s s-prog">in progress</span></td></tr>
+    <tr><td>Inequalities and absolute value</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Quadratics: factoring, completing the square, the discriminant</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Radicals and irrational numbers</td><td class="st"><span class="s s-none">not started</span></td></tr>
+  </table>
+</section>
+
+<section id="count">
+  <h2>Counting &amp; probability</h2>
+  <table>
+    <tr><th>Topic</th><th>Status</th></tr>
+    <tr><td>Multiplication principle; simple product counting</td><td class="st"><span class="s s-cov">covered</span></td></tr>
+    <tr><td>Inclusion–exclusion, two sets</td><td class="st"><span class="s s-cov">covered</span></td></tr>
+    <tr><td>Organized casework decided before counting</td><td class="st"><span class="s s-prog">in progress</span></td></tr>
+    <tr><td>Choosing vs. arranging; combinations</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Permutations, including with repetition</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Counting the complement</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Inclusion–exclusion, three or more sets</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Basic probability; equally likely outcomes</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Expected value</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Counterintuitive classics (birthday, Monty Hall)</td><td class="st"><span class="s s-none">not started</span></td></tr>
+  </table>
+</section>
+
+<section id="nt">
+  <h2>Number theory</h2>
+  <table>
+    <tr><th>Topic</th><th>Status</th></tr>
+    <tr><td>Units-digit and last-digit cycles</td><td class="st"><span class="s s-mast">mastered</span></td></tr>
+    <tr><td>Remainder cycles; modular arithmetic informally</td><td class="st"><span class="s s-cov">covered</span></td></tr>
+    <tr><td>Divisibility rules</td><td class="st"><span class="s s-cov">covered</span></td></tr>
+    <tr><td>Prime factorization as a tool</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Counting factors and divisors</td><td class="st"><span class="s s-prog">in progress</span></td></tr>
+    <tr><td>GCD and LCM, and what they mean</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Modular arithmetic formally; congruences</td><td class="st"><span class="s s-none">not started</span></td></tr>
+  </table>
+</section>
+
+<section id="fn">
+  <h2>Functions &amp; graphs</h2>
+  <table>
+    <tr><th>Topic</th><th>Status</th></tr>
+    <tr><td>Coordinates; plotting points</td><td class="st"><span class="s s-cov">covered</span></td></tr>
+    <tr><td>Function machines; f(x) notation</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Lines: slope, intercepts, slope as a rate</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Graphs of quadratics; the parabola and its vertex</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Reading graphs as stories; a zoo of shapes</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Transformations of graphs</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Exponential growth and decay</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Logarithms as the inverse question</td><td class="st"><span class="s s-none">not started</span></td></tr>
+  </table>
+</section>
+
+<section id="geo">
+  <h2>Geometry</h2>
+  <table>
+    <tr><th>Topic</th><th>Status</th></tr>
+    <tr><td>Area and perimeter as algebra in disguise</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Angles, parallel lines, triangle facts</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>The Pythagorean theorem and its proofs</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Similarity and scaling</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Circles: arcs, sectors, inscribed angles</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Coordinate geometry</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Writing a proof</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Trigonometry: ratios, the unit circle</td><td class="st"><span class="s s-none">not started</span></td></tr>
+  </table>
+</section>
+
+<section id="calc">
+  <h2>Toward calculus</h2>
+  <table>
+    <tr><th>Topic</th><th>Status</th></tr>
+    <tr><td>Sequences and series; arithmetic and geometric</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Optimization: best-possible problems without calculus</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Limits, informally then formally</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Rate of change; the derivative</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Differentiation rules; curve sketching</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Accumulation; the integral</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>The fundamental theorem</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Differential equations and modeling</td><td class="st"><span class="s s-none">not started</span></td></tr>
+  </table>
+</section>
+
+<section id="meta">
+  <h2>Problem-solving craft</h2>
+  <p class="sub">Not topics — habits. These are the real curriculum; everything above is the material they're practiced on.</p>
+  <table>
+    <tr><th>Habit</th><th>Status</th></tr>
+    <tr><td>The Opening Playbook: six first moves on an alien problem</td><td class="st"><span class="s s-prog">in progress</span></td></tr>
+    <tr><td>Reaching for structure before examples</td><td class="st"><span class="s s-mast">mastered</span></td></tr>
+    <tr><td>Carrying a method through to the actual question asked</td><td class="st"><span class="s s-prog">in progress</span></td></tr>
+    <tr><td>Checking an answer for plausibility before submitting</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Knowing how sure you are (calibrated confidence)</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Reapplying a weapon in a multi-step chain</td><td class="st"><span class="s s-prog">in progress</span></td></tr>
+    <tr><td>Explaining a solution so someone else understands it</td><td class="st"><span class="s s-none">not started</span></td></tr>
+    <tr><td>Tolerating being stuck; treating it as information</td><td class="st"><span class="s s-prog">in progress</span></td></tr>
+  </table>
+</section>
+
+</div>
+</body>
+</html>

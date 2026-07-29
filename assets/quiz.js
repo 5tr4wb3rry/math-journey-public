@@ -1,0 +1,559 @@
+/* Math Journey — shared quiz engine.
+ *
+ * Every session quiz in public/ is: boilerplate + a PROBLEMS array + a CONFIG object,
+ * then MathQuiz.start(CONFIG, PROBLEMS). Never rewrite this file per session; fix
+ * behavior here and every quiz inherits it.
+ *
+ * CONFIG
+ *   unit          number  — used in the heading and the report filename
+ *   session       number  — same; use 'checkpoint' for a unit checkpoint
+ *   title         string  — page heading
+ *   subtitle      string  — optional line under the heading
+ *   confidence    bool    — show the "how sure are you?" tags per problem
+ *   stuckChips    array   — optional override of the playbook moves offered on "I'm stuck"
+ *
+ * Screens: start (climb framing + playbook) -> climb (one problem at a time, playbook
+ * card kept visible throughout) -> review. Both the framing and the visible playbook
+ * card are non-negotiables from .claude/rules/sessions.md; do not remove them.
+ *
+ * PROBLEM
+ *   question      string  — the prompt, plain text
+ *   math          string  — optional monospace line (an expression, a table, a diagram)
+ *   answers       array   — accepted answers; numbers, fraction strings, or plain strings
+ *   hints         array   — up to three, ordered nudge -> stronger -> strongest
+ *   strand        string  — which thread of the curriculum this exercises
+ *   level         string  — difficulty label, e.g. 'core', 'stretch', 'reach'
+ *
+ * Answers are auto-scored. Numeric and fraction forms are interchangeable: if the
+ * accepted answer is 3/4 then 3/4, 0.75, 6/8 and 1 -1/4 -style mixed numbers all match.
+ * Anything that is not a number is compared as case- and space-insensitive text.
+ */
+
+(function (global) {
+  'use strict';
+
+  // The Opening Playbook. Shown on the start screen, kept visible through the whole
+  // climb, and used as the tap-chips on "I'm stuck" — the same six moves everywhere, so
+  // naming what he tried is the same vocabulary as choosing what to try.
+  var PLAYBOOK = [
+    ['Try numbers',      'Plug in small, easy values and see what happens.'],
+    ['Shrink it',        'Solve a smaller version of the problem first.'],
+    ['Draw it / table it', 'Pictures and tables before symbols.'],
+    ['Name things',      'Give the unknowns letters; write down what you know.'],
+    ['Work backwards',   'Start from what the answer has to satisfy.'],
+    ['Say it out loud',  'Restate the problem in your own words.']
+  ];
+
+  var DEFAULT_STUCK_CHIPS = PLAYBOOK.map(function (m) { return m[0]; })
+    .concat(["Didn't know where to start"]);
+
+  var CONFIDENCE_TAGS = ["I'm sure", 'I think so', 'I guessed'];
+
+  // Said aloud by the parent and shown before the climb starts, every session.
+  var CLIMB_FRAMING = [
+    'Nobody summits clean.',
+    'Finding where it gets hard is the whole point — that is the result we want.',
+    'Hints cost nothing. Using one is a move, not a mistake.',
+    'There is no timer. Take as long as you take.'
+  ];
+
+  /* ---------------------------------------------------------------- answers */
+
+  // Turn "3/4", "0.75", "1 1/2", "-2", "1,250" into a number. null if it isn't one.
+  function toNumber(raw) {
+    var s = String(raw).trim().toLowerCase().replace(/,/g, '').replace(/\s+/g, ' ');
+    if (!s) return null;
+
+    var mixed = s.match(/^([+-]?)(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+    if (mixed) {
+      var den = Number(mixed[4]);
+      if (!den) return null;
+      var mag = Number(mixed[2]) + Number(mixed[3]) / den;
+      return mixed[1] === '-' ? -mag : mag;
+    }
+
+    var frac = s.match(/^([+-]?\d*\.?\d+)\s*\/\s*([+-]?\d*\.?\d+)$/);
+    if (frac) {
+      var d = parseFloat(frac[2]);
+      if (!d) return null;
+      return parseFloat(frac[1]) / d;
+    }
+
+    if (/^[+-]?(\d+\.?\d*|\.\d+)$/.test(s)) return parseFloat(s);
+    return null;
+  }
+
+  // Tight enough to reject a truncated decimal typed for a repeating fraction
+  // (0.3333333333 is not 1/3), loose enough to absorb float rounding between two
+  // spellings of the same value (6/8 vs 3/4).
+  function sameNumber(a, b) {
+    return Math.abs(a - b) <= 1e-12 * Math.max(1, Math.abs(a), Math.abs(b));
+  }
+
+  function normalizeText(raw) {
+    return String(raw).trim().toLowerCase().replace(/\s+/g, '');
+  }
+
+  function isCorrect(given, accepted) {
+    if (given == null || normalizeText(given) === '') return false;
+    var givenNum = toNumber(given);
+    for (var i = 0; i < accepted.length; i++) {
+      var wantNum = toNumber(accepted[i]);
+      if (givenNum !== null && wantNum !== null) {
+        if (sameNumber(givenNum, wantNum)) return true;
+      } else if (normalizeText(given) === normalizeText(accepted[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /* ------------------------------------------------------------------ utils */
+
+  function el(tag, props, kids) {
+    var node = document.createElement(tag);
+    if (props) {
+      Object.keys(props).forEach(function (k) {
+        var v = props[k];
+        // null/undefined/false means "omit this attribute". Without this guard
+        // setAttribute writes the string "null" and { disabled: null } disables
+        // the button it was meant to leave enabled.
+        if (v === null || v === undefined || v === false) return;
+        if (k === 'class') node.className = v;
+        else if (k === 'text') node.textContent = v;
+        else if (k.slice(0, 2) === 'on') node.addEventListener(k.slice(2), v);
+        // A textarea has no value attribute — its content comes from its child text.
+        // Set the property so revisiting a problem shows what was typed there.
+        else if (k === 'value') node.value = v;
+        else node.setAttribute(k, v);
+      });
+    }
+    (kids || []).forEach(function (kid) { if (kid) node.appendChild(kid); });
+    return node;
+  }
+
+  function today() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  /* ----------------------------------------------------------------- engine */
+
+  function start(config, problems) {
+    var cfg = config || {};
+    var chips = cfg.stuckChips || DEFAULT_STUCK_CHIPS;
+    var root = document.getElementById('quiz');
+    var storeKey = 'mathjourney:u' + cfg.unit + ':s' + cfg.session;
+
+    var state = problems.map(function () {
+      return { answer: '', hints: 0, stuck: [], note: '', confidence: '' };
+    });
+    var reflection = { hardest: '', note: '' };
+    var index = 0;
+    var screen = 'start';           // 'start' -> 'climb' -> 'review'
+
+    // Light autosave so an accidental refresh mid-climb doesn't lose the work.
+    try {
+      var saved = JSON.parse(localStorage.getItem(storeKey) || 'null');
+      if (saved && saved.state && saved.state.length === state.length && saved.screen === 'climb') {
+        state = saved.state;
+        index = saved.index || 0;
+        screen = 'climb';
+      }
+    } catch (e) { /* storage unavailable; carry on */ }
+
+    function save() {
+      try {
+        localStorage.setItem(storeKey, JSON.stringify({
+          state: state, index: index, screen: screen
+        }));
+      } catch (e) { /* ignore */ }
+    }
+
+    function graded(i) { return isCorrect(state[i].answer, problems[i].answers); }
+    function answered(i) { return normalizeText(state[i].answer) !== ''; }
+    function score() { return problems.reduce(function (n, _, i) { return n + (graded(i) ? 1 : 0); }, 0); }
+
+    /* ---- progress rail: doubles as navigation, never locks ---- */
+
+    function renderRail() {
+      var done = screen === 'review';
+      var rail = el('div', { class: 'rail' });
+      problems.forEach(function (_, i) {
+        var cls = 'rail-dot';
+        if (done) cls += graded(i) ? ' right' : ' wrong';
+        else if (answered(i)) cls += ' answered';
+        if (!done && i === index) cls += ' current';
+        rail.appendChild(el('button', {
+          class: cls,
+          text: String(i + 1),
+          'aria-label': 'Problem ' + (i + 1),
+          onclick: function () { if (!done) { index = i; save(); render(); } }
+        }));
+      });
+      return rail;
+    }
+
+    /* ---- the playbook card: on the start screen and through the whole climb ---- */
+
+    function renderPlaybook(open) {
+      var card = el('details', { class: 'card playbook' });
+      if (open) card.setAttribute('open', 'open');
+      card.appendChild(el('summary', { text: 'The Opening Playbook' }));
+      var list = el('ol', { class: 'playbook-list' });
+      PLAYBOOK.forEach(function (move) {
+        list.appendChild(el('li', {}, [
+          el('strong', { text: move[0] }),
+          el('span', { text: ' — ' + move[1] })
+        ]));
+      });
+      card.appendChild(list);
+      return card;
+    }
+
+    /* ---- start screen: the climb framing, said aloud and shown, every session ---- */
+
+    function renderStart() {
+      var frag = document.createDocumentFragment();
+
+      var card = el('div', { class: 'card' });
+      card.appendChild(el('p', { class: 'eyebrow', text: 'Before you start' }));
+      card.appendChild(el('h2', { text: 'This is a climb' }));
+      var ul = el('ul', { class: 'framing' });
+      CLIMB_FRAMING.forEach(function (line) { ul.appendChild(el('li', { text: line })); });
+      card.appendChild(ul);
+      card.appendChild(el('p', {
+        class: 'hint-note',
+        text: problems.length + ' problems, getting harder. You can move back and forward ' +
+              'freely and change anything until you finish.'
+      }));
+      card.appendChild(el('div', { class: 'nav' }, [
+        el('div', { class: 'spacer' }),
+        el('button', {
+          class: 'btn btn-primary', text: 'Start the climb',
+          onclick: function () { screen = 'climb'; save(); render(); }
+        })
+      ]));
+      frag.appendChild(card);
+      frag.appendChild(renderPlaybook(true));
+      return frag;
+    }
+
+    /* ---- one problem ---- */
+
+    function renderProblem() {
+      var p = problems[index];
+      var s = state[index];
+      var card = el('div', { class: 'card' });
+
+      card.appendChild(el('p', {
+        class: 'eyebrow',
+        text: 'Problem ' + (index + 1) + ' of ' + problems.length +
+          (p.strand ? ' · ' + p.strand : '') + (p.level ? ' · ' + p.level : '')
+      }));
+      card.appendChild(el('p', { class: 'q-text', text: p.question }));
+      if (p.math) card.appendChild(el('pre', { class: 'math', text: p.math }));
+
+      var input = el('input', {
+        type: 'text',
+        value: s.answer,
+        placeholder: 'Your answer',
+        autocomplete: 'off',
+        'aria-label': 'Answer to problem ' + (index + 1),
+        oninput: function () { s.answer = this.value; save(); },
+        onkeydown: function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); go(1); } }
+      });
+      card.appendChild(el('div', { class: 'answer-row' }, [input]));
+      card.appendChild(el('p', {
+        class: 'hint-note',
+        text: 'Fractions or decimals both work — 3/4 and 0.75 are the same answer.'
+      }));
+
+      /* hints, self-served, one stage at a time */
+      var hints = p.hints || [];
+      if (hints.length) {
+        var box = el('div', { class: 'hints' });
+        var labels = ['A nudge', 'More', 'The most I can give you'];
+        for (var h = 0; h < s.hints; h++) {
+          box.appendChild(el('div', { class: 'hint' }, [
+            el('span', { class: 'label', text: labels[h] || 'Hint ' + (h + 1) }),
+            el('span', { text: hints[h] })
+          ]));
+        }
+        if (s.hints < hints.length) {
+          box.appendChild(el('button', {
+            class: 'btn',
+            text: s.hints === 0 ? 'Give me a move' : 'Give me another move',
+            onclick: function () { s.hints++; save(); render(); }
+          }));
+        }
+        card.appendChild(box);
+      }
+
+      /* "I'm stuck" — which playbook moves did you try? Entirely skippable. */
+      var stuckOpen = s.stuck.length > 0 || s.note !== '' || s._stuckOpen;
+      if (!stuckOpen) {
+        card.appendChild(el('button', {
+          class: 'btn btn-quiet',
+          text: "I'm stuck",
+          onclick: function () { s._stuckOpen = true; render(); }
+        }));
+      } else {
+        var panel = el('div', { class: 'panel' });
+        panel.appendChild(el('h3', { text: 'What did you already try?' }));
+        var chipRow = el('div', { class: 'chips' });
+        chips.forEach(function (label) {
+          var on = s.stuck.indexOf(label) !== -1;
+          chipRow.appendChild(el('button', {
+            class: 'chip', 'aria-pressed': String(on), text: label,
+            onclick: function () {
+              var at = s.stuck.indexOf(label);
+              if (at === -1) s.stuck.push(label); else s.stuck.splice(at, 1);
+              save(); render();
+            }
+          }));
+        });
+        panel.appendChild(chipRow);
+        panel.appendChild(el('textarea', {
+          rows: '2', placeholder: 'Anything else? (optional)', value: s.note,
+          oninput: function () { s.note = this.value; save(); }
+        }));
+        card.appendChild(panel);
+      }
+
+      /* optional confidence tag */
+      if (cfg.confidence) {
+        var conf = el('div', { class: 'panel' });
+        conf.appendChild(el('h3', { text: 'How sure are you?' }));
+        var confRow = el('div', { class: 'chips' });
+        CONFIDENCE_TAGS.forEach(function (tag) {
+          confRow.appendChild(el('button', {
+            class: 'chip', 'aria-pressed': String(s.confidence === tag), text: tag,
+            onclick: function () { s.confidence = (s.confidence === tag ? '' : tag); save(); render(); }
+          }));
+        });
+        conf.appendChild(confRow);
+        card.appendChild(conf);
+      }
+
+      /* navigation — nothing is checked or locked until the final submit */
+      var nav = el('div', { class: 'nav' }, [
+        el('button', {
+          class: 'btn', text: '← Back', disabled: index === 0 ? 'disabled' : null,
+          onclick: function () { go(-1); }
+        }),
+        el('div', { class: 'spacer' }),
+        index < problems.length - 1
+          ? el('button', { class: 'btn btn-primary', text: 'Next →', onclick: function () { go(1); } })
+          : el('button', { class: 'btn btn-primary', text: 'Finish and check', onclick: finish })
+      ]);
+      card.appendChild(nav);
+
+      return card;
+    }
+
+    function go(step) {
+      var next = index + step;
+      if (next < 0) return;
+      if (next >= problems.length) { finish(); return; }
+      index = next;
+      save();
+      render();
+    }
+
+    function finish() {
+      var blank = problems.filter(function (_, i) { return !answered(i); }).length;
+      var msg = blank
+        ? 'You have ' + blank + ' problem' + (blank === 1 ? '' : 's') + ' with no answer yet. Finish anyway?'
+        : 'Ready to check your answers? You can look back but not change them after this.';
+      if (!global.confirm(msg)) return;
+      screen = 'review';
+      save();
+      render();
+      global.scrollTo(0, 0);
+    }
+
+    /* ---- review screen: also the parent debrief view ---- */
+
+    function renderReview() {
+      var frag = document.createDocumentFragment();
+      var n = score();
+
+      var head = el('div', { class: 'card' });
+      head.appendChild(el('p', { class: 'eyebrow', text: 'Review' }));
+      head.appendChild(el('p', { class: 'score' }, [
+        document.createTextNode(n + ' / ' + problems.length + ' '),
+        el('small', { text: 'correct' })
+      ]));
+      frag.appendChild(head);
+
+      var list = el('div', { class: 'card review' });
+      problems.forEach(function (p, i) {
+        var right = graded(i);
+        var s = state[i];
+        var bits = [];
+        if (s.hints) bits.push(s.hints + ' hint' + (s.hints === 1 ? '' : 's'));
+        if (s.stuck.length) bits.push('tried: ' + s.stuck.join(', '));
+        if (s.note) bits.push('note: ' + s.note);
+        if (cfg.confidence && s.confidence) bits.push(s.confidence);
+
+        list.appendChild(el('div', { class: 'review-item' }, [
+          el('span', { class: 'n', text: String(i + 1) }),
+          el('span', {}, [
+            el('span', { text: p.question }),
+            el('br'),
+            el('span', { class: 'given', text: 'You said: ' + (answered(i) ? s.answer : '(blank)') })
+          ]),
+          el('span', { class: 'verdict ' + (right ? 'right' : 'wrong'), text: right ? 'right' : 'wrong' }),
+          bits.length ? el('span', { class: 'meta', text: bits.join(' · ') }) : null
+        ]));
+      });
+      frag.appendChild(list);
+
+      /* one tap choice plus one optional line. Nothing is required to finish. */
+      var reflect = el('div', { class: 'card' });
+      reflect.appendChild(el('h2', { text: 'Which problem was the hardest?' }));
+      var row = el('div', { class: 'chips' });
+      problems.forEach(function (_, i) {
+        var label = 'Problem ' + (i + 1);
+        row.appendChild(el('button', {
+          class: 'chip', 'aria-pressed': String(reflection.hardest === label), text: String(i + 1),
+          'aria-label': label,
+          onclick: function () {
+            reflection.hardest = (reflection.hardest === label ? '' : label);
+            render();
+          }
+        }));
+      });
+      row.appendChild(el('button', {
+        class: 'chip', 'aria-pressed': String(reflection.hardest === 'None of them'),
+        text: 'None of them',
+        onclick: function () {
+          reflection.hardest = (reflection.hardest === 'None of them' ? '' : 'None of them');
+          render();
+        }
+      }));
+      reflect.appendChild(row);
+      reflect.appendChild(el('textarea', {
+        rows: '2', placeholder: 'Want to say why? (optional)', value: reflection.note,
+        oninput: function () { reflection.note = this.value; refreshReport(); }
+      }));
+      frag.appendChild(reflect);
+
+      frag.appendChild(renderReport());
+      return frag;
+    }
+
+    /* ---- report: copy and download, no libraries ---- */
+
+    function reportText() {
+      var lines = [];
+      lines.push('MATH JOURNEY — Unit ' + cfg.unit + ', Session ' + cfg.session);
+      if (cfg.title) lines.push(cfg.title);
+      lines.push('Date: ' + today());
+      lines.push('Score: ' + score() + ' / ' + problems.length);
+      lines.push('');
+
+      problems.forEach(function (p, i) {
+        var s = state[i];
+        lines.push('--- Problem ' + (i + 1) + (p.strand ? ' (' + p.strand + (p.level ? ', ' + p.level : '') + ')' : '') + ' ---');
+        lines.push(p.question);
+        lines.push('Result:       ' + (graded(i) ? 'correct' : 'incorrect'));
+        lines.push('Answer given: ' + (answered(i) ? s.answer : '(blank)'));
+        lines.push('Hints used:   ' + s.hints);
+        lines.push('Stuck tags:   ' + (s.stuck.length ? s.stuck.join(', ') : '—'));
+        if (s.note) lines.push('Note:         ' + s.note);
+        if (cfg.confidence) lines.push('Confidence:   ' + (s.confidence || '—'));
+        lines.push('');
+      });
+
+      lines.push('--- Reflection ---');
+      lines.push('Hardest problem: ' + (reflection.hardest || '—'));
+      lines.push('In his words:    ' + (reflection.note || '—'));
+      lines.push('');
+      return lines.join('\n');
+    }
+
+    function refreshReport() {
+      var box = document.getElementById('report');
+      if (box) box.value = reportText();
+    }
+
+    function renderReport() {
+      var card = el('div', { class: 'card' });
+      card.appendChild(el('h2', { text: 'Send this back' }));
+      card.appendChild(el('p', {
+        class: 'lede',
+        text: 'Copy it or download it, then hand it over. It has every answer, every hint used, and what he said about it.'
+      }));
+
+      var status = el('span', { class: 'copied' });
+      var area = el('textarea', { id: 'report', rows: '18', readonly: 'readonly' });
+      area.value = reportText();
+
+      var filename = 'report_unit' + cfg.unit + '_session' + cfg.session + '_' + today() + '.txt';
+
+      var copyBtn = el('button', {
+        class: 'btn btn-primary', text: 'Copy report',
+        onclick: function () {
+          var text = area.value;
+          var done = function () { status.textContent = 'Copied.'; };
+          var fallback = function () {
+            area.removeAttribute('readonly');
+            area.focus();
+            area.select();
+            var ok = false;
+            try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+            area.setAttribute('readonly', 'readonly');
+            status.textContent = ok ? 'Copied.' : 'Select the text above and copy it.';
+          };
+          if (global.navigator && global.navigator.clipboard && global.navigator.clipboard.writeText) {
+            global.navigator.clipboard.writeText(text).then(done, fallback);
+          } else {
+            fallback();
+          }
+        }
+      });
+
+      var downloadBtn = el('button', {
+        class: 'btn', text: 'Download report',
+        onclick: function () {
+          var blob = new Blob([area.value], { type: 'text/plain;charset=utf-8' });
+          var url = URL.createObjectURL(blob);
+          var a = el('a', { href: url, download: filename });
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+          status.textContent = 'Saved as ' + filename;
+        }
+      });
+
+      card.appendChild(el('div', { class: 'report-actions' }, [copyBtn, downloadBtn, status]));
+      card.appendChild(area);
+      return card;
+    }
+
+    /* ---- mount ---- */
+
+    function render() {
+      root.textContent = '';
+      if (screen === 'start') { root.appendChild(renderStart()); return; }
+      root.appendChild(renderRail());
+      if (screen === 'review') {
+        root.appendChild(renderReview());
+      } else {
+        root.appendChild(renderProblem());
+        // Non-negotiable: the playbook card stays visible for the whole climb.
+        root.appendChild(renderPlaybook(false));
+      }
+    }
+
+    if (!root) throw new Error('quiz.js: no element with id="quiz" on the page');
+    render();
+  }
+
+  global.MathQuiz = { start: start, isCorrect: isCorrect, toNumber: toNumber };
+})(window);
