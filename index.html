@@ -1,45 +1,70 @@
 <!doctype html>
 <!--
-  Landing page. Regenerate this whenever a session is added — see .claude/rules/workflow.md.
-  Add the new session as an <li> in the sessions list of the right unit; add a new
-  <section> when a unit opens.
+  Landing page. TWO TABS: Lessons and Syllabus. This file replaces the old
+  syllabus.html — the topic map now lives in the Syllabus tab so there is one
+  address, not two.
 
-  PUBLISHED. Nothing here may name the learner or hint at an answer.
-  _template/ is a working directory, not a destination: never link quiz.html or demo.html.
+  Regenerate whenever a lesson is added or a topic's status changes:
+    - add the lesson to the Lessons tab under its syllabus area
+    - link the topic's row in the Syllabus tab to it
+    - the Unit column says which unit is handling each topic, which is the
+      correspondence between the unit numbering and the syllabus
+
+  PUBLISHED. Nothing here may name the learner. Never link anything in _template/.
 -->
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mathematical Journey</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/quiz.css">
-  <style>
-    .tiles { display: grid; gap: .75rem; margin-top: 1rem; }
-    .tile {
-      display: flex; align-items: baseline; gap: .9rem;
-      padding: .95rem 1.1rem;
-      border: 1px solid var(--line); border-radius: var(--radius-sm);
-      background: var(--paper); color: var(--ink);
-      text-decoration: none;
-      transition: border-color .12s ease, background .12s ease, transform .08s ease;
-    }
-    .tile:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
-    .tile .n {
-      font-family: "IBM Plex Mono", ui-monospace, monospace;
-      font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--ink-faint); white-space: nowrap;
-    }
-    .tile .t { font-family: "Space Grotesk", system-ui, sans-serif; font-weight: 600; }
-    .tile .d { color: var(--ink-soft); font-size: .9rem; }
-    .empty {
-      padding: .95rem 1.1rem; border: 1px dashed var(--line);
-      border-radius: var(--radius-sm); color: var(--ink-faint); font-size: .95rem;
-    }
-    .unit-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mathematical Journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/quiz.css">
+<style>
+  .tabs { display:flex; gap:.4rem; margin:1.5rem 0 1.25rem; border-bottom:1px solid var(--line); }
+  .tabs button {
+    background:none; border:0; border-bottom:2px solid transparent;
+    font-family:"Space Grotesk",system-ui,sans-serif; font-size:1rem; font-weight:600;
+    color:var(--ink-faint); padding:.6rem .9rem; cursor:pointer; margin-bottom:-1px;
+  }
+  .tabs button:hover { color:var(--ink); }
+  .tabs button[aria-selected="true"] { color:var(--accent); border-bottom-color:var(--accent); }
+  .area { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.75rem; letter-spacing:.13em;
+          text-transform:uppercase; color:var(--ink-faint); margin:1.5rem 0 .1rem; }
+  .area:first-of-type { margin-top:.25rem; }
+  .tiles { display:grid; gap:.75rem; margin-top:.6rem; }
+  .tile { display:flex; align-items:baseline; gap:.9rem; padding:.95rem 1.1rem;
+          border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--paper);
+          color:var(--ink); text-decoration:none;
+          transition:border-color .12s ease, background .12s ease, transform .08s ease; }
+  .tile:hover { border-color:var(--accent); background:var(--accent-soft); transform:translateY(-1px); }
+  .tile .n { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.75rem; letter-spacing:.1em;
+             text-transform:uppercase; color:var(--ink-faint); white-space:nowrap; }
+  .tile .t { font-family:"Space Grotesk",system-ui,sans-serif; font-weight:600; }
+  .tile .d { color:var(--ink-soft); font-size:.9rem; }
+  table { width:100%; border-collapse:collapse; margin:.4rem 0 0; font-size:.95rem; }
+  th { font-family:"Space Grotesk",system-ui,sans-serif; text-align:left; font-weight:500;
+       border-bottom:2px solid var(--ink); padding:6px 8px; }
+  td { border-bottom:1px dashed var(--line); padding:7px 8px; vertical-align:top; }
+  td.st { white-space:nowrap; width:120px; }
+  td.unit { white-space:nowrap; width:150px; font-family:"IBM Plex Mono",ui-monospace,monospace;
+            font-size:.78rem; color:var(--accent); }
+  td.unit.none { color:var(--line); }
+  td a { color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft); }
+  td a:hover { border-bottom-color:var(--accent); }
+  .s { font-family:"Space Grotesk",system-ui,sans-serif; font-size:.72rem; letter-spacing:.04em;
+       text-transform:uppercase; border-radius:999px; padding:3px 10px; font-weight:500; }
+  .s-none { background:#EFE8DA; color:var(--ink-soft); }
+  .s-prog { background:var(--warm-soft); color:var(--warm); }
+  .s-cov  { background:var(--accent-soft); color:var(--accent); }
+  .s-mast { background:var(--good-soft); color:var(--good); }
+  .legend { display:flex; gap:8px; flex-wrap:wrap; margin:.75rem 0 0; }
+  .toc { margin-top:.6rem; font-size:.9rem; }
+  .toc a { color:var(--accent); text-decoration:none; }
+  .toc a:hover { text-decoration:underline; }
+  @media (max-width:34rem) { td.unit { display:none; } th:last-child { display:none; } }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -48,51 +73,206 @@
     <p class="eyebrow">Mathematical journey</p>
     <h1>Algebra to calculus, the long way round</h1>
     <p class="lede">
-      Every climb lives here. Untimed, hints included, and built to get hard before it
-      ends — finding the wall is the point, not a problem with the quiz.
+      Work runs in cycles of three. A <b>probe</b> goes past what you can do yet, to find
+      where it gets hard. A <b>lesson</b> covers exactly what the probe caught, and nothing
+      you already had. A <b>check</b> then uses the same shapes with different numbers, to
+      see whether it stuck.
     </p>
   </header>
 
-  <section class="card">
-    <h2>The territory</h2>
-    <p class="lede" style="margin-bottom:0">
-      The whole road ahead and where things stand on each topic.
-    </p>
-    <div class="tiles">
-      <a class="tile" href="syllabus.html">
-        <span class="n">Map</span>
-        <span><span class="t">Syllabus</span><br><span class="d">Every topic from algebra to differential equations, with status on each.</span></span>
-      </a>
-    </div>
-  </section>
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true"  aria-controls="tab-lessons">Lessons</button>
+    <button role="tab" aria-selected="false" aria-controls="tab-syllabus">Syllabus</button>
+  </div>
 
-  <section class="card">
-    <h2>How this works</h2>
-    <p class="lede" style="margin-bottom:0">
-      Everything runs in cycles of three. A <b>probe</b> quiz goes past what you can do
-      yet, to find where it gets hard. A <b>lesson</b> covers exactly what the probe
-      caught, and nothing you already had. A <b>check</b> quiz then uses the same shapes
-      with different numbers, to see whether it stuck. Anything still loose comes back in
-      the next cycle, taught a different way.
-    </p>
-  </section>
+  <div id="tab-lessons">
+    <section class="card">
+      <h2>Lessons so far</h2>
+      <p class="lede">
+        One lesson per topic, written only for topics a quiz showed were not yet secure.
+        Grouped by where they sit on the syllabus.
+      </p>
+  <h3 class="area">Algebra</h3>
+  <div class="tiles">
+    <a class="tile" href="lessons/the-x-plus-1-over-x-family-iterated.html">
+      <span class="n">Lesson</span>
+      <span><span class="t">The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)</span><br><span class="d">Climbing from x + 1/x to a fourth power, and what changes when you use the same move twice.</span></span>
+    </a>
+    <a class="tile" href="lessons/rate-work-and-mixture-problems.html">
+      <span class="n">Lesson</span>
+      <span><span class="t">Rate, work, and mixture problems</span><br><span class="d">Rates add, times don’t — and the flip back to a time is the step that gets dropped.</span></span>
+    </a>
+  </div>
+  <h3 class="area">Counting &amp; probability</h3>
+  <div class="tiles">
+    <a class="tile" href="lessons/choosing-vs-arranging-combinations.html">
+      <span class="n">Lesson</span>
+      <span><span class="t">Choosing vs. arranging; combinations</span><br><span class="d">When a constraint decides the order for you, and when it genuinely doesn’t.</span></span>
+    </a>
+  </div>
+  <h3 class="area">Number theory</h3>
+  <div class="tiles">
+    <a class="tile" href="lessons/counting-factors-and-divisors.html">
+      <span class="n">Lesson</span>
+      <span><span class="t">Counting factors and divisors</span><br><span class="d">Trailing zeros of a factorial, and how many divisors a number has — without listing them.</span></span>
+    </a>
+  </div>
+    </section>
+  </div>
 
-  <section class="card">
-    <div class="unit-head">
-      <h2>Unit 1 · Cycle 1 — Lessons</h2>
-    </div>
-    <p class="lede">
-      Four topics came back short. One lesson each; the check follows once they're all up.
-    </p>
-    <div class="tiles">
-      <a class="tile" href="lessons/counting-factors-and-divisors.html">
-        <span class="n">Lesson</span>
-        <span><span class="t">Counting factors and divisors</span><br><span class="d">Trailing zeros of a factorial, and how many divisors a number has — without listing them.</span></span>
-      </a>
-      <p class="empty">Three more lessons to come: iterated x + 1/x · rate and work problems · choosing vs. arranging.</p>
-    </div>
+  <div id="tab-syllabus" hidden>
+    <section class="card">
+      <h2>The whole territory</h2>
+      <p class="lede">
+        Every topic from algebra to differential equations, with where things stand and
+        which unit is handling it. This map changes only when something is learned or the
+        destination itself changes.
+      </p>
+      <div class="legend">
+        <span class="s s-none">not started</span>
+        <span class="s s-prog">in progress</span>
+        <span class="s s-cov">covered</span>
+        <span class="s s-mast">mastered</span>
+      </div>
+      <p class="lede" style="margin:.9rem 0 0">
+        <b>Covered</b> = met it and can use it. <b>Mastered</b> = all three agree: the record
+        shows it used correctly and unprompted on a problem that didn’t announce it, the
+        parent agrees, and <b>he says he owns it</b>. Any one saying no keeps it at
+        <i>covered</i>.
+      </p>
+      <p class="toc"><a href="#alg">Algebra</a> · <a href="#count">Counting & probability</a> · <a href="#nt">Number theory</a> · <a href="#fn">Functions & graphs</a> · <a href="#geo">Geometry</a> · <a href="#calc">Toward calculus</a> · <a href="#meta">Problem-solving craft</a></p>
+    </section>
+
+  <section class="card" id="alg">
+    <h2>Algebra</h2>
+    <table>
+      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
+      <tr><td>Variables, expressions, evaluating and translating</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
+      <tr><td>Linear equations, one unknown (all forms)</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td>Sign discipline with negatives and powers</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
+      <tr><td>Squaring identities: (a±b)², sum &amp; product → a²+b²</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td>Symmetric expressions in three variables</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td><a href="lessons/the-x-plus-1-over-x-family-iterated.html">The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)</a></td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td>Difference of squares; factoring as un-multiplying</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Cubes: sum and difference; the cube identities</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Exponent laws, including zero and negative exponents</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Substitution as a simplifying weapon</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Systems of two equations: substitution, elimination</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Word problems: age, money, consecutive numbers</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
+      <tr><td><a href="lessons/rate-work-and-mixture-problems.html">Rate, work, and mixture problems</a></td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td>Inequalities and absolute value</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Quadratics: factoring, completing the square, the discriminant</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Radicals and irrational numbers</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+    </table>
   </section>
+  <section class="card" id="count">
+    <h2>Counting &amp; probability</h2>
+    <table>
+      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
+      <tr><td>Multiplication principle; simple product counting</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td>Inclusion–exclusion, two sets</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td>Organized casework decided before counting</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
+      <tr><td><a href="lessons/choosing-vs-arranging-combinations.html">Choosing vs. arranging; combinations</a></td><td class="st"><span class="s s-none">not started</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td>Permutations, including with repetition</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Counting the complement</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Inclusion–exclusion, three or more sets</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Basic probability; equally likely outcomes</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Expected value</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Counterintuitive classics (birthday, Monty Hall)</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+    </table>
+  </section>
+  <section class="card" id="nt">
+    <h2>Number theory</h2>
+    <table>
+      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
+      <tr><td>Units-digit and last-digit cycles <span class="self">he says: not yet</span></td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
+      <tr><td>Remainder cycles; modular arithmetic informally</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td>Divisibility rules</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
+      <tr><td>Prime factorization as a tool</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td><a href="lessons/counting-factors-and-divisors.html">Counting factors and divisors</a></td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
+      <tr><td>GCD and LCM, and what they mean</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Modular arithmetic formally; congruences</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+    </table>
+  </section>
+  <section class="card" id="fn">
+    <h2>Functions &amp; graphs</h2>
+    <table>
+      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
+      <tr><td>Coordinates; plotting points</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
+      <tr><td>Function machines; f(x) notation</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Lines: slope, intercepts, slope as a rate</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Graphs of quadratics; the parabola and its vertex</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Reading graphs as stories; a zoo of shapes</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Transformations of graphs</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Exponential growth and decay</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Logarithms as the inverse question</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+    </table>
+  </section>
+  <section class="card" id="geo">
+    <h2>Geometry</h2>
+    <table>
+      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
+      <tr><td>Area and perimeter as algebra in disguise</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Angles, parallel lines, triangle facts</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>The Pythagorean theorem and its proofs</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Similarity and scaling</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Circles: arcs, sectors, inscribed angles</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Coordinate geometry</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Writing a proof</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Trigonometry: ratios, the unit circle</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+    </table>
+  </section>
+  <section class="card" id="calc">
+    <h2>Toward calculus</h2>
+    <table>
+      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
+      <tr><td>Sequences and series; arithmetic and geometric</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Optimization: best-possible problems without calculus</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Limits, informally then formally</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Rate of change; the derivative</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Differentiation rules; curve sketching</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Accumulation; the integral</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>The fundamental theorem</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Differential equations and modeling</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+    </table>
+  </section>
+  <section class="card" id="meta">
+    <h2>Problem-solving craft</h2>
+    <table>
+      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
+      <tr><td>The Opening Playbook: six first moves on an alien problem</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
+      <tr><td>Reaching for structure before examples</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
+      <tr><td>Carrying a method through to the actual question asked</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
+      <tr><td>Checking an answer for plausibility before submitting</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Knowing how sure you are (calibrated confidence)</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Reapplying a weapon in a multi-step chain</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
+      <tr><td>Explaining a solution so someone else understands it</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
+      <tr><td>Tolerating being stuck; treating it as information</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
+    </table>
+  </section>
+  </div>
 
 </div>
+<script>
+  var tabs = [].slice.call(document.querySelectorAll('.tabs button'));
+  function show(name) {
+    tabs.forEach(function (b) {
+      var on = b.getAttribute('aria-controls') === name;
+      b.setAttribute('aria-selected', String(on));
+      document.getElementById(b.getAttribute('aria-controls')).hidden = !on;
+    });
+    history.replaceState(null, '', name === 'tab-syllabus' ? '#syllabus' : '#lessons');
+  }
+  tabs.forEach(function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('aria-controls')); });
+  });
+  // deep links: #syllabus opens that tab, and so does any anchor into one of its sections
+  var h = location.hash.replace('#', '');
+  var ids = [].slice.call(document.querySelectorAll('#tab-syllabus section')).map(function (s) { return s.id; });
+  if (h === 'syllabus' || ids.indexOf(h) !== -1) {
+    show('tab-syllabus');
+    if (ids.indexOf(h) !== -1) document.getElementById(h).scrollIntoView();
+  }
+</script>
 </body>
 </html>

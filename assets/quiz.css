@@ -94,6 +94,25 @@ h3 { font-size: 1rem; margin: 0 0 .5rem; }
 .playbook-list strong { font-family: "Space Grotesk", system-ui, sans-serif; }
 .playbook-list span { color: var(--ink-soft); }
 
+/* ---- site nav: every lesson carries this so no page is a dead end ---- */
+
+.sitenav {
+  display: flex; flex-wrap: wrap; gap: .4rem;
+  margin: 0 0 1.75rem;
+  font-size: .9rem;
+}
+.sitenav a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: .35rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  transition: border-color .12s ease, color .12s ease, background .12s ease;
+}
+.sitenav a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.sitenav .here { color: var(--ink-faint); border-style: dashed; pointer-events: none; }
+
 /* ---- lessons ---- */
 
 .card ol, .card ul { margin: .5rem 0 0; padding-left: 1.3rem; }
