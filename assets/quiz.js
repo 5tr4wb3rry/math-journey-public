@@ -6,18 +6,16 @@
  *
  * CONFIG
  *   unit          number  — used in the heading and the report filename
- *   cycle         number  — which cycle within the unit; omit for a unit checkpoint
- *   stage         string  — 'probe' | 'check' | 'checkpoint'. Drives the start-screen
+ *   cycle         number  — which cycle within the unit; omit for a unit milestone
+ *   stage         string  — 'probe' | 'check' | 'milestone'. Drives the start-screen
  *                           framing: a probe is meant to beat him somewhere, a check is
  *                           meant to go his way, and they must not be framed alike.
  *   title         string  — page heading
  *   subtitle      string  — optional line under the heading
  *   confidence    bool    — show the "how sure are you?" tags per problem
  *   stuckChips    array   — optional override of the playbook moves offered on "I'm stuck"
- *   topics        array   — syllabus topic names this session touched. On the review
- *                           screen he rates each one himself. A topic is only ever
- *                           marked "mastered" on the syllabus when the record, the
- *                           parent AND he all agree; his "not yet" is decisive.
+ *   topics        array   — optional override for the ownership taps. Normally omitted:
+ *                           the topic list is derived from the problems themselves.
  *
  * Screens: start (climb framing + playbook) -> climb (one problem at a time, playbook
  * card kept visible throughout) -> review. Both the framing and the visible playbook
@@ -28,12 +26,22 @@
  *   math          string  — optional monospace line (an expression, a table, a diagram)
  *   answers       array   — accepted answers; numbers, fraction strings, or plain strings
  *   hints         array   — up to three, ordered nudge -> stronger -> strongest
- *   strand        string  — which thread of the curriculum this exercises
+ *   topic         string  — REQUIRED. The syllabus topic this problem tests, spelled
+ *                           exactly as it appears in syllabus.html. Verdicts are computed
+ *                           per topic, so a misspelling silently splits one topic in two.
  *   level         string  — difficulty label, e.g. 'core', 'stretch', 'reach'
  *
  * Answers are auto-scored. Numeric and fraction forms are interchangeable: if the
  * accepted answer is 3/4 then 3/4, 0.75, 6/8 and 1 -1/4 -style mixed numbers all match.
  * Anything that is not a number is compared as case- and space-insensitive text.
+ *
+ * TOPIC VERDICTS drive everything downstream: each partial or unsolved topic gets its own
+ * lesson, and nothing else does. Give every topic at least two problems at different
+ * levels — with only one, "partial" can never occur and the verdict collapses to pass/fail.
+ *   solved      every problem for that topic correct, and none tagged "I guessed"
+ *   partial     some correct, OR all correct but at least one guessed
+ *   not solved  none correct
+ * A correct guess is deliberately not "solved": it demonstrated nothing.
  */
 
 (function (global) {
@@ -83,7 +91,7 @@
       ]
     }
   };
-  FRAMING.checkpoint = FRAMING.probe;
+  FRAMING.milestone = FRAMING.probe;
 
   /* ---------------------------------------------------------------- answers */
 
@@ -167,6 +175,39 @@
       String(d.getDate()).padStart(2, '0');
   }
 
+  // Distinct topics in the order the problems first hit them.
+  function topicsOf(problems) {
+    var seen = [];
+    problems.forEach(function (p) {
+      var t = p.topic;
+      if (t && seen.indexOf(t) === -1) seen.push(t);
+    });
+    return seen;
+  }
+
+  /* Per-topic verdicts. The whole downstream model runs off these: every `partial` or
+   * `not solved` topic gets its own lesson, and nothing else does. A correct guess counts
+   * as `partial` on purpose — it demonstrated nothing.
+   *
+   * `right`/`total` are reported alongside the verdict so the parent can see a 1-of-3
+   * partial is not the same as a 2-of-3 partial without re-reading the problem list. */
+  function verdictsFor(problems, state, graded) {
+    return topicsOf(problems).map(function (topic) {
+      var total = 0, right = 0, guessed = 0;
+      problems.forEach(function (p, i) {
+        if (p.topic !== topic) return;
+        total++;
+        if (graded(i)) right++;
+        if (state[i].confidence === 'I guessed') guessed++;
+      });
+      var verdict;
+      if (right === 0) verdict = 'not solved';
+      else if (right < total) verdict = 'partial';
+      else verdict = guessed ? 'partial' : 'solved';
+      return { topic: topic, right: right, total: total, guessed: guessed, verdict: verdict };
+    });
+  }
+
   /* ----------------------------------------------------------------- engine */
 
   function start(config, problems) {
@@ -174,7 +215,7 @@
     var chips = cfg.stuckChips || DEFAULT_STUCK_CHIPS;
     var root = document.getElementById('quiz');
 
-    // "unit1_cycle2_probe", or "unit1_checkpoint" when there is no cycle. Used for the
+    // "unit1_cycle2_probe", or "unit1_milestone" when there is no cycle. Used for the
     // autosave key, the report heading and the download filename, so all three agree.
     var stage = cfg.stage || 'probe';
     var slug = 'unit' + cfg.unit + (cfg.cycle ? '_cycle' + cfg.cycle : '') + '_' + stage;
@@ -185,7 +226,7 @@
     var state = problems.map(function () {
       return { answer: '', hints: 0, stuck: [], note: '', confidence: '' };
     });
-    var topics = cfg.topics || [];
+    var topics = cfg.topics || topicsOf(problems);
     var reflection = { hardest: '', note: '', owns: {} };
     var index = 0;
     var screen = 'start';           // 'start' -> 'climb' -> 'review'
@@ -288,7 +329,7 @@
       card.appendChild(el('p', {
         class: 'eyebrow',
         text: 'Problem ' + (index + 1) + ' of ' + problems.length +
-          (p.strand ? ' · ' + p.strand : '') + (p.level ? ' · ' + p.level : '')
+          (p.topic ? ' · ' + p.topic : '') + (p.level ? ' · ' + p.level : '')
       }));
       card.appendChild(el('p', { class: 'q-text', text: p.question }));
       if (p.math) card.appendChild(el('pre', { class: 'math', text: p.math }));
@@ -523,7 +564,7 @@
 
       problems.forEach(function (p, i) {
         var s = state[i];
-        lines.push('--- Problem ' + (i + 1) + (p.strand ? ' (' + p.strand + (p.level ? ', ' + p.level : '') + ')' : '') + ' ---');
+        lines.push('--- Problem ' + (i + 1) + (p.topic ? ' (' + p.topic + (p.level ? ', ' + p.level : '') + ')' : '') + ' ---');
         lines.push(p.question);
         lines.push('Result:       ' + (graded(i) ? 'correct' : 'incorrect'));
         lines.push('Answer given: ' + (answered(i) ? s.answer : '(blank)'));
@@ -533,6 +574,16 @@
         if (cfg.confidence) lines.push('Confidence:   ' + (s.confidence || '—'));
         lines.push('');
       });
+
+      // The block the whole downstream model runs off. Every topic below marked
+      // "partial" or "not solved" gets its own lesson; "solved" topics get none.
+      lines.push('--- Topic results (this is the lesson queue) ---');
+      verdictsFor(problems, state, graded).forEach(function (v) {
+        lines.push('  ' + v.verdict.toUpperCase().padEnd(11) +
+          v.right + '/' + v.total + '  ' + v.topic +
+          (v.guessed ? '  [' + v.guessed + ' guessed]' : ''));
+      });
+      lines.push('');
 
       lines.push('--- Reflection ---');
       lines.push('Hardest problem: ' + (reflection.hardest || '—'));
@@ -625,8 +676,24 @@
     }
 
     if (!root) throw new Error('quiz.js: no element with id="quiz" on the page');
+
+    // Authoring guards. These are silent-failure traps: an untagged problem vanishes from
+    // the lesson queue, and a single-problem topic can never come back "partial", so it
+    // reads as pass/fail with no middle. Both are invisible in the finished report.
+    problems.forEach(function (p, i) {
+      if (!p.topic) console.warn('quiz.js: problem ' + (i + 1) + ' has no topic — it will not appear in the lesson queue.');
+    });
+    topicsOf(problems).forEach(function (t) {
+      var n = problems.filter(function (p) { return p.topic === t; }).length;
+      if (n < 2) console.warn('quiz.js: topic "' + t + '" has only ' + n + ' problem — "partial" cannot occur for it.');
+    });
+
     render();
   }
 
-  global.MathQuiz = { start: start, isCorrect: isCorrect, toNumber: toNumber };
+  global.MathQuiz = {
+    start: start, isCorrect: isCorrect, toNumber: toNumber,
+    // exposed so the verdict rule can be tested directly, without driving the UI
+    verdictsFor: verdictsFor, topicsOf: topicsOf
+  };
 })(window);
