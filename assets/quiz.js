@@ -6,10 +6,13 @@
  *
  * CONFIG
  *   unit          number  — used in the heading and the report filename
- *   cycle         number  — which cycle within the unit; omit for a unit milestone
- *   stage         string  — 'probe' | 'check' | 'milestone'. Drives the start-screen
- *                           framing: a probe is meant to beat him somewhere, a check is
- *                           meant to go his way, and they must not be framed alike.
+ *   stage         string  — 'assessment' | 'check' | 'unit-assessment'. Drives the
+ *                           start-screen framing: an assessment is meant to beat him
+ *                           somewhere, a check is meant to go his way, and they must not
+ *                           be framed alike.
+ *   slug          string  — optional override for the report filename and autosave key.
+ *                           Use it on a check so the file names the topic, e.g.
+ *                           'check_counting-factors'. Defaults to unit + stage.
  *   title         string  — page heading
  *   subtitle      string  — optional line under the heading
  *   confidence    bool    — show the "how sure are you?" tags per problem
@@ -68,11 +71,11 @@
   // explicit that written reflection gets left blank, so this stays one tap per row.
   var OWNERSHIP_TAGS = ['I own this', 'Getting there', 'Not yet'];
 
-  // Said aloud by the parent and shown before the quiz starts, every time. A probe and a
-  // check are pitched differently and must be framed differently — a check he expects to
-  // fail teaches him nothing about whether the lesson worked.
+  // Said aloud by the parent and shown before the quiz starts, every time. An assessment
+  // and a check are pitched differently and must be framed differently — a check he expects
+  // to fail teaches him nothing about whether the lesson worked.
   var FRAMING = {
-    probe: {
+    assessment: {
       heading: 'This is a climb',
       lines: [
         'Nobody summits clean.',
@@ -91,7 +94,7 @@
       ]
     }
   };
-  FRAMING.milestone = FRAMING.probe;
+  FRAMING['unit-assessment'] = FRAMING.assessment;
 
   /* ---------------------------------------------------------------- answers */
 
@@ -215,12 +218,12 @@
     var chips = cfg.stuckChips || DEFAULT_STUCK_CHIPS;
     var root = document.getElementById('quiz');
 
-    // "unit1_cycle2_probe", or "unit1_milestone" when there is no cycle. Used for the
-    // autosave key, the report heading and the download filename, so all three agree.
-    var stage = cfg.stage || 'probe';
-    var slug = 'unit' + cfg.unit + (cfg.cycle ? '_cycle' + cfg.cycle : '') + '_' + stage;
-    var label = 'Unit ' + cfg.unit + (cfg.cycle ? ' · Cycle ' + cfg.cycle : '') +
-                ' · ' + stage.charAt(0).toUpperCase() + stage.slice(1);
+    // Drives the autosave key, the report heading and the download filename together, so
+    // all three agree. A check passes `slug` so its report names the topic it covers.
+    var stage = cfg.stage || 'assessment';
+    var pretty = stage.replace(/-/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); });
+    var slug = cfg.slug || ('unit' + cfg.unit + '_' + stage);
+    var label = 'Unit ' + cfg.unit + ' · ' + pretty + (cfg.topicLabel ? ' · ' + cfg.topicLabel : '');
     var storeKey = 'mathjourney:' + slug;
 
     var state = problems.map(function () {
@@ -296,7 +299,7 @@
       var frag = document.createDocumentFragment();
 
       var card = el('div', { class: 'card' });
-      var framing = FRAMING[cfg.stage] || FRAMING.probe;
+      var framing = FRAMING[cfg.stage] || FRAMING.assessment;
       card.appendChild(el('p', { class: 'eyebrow', text: 'Before you start' }));
       card.appendChild(el('h2', { text: framing.heading }));
       var ul = el('ul', { class: 'framing' });
