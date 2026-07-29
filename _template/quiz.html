@@ -51,12 +51,22 @@
                          Turn it on for checkpoints and any session where the gap
                          between confidence and correctness is what you want to see.
        stuckChips      — optional. Omit it to use the engine's default playbook moves;
-                         pass an array to match the moves this session is drilling. */
+                         pass an array to match the moves this session is drilling.
+       topics          — the syllabus topic names this session touches, spelled exactly
+                         as they appear in syllabus.html. On the review screen he rates
+                         each one himself: I own this / Getting there / Not yet.
+                         A topic only ever reaches "mastered" when the record, the parent
+                         AND he all agree, and his "not yet" is decisive. Leave this out
+                         and his verdict is never collected, so nothing can be promoted. */
     var CONFIG = {
       unit: 1,
       session: 1,
       title: 'Session title goes here',
-      confidence: false
+      confidence: false,
+      topics: [
+        'Units-digit and last-digit cycles',
+        'The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)'
+      ]
     };
 
     /* -------------------------------------------------------------- PROBLEMS

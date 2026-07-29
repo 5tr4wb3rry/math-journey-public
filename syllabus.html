@@ -31,6 +31,9 @@ td.st{white-space:nowrap;width:130px}
 .s-cov{background:var(--marker-soft);color:var(--marker)}
 .s-mast{background:var(--green-soft);color:var(--green)}
 .legend{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 0}
+/* Shown where the record would say mastered but he does not agree yet. The gap is
+   the point — it is the calibration signal, so it is displayed, not hidden. */
+.self{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber);background:var(--amber-soft);border-radius:999px;padding:2px 8px;margin-left:8px;white-space:nowrap}
 .toc a{display:inline-block;padding:6px 12px;border-radius:8px;font-size:14px;color:var(--marker);text-decoration:none}
 .toc a:hover{background:var(--marker-soft)}
 @media(max-width:560px){section{padding:20px}td.st{width:auto}}
@@ -49,7 +52,7 @@ td.st{white-space:nowrap;width:130px}
     <span class="s s-cov">covered</span>
     <span class="s s-mast">mastered</span>
   </div>
-  <p class="sub" style="margin-top:12px"><b>Covered</b> = met it and can use it. <b>Mastered</b> = used it correctly, unprompted, on a problem that didn't announce it — including under checkpoint conditions.</p>
+  <p class="sub" style="margin-top:12px"><b>Covered</b> = met it and can use it. <b>Mastered</b> = all three agree: the record shows it used correctly and unprompted on a problem that didn't announce it, the parent agrees, and <b>he says he owns it</b>. Any one of the three saying no keeps it at <i>covered</i> — his no is decisive, and a topic he doesn't feel he owns is not mastered no matter what the score said.</p>
   <div class="toc" style="margin-top:10px">
     <a href="#alg">Algebra</a> · <a href="#count">Counting &amp; probability</a> · <a href="#nt">Number theory</a> ·
     <a href="#fn">Functions &amp; graphs</a> · <a href="#geo">Geometry</a> · <a href="#calc">Toward calculus</a> · <a href="#meta">Problem-solving craft</a>
@@ -100,7 +103,7 @@ td.st{white-space:nowrap;width:130px}
   <h2>Number theory</h2>
   <table>
     <tr><th>Topic</th><th>Status</th></tr>
-    <tr><td>Units-digit and last-digit cycles</td><td class="st"><span class="s s-mast">mastered</span></td></tr>
+    <tr><td>Units-digit and last-digit cycles <span class="self">he says: not yet</span></td><td class="st"><span class="s s-cov">covered</span></td></tr>
     <tr><td>Remainder cycles; modular arithmetic informally</td><td class="st"><span class="s s-cov">covered</span></td></tr>
     <tr><td>Divisibility rules</td><td class="st"><span class="s s-cov">covered</span></td></tr>
     <tr><td>Prime factorization as a tool</td><td class="st"><span class="s s-none">not started</span></td></tr>

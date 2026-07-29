@@ -11,6 +11,10 @@
  *   subtitle      string  — optional line under the heading
  *   confidence    bool    — show the "how sure are you?" tags per problem
  *   stuckChips    array   — optional override of the playbook moves offered on "I'm stuck"
+ *   topics        array   — syllabus topic names this session touched. On the review
+ *                           screen he rates each one himself. A topic is only ever
+ *                           marked "mastered" on the syllabus when the record, the
+ *                           parent AND he all agree; his "not yet" is decisive.
  *
  * Screens: start (climb framing + playbook) -> climb (one problem at a time, playbook
  * card kept visible throughout) -> review. Both the framing and the visible playbook
@@ -48,6 +52,10 @@
     .concat(["Didn't know where to start"]);
 
   var CONFIDENCE_TAGS = ["I'm sure", 'I think so', 'I guessed'];
+
+  // His own verdict on each topic the session touched. Taps only — sessions.md is
+  // explicit that written reflection gets left blank, so this stays one tap per row.
+  var OWNERSHIP_TAGS = ['I own this', 'Getting there', 'Not yet'];
 
   // Said aloud by the parent and shown before the climb starts, every session.
   var CLIMB_FRAMING = [
@@ -150,7 +158,8 @@
     var state = problems.map(function () {
       return { answer: '', hints: 0, stuck: [], note: '', confidence: '' };
     });
-    var reflection = { hardest: '', note: '' };
+    var topics = cfg.topics || [];
+    var reflection = { hardest: '', note: '', owns: {} };
     var index = 0;
     var screen = 'start';           // 'start' -> 'climb' -> 'review'
 
@@ -442,6 +451,34 @@
       }));
       frag.appendChild(reflect);
 
+      /* His verdict on the session's topics. Nothing is required; a blank row simply
+         means he did not say, which is not the same as "not yet". */
+      if (topics.length) {
+        var own = el('div', { class: 'card' });
+        own.appendChild(el('h2', { text: 'Do you feel you own these?' }));
+        own.appendChild(el('p', {
+          class: 'lede',
+          text: 'Your call, not the score\'s. Nothing gets marked mastered unless you say so.'
+        }));
+        topics.forEach(function (topic) {
+          var row = el('div', { class: 'own-row' });
+          row.appendChild(el('span', { class: 'own-topic', text: topic }));
+          var tagRow = el('div', { class: 'chips' });
+          OWNERSHIP_TAGS.forEach(function (tag) {
+            tagRow.appendChild(el('button', {
+              class: 'chip', 'aria-pressed': String(reflection.owns[topic] === tag), text: tag,
+              onclick: function () {
+                reflection.owns[topic] = (reflection.owns[topic] === tag ? '' : tag);
+                render();
+              }
+            }));
+          });
+          row.appendChild(tagRow);
+          own.appendChild(row);
+        });
+        frag.appendChild(own);
+      }
+
       frag.appendChild(renderReport());
       return frag;
     }
@@ -473,6 +510,14 @@
       lines.push('Hardest problem: ' + (reflection.hardest || '—'));
       lines.push('In his words:    ' + (reflection.note || '—'));
       lines.push('');
+
+      if (topics.length) {
+        lines.push('--- Does he feel he owns it? (his call; a "Not yet" blocks mastered) ---');
+        topics.forEach(function (topic) {
+          lines.push('  ' + topic + ': ' + (reflection.owns[topic] || '(did not say)'));
+        });
+        lines.push('');
+      }
       return lines.join('\n');
     }
 
