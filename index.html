@@ -81,11 +81,11 @@
   </header>
 
   <div class="tabs" role="tablist">
-    <button role="tab" aria-selected="true"  aria-controls="tab-lessons">Lessons</button>
-    <button role="tab" aria-selected="false" aria-controls="tab-syllabus">Syllabus</button>
+    <button role="tab" aria-selected="true"  aria-controls="tab-syllabus">Syllabus</button>
+    <button role="tab" aria-selected="false" aria-controls="tab-lessons">Lessons</button>
   </div>
 
-  <div id="tab-lessons">
+  <div id="tab-lessons" hidden>
     <section class="card">
       <h2>Lessons so far</h2>
       <p class="lede">
@@ -120,7 +120,7 @@
     </section>
   </div>
 
-  <div id="tab-syllabus" hidden>
+  <div id="tab-syllabus">
     <section class="card">
       <h2>The whole territory</h2>
       <p class="lede">
@@ -261,7 +261,7 @@
       b.setAttribute('aria-selected', String(on));
       document.getElementById(b.getAttribute('aria-controls')).hidden = !on;
     });
-    history.replaceState(null, '', name === 'tab-syllabus' ? '#syllabus' : '#lessons');
+    history.replaceState(null, '', name === 'tab-lessons' ? '#lessons' : '#syllabus');
   }
   tabs.forEach(function (b) {
     b.addEventListener('click', function () { show(b.getAttribute('aria-controls')); });
@@ -269,9 +269,11 @@
   // deep links: #syllabus opens that tab, and so does any anchor into one of its sections
   var h = location.hash.replace('#', '');
   var ids = [].slice.call(document.querySelectorAll('#tab-syllabus section')).map(function (s) { return s.id; });
-  if (h === 'syllabus' || ids.indexOf(h) !== -1) {
+  if (h === 'lessons') {
+    show('tab-lessons');
+  } else if (ids.indexOf(h) !== -1) {
     show('tab-syllabus');
-    if (ids.indexOf(h) !== -1) document.getElementById(h).scrollIntoView();
+    document.getElementById(h).scrollIntoView();
   }
 </script>
 </body>
