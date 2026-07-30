@@ -5,7 +5,9 @@
   address, not two.
 
   Regenerate whenever a lesson is added or a topic's status changes:
-    - add the lesson to the Lessons tab under its syllabus area
+    - add the lesson to the Lessons tab under its syllabus area, as one
+      <div class="pair"> holding the lesson tile then its check tile — a topic
+      is always one row, lesson left, check right
     - link the topic's row in the Syllabus tab to it
     - the Unit column says which unit is handling each topic, which is the
       correspondence between the unit numbering and the syllabus
@@ -34,6 +36,9 @@
           text-transform:uppercase; color:var(--ink-faint); margin:1.5rem 0 .1rem; }
   .area:first-of-type { margin-top:.25rem; }
   .tiles { display:grid; gap:.75rem; margin-top:.6rem; }
+  /* one row per topic: the lesson wide on the left, its check narrow on the right */
+  .pair { display:grid; grid-template-columns:1fr 12rem; gap:.75rem; align-items:stretch; }
+  @media (max-width:46rem) { .pair { grid-template-columns:1fr; } }
   .tile { display:flex; align-items:baseline; gap:.9rem; padding:.95rem 1.1rem;
           border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--paper);
           color:var(--ink); text-decoration:none;
@@ -43,6 +48,7 @@
              text-transform:uppercase; color:var(--ink-faint); white-space:nowrap; }
   .tile .t { font-family:"Space Grotesk",system-ui,sans-serif; font-weight:600; }
   .tile .d { color:var(--ink-soft); font-size:.9rem; }
+  .tile.check { flex-direction:column; align-items:flex-start; justify-content:center; gap:.35rem; }
   table { width:100%; border-collapse:collapse; margin:.4rem 0 0; font-size:.95rem; }
   th { font-family:"Space Grotesk",system-ui,sans-serif; text-align:left; font-weight:500;
        border-bottom:2px solid var(--ink); padding:6px 8px; }
@@ -95,44 +101,52 @@
       </p>
   <h3 class="area">Algebra</h3>
   <div class="tiles">
-    <a class="tile" href="lessons/the-x-plus-1-over-x-family-iterated.html">
-      <span class="n">Lesson</span>
-      <span><span class="t">The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)</span><br><span class="d">Climbing from x + 1/x to a fourth power, and what changes when you use the same move twice.</span></span>
-    </a>
-    <a class="tile" href="lessons/the-x-plus-1-over-x-family-iterated-check.html">
-      <span class="n">Check</span>
-      <span><span class="t">Check: The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)</span><br><span class="d">Three problems on this topic only, different numbers. Take it after the lesson.</span></span>
-    </a>
-    <a class="tile" href="lessons/rate-work-and-mixture-problems.html">
-      <span class="n">Lesson</span>
-      <span><span class="t">Rate, work, and mixture problems</span><br><span class="d">Rates add, times don’t — and the flip back to a time is the step that gets dropped.</span></span>
-    </a>
-    <a class="tile" href="lessons/rate-work-and-mixture-problems-check.html">
-      <span class="n">Check</span>
-      <span><span class="t">Check: Rate, work, and mixture problems</span><br><span class="d">Three problems on this topic only, different numbers. Take it after the lesson.</span></span>
-    </a>
+    <div class="pair">
+      <a class="tile" href="lessons/the-x-plus-1-over-x-family-iterated.html">
+        <span class="n">Lesson</span>
+        <span><span class="t">The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)</span><br><span class="d">Climbing from x + 1/x to a fourth power, and what changes when you use the same move twice.</span></span>
+      </a>
+      <a class="tile check" href="lessons/the-x-plus-1-over-x-family-iterated-check.html">
+        <span class="n">Check</span>
+        <span class="d">Three problems, new numbers. After the lesson.</span>
+      </a>
+    </div>
+    <div class="pair">
+      <a class="tile" href="lessons/rate-work-and-mixture-problems.html">
+        <span class="n">Lesson</span>
+        <span><span class="t">Rate, work, and mixture problems</span><br><span class="d">Rates add, times don’t — and the flip back to a time is the step that gets dropped.</span></span>
+      </a>
+      <a class="tile check" href="lessons/rate-work-and-mixture-problems-check.html">
+        <span class="n">Check</span>
+        <span class="d">Three problems, new numbers. After the lesson.</span>
+      </a>
+    </div>
   </div>
   <h3 class="area">Counting &amp; probability</h3>
   <div class="tiles">
-    <a class="tile" href="lessons/choosing-vs-arranging-combinations.html">
-      <span class="n">Lesson</span>
-      <span><span class="t">Choosing vs. arranging; combinations</span><br><span class="d">When a constraint decides the order for you, and when it genuinely doesn’t.</span></span>
-    </a>
-    <a class="tile" href="lessons/choosing-vs-arranging-combinations-check.html">
-      <span class="n">Check</span>
-      <span><span class="t">Check: Choosing vs. arranging; combinations</span><br><span class="d">Three problems on this topic only, different numbers. Take it after the lesson.</span></span>
-    </a>
+    <div class="pair">
+      <a class="tile" href="lessons/choosing-vs-arranging-combinations.html">
+        <span class="n">Lesson</span>
+        <span><span class="t">Choosing vs. arranging; combinations</span><br><span class="d">When a constraint decides the order for you, and when it genuinely doesn’t.</span></span>
+      </a>
+      <a class="tile check" href="lessons/choosing-vs-arranging-combinations-check.html">
+        <span class="n">Check</span>
+        <span class="d">Three problems, new numbers. After the lesson.</span>
+      </a>
+    </div>
   </div>
   <h3 class="area">Number theory</h3>
   <div class="tiles">
-    <a class="tile" href="lessons/counting-factors-and-divisors.html">
-      <span class="n">Lesson</span>
-      <span><span class="t">Counting factors and divisors</span><br><span class="d">Trailing zeros of a factorial, and how many divisors a number has — without listing them.</span></span>
-    </a>
-    <a class="tile" href="lessons/counting-factors-and-divisors-check.html">
-      <span class="n">Check</span>
-      <span><span class="t">Check: Counting factors and divisors</span><br><span class="d">Three problems on this topic only, different numbers. Take it after the lesson.</span></span>
-    </a>
+    <div class="pair">
+      <a class="tile" href="lessons/counting-factors-and-divisors.html">
+        <span class="n">Lesson</span>
+        <span><span class="t">Counting factors and divisors</span><br><span class="d">Trailing zeros of a factorial, and how many divisors a number has — without listing them.</span></span>
+      </a>
+      <a class="tile check" href="lessons/counting-factors-and-divisors-check.html">
+        <span class="n">Check</span>
+        <span class="d">Three problems, new numbers. After the lesson.</span>
+      </a>
+    </div>
   </div>
     </section>
   </div>
