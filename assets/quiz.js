@@ -233,21 +233,38 @@
     var reflection = { hardest: '', note: '', owns: {} };
     var index = 0;
     var screen = 'start';           // 'start' -> 'climb' -> 'review'
+    // True only when the review screen was restored from storage rather than just
+    // finished — drives the "this is an old report" notice on the report card.
+    var restoredReview = false;
 
-    // Light autosave so an accidental refresh mid-climb doesn't lose the work.
+    // Light autosave so an accidental refresh mid-climb doesn't lose the work, and so a
+    // finished-but-unsent report is never stranded: a saved 'review' restores straight
+    // back to the report instead of dropping him on the start screen.
     try {
       var saved = JSON.parse(localStorage.getItem(storeKey) || 'null');
-      if (saved && saved.state && saved.state.length === state.length && saved.screen === 'climb') {
+      if (saved && saved.state && saved.state.length === state.length &&
+          (saved.screen === 'climb' || saved.screen === 'review')) {
         state = saved.state;
         index = saved.index || 0;
-        screen = 'climb';
+        screen = saved.screen;
+        // reflection didn't exist in older saves. Absent entirely: keep the fresh
+        // blank default. Present: pull each field with its own fallback so a save
+        // from a version that only had part of the shape still restores whole.
+        if (saved.reflection) {
+          reflection = {
+            hardest: saved.reflection.hardest || '',
+            note: saved.reflection.note || '',
+            owns: saved.reflection.owns || {}
+          };
+        }
+        if (screen === 'review') restoredReview = true;
       }
     } catch (e) { /* storage unavailable; carry on */ }
 
     function save() {
       try {
         localStorage.setItem(storeKey, JSON.stringify({
-          state: state, index: index, screen: screen
+          state: state, index: index, screen: screen, reflection: reflection
         }));
       } catch (e) { /* ignore */ }
     }
@@ -504,6 +521,7 @@
           'aria-label': label,
           onclick: function () {
             reflection.hardest = (reflection.hardest === label ? '' : label);
+            save();
             render();
           }
         }));
@@ -513,13 +531,14 @@
         text: 'None of them',
         onclick: function () {
           reflection.hardest = (reflection.hardest === 'None of them' ? '' : 'None of them');
+          save();
           render();
         }
       }));
       reflect.appendChild(row);
       reflect.appendChild(el('textarea', {
         rows: '2', placeholder: 'Want to say why? (optional)', value: reflection.note,
-        oninput: function () { reflection.note = this.value; refreshReport(); }
+        oninput: function () { reflection.note = this.value; save(); refreshReport(); }
       }));
       frag.appendChild(reflect);
 
@@ -541,6 +560,7 @@
               class: 'chip', 'aria-pressed': String(reflection.owns[topic] === tag), text: tag,
               onclick: function () {
                 reflection.owns[topic] = (reflection.owns[topic] === tag ? '' : tag);
+                save();
                 render();
               }
             }));
@@ -647,6 +667,12 @@
     function renderReport() {
       var card = el('div', { class: 'card' });
       card.appendChild(el('h2', { text: 'Send this back' }));
+      if (restoredReview) {
+        card.appendChild(el('p', {
+          class: 'hint-note',
+          text: 'This is the finished report from earlier, restored from this browser.'
+        }));
+      }
       card.appendChild(el('p', {
         class: 'lede',
         text: 'Email it, download it, or copy it. It has every answer, every hint used, and what he said about it.'
@@ -658,15 +684,35 @@
 
       var filename = 'report_' + slug + '_' + today() + '.txt';
 
+      /* A downloaded file survives everything; email depends on a mail app actually
+       * being set up on the device, which cannot be checked from here. So Download is
+       * the primary action and comes first, with Send to parent secondary beside it. */
+      var downloadBtn = el('button', {
+        class: 'btn btn-primary', text: 'Download report',
+        onclick: function () {
+          var blob = new Blob([area.value], { type: 'text/plain;charset=utf-8' });
+          var url = URL.createObjectURL(blob);
+          var a = el('a', { href: url, download: filename });
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+          status.textContent = 'Saved as ' + filename;
+        }
+      });
+
       /* Opens the device's mail app with the report already written. The To field is
        * left EMPTY on purpose: this page is world-readable, and an address published
-       * here would be scraped. The mail app fills the recipient from contacts. */
+       * here would be scraped. The mail app fills the recipient from contacts.
+       *
+       * Clicking this link only ever *requests* that the OS open a mail app — nothing
+       * here confirms one actually did, so the status line must not claim it opened. */
       var mailBtn = el('a', {
-        class: 'btn btn-primary',
+        class: 'btn',
         href: 'mailto:?subject=' + encodeURIComponent('Math Journey — ' + label + ' — ' + today()) +
               '&body=' + encodeURIComponent(mailBody()),
         text: 'Send to parent',
-        onclick: function () { status.textContent = 'Opening your email…'; }
+        onclick: function () { status.textContent = "If your email app doesn't open, use Download instead."; }
       });
 
       var copyBtn = el('button', {
@@ -691,21 +737,7 @@
         }
       });
 
-      var downloadBtn = el('button', {
-        class: 'btn', text: 'Download report',
-        onclick: function () {
-          var blob = new Blob([area.value], { type: 'text/plain;charset=utf-8' });
-          var url = URL.createObjectURL(blob);
-          var a = el('a', { href: url, download: filename });
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-          status.textContent = 'Saved as ' + filename;
-        }
-      });
-
-      card.appendChild(el('div', { class: 'report-actions' }, [mailBtn, downloadBtn, copyBtn, status]));
+      card.appendChild(el('div', { class: 'report-actions' }, [downloadBtn, mailBtn, copyBtn, status]));
       card.appendChild(area);
       return card;
     }
