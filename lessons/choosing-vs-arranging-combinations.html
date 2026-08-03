@@ -34,8 +34,10 @@
 
   <section class="card">
     <h2>Start here</h2>
-    <pre class="math">How many 3-digit numbers have digits that strictly increase?
-(148 counts. 155 does not — the digits must go strictly up.)</pre>
+    <pre class="math">How many 3-digit numbers
+have digits that strictly increase?
+(148 counts. 155 does not —
+the digits must go strictly up.)</pre>
     <p>
       This does not look like a choosing problem. It looks like you have to build numbers
       digit by digit, and the constraint links each digit to the one before it, so the
@@ -68,7 +70,8 @@
     </div>
     <p>Which digits are available? Not 0 — a 3-digit number cannot start with 0, and in an
     increasing number 0 would have to come first, being smallest. So the pool is 1 to 9.</p>
-    <pre class="math">choose 3 digits from 9, order irrelevant  =  C(9,3)</pre>
+    <pre class="math">choose 3 digits from 9,
+order irrelevant = C(9,3)</pre>
   </section>
 
   <section class="card">
@@ -77,14 +80,19 @@
       Arranging counts ordered outcomes. Choosing counts unordered ones. They differ by
       exactly the number of orderings you decided not to distinguish.
     </p>
-    <pre class="math">ARRANGE 3 of 9, order matters:   9 × 8 × 7 = 504
+    <pre class="math">ARRANGE 3 of 9, order matters:
+  9 × 8 × 7 = 504
 CHOOSE  3 of 9, order ignored:   504 ÷ 6 = 84
 
-The 6 is 3! — the number of ways to shuffle any 3 chosen digits.</pre>
+The 6 is 3! — the number of ways
+to shuffle any 3 chosen digits.</pre>
     <p>Written as a formula:</p>
     <pre class="math">C(n, k) = n! / ( k! · (n−k)! )
 
-C(9,3) = 9! / (3! · 6!) = (9 × 8 × 7) / (3 × 2 × 1) = 504 / 6 = 84</pre>
+C(9,3) = 9! / (3! · 6!)
+       = (9 × 8 × 7) / (3 × 2 × 1)
+       = 504 / 6
+       = 84</pre>
     <p><strong>So there are 84 such numbers.</strong></p>
     <div class="hint">
       <span class="label">Easy to miss</span>
@@ -92,7 +100,8 @@ C(9,3) = 9! / (3! · 6!) = (9 × 8 × 7) / (3 × 2 × 1) = 504 / 6 = 84</pre>
       thing. The divisor is always k! — the shuffles of the k things you picked — never n!.</span>
     </div>
     <p>Sanity check on a size you can verify by hand:</p>
-    <pre class="math">2-digit strictly increasing numbers, digits from 1–9:
+    <pre class="math">2-digit strictly increasing numbers,
+digits from 1–9:
 C(9,2) = (9 × 8)/2 = 36
 
 Count directly: starting 1 → 12…19 is 8
@@ -112,7 +121,9 @@ Count directly: starting 1 → 12…19 is 8
       Now 0 is allowed. In a decreasing number 0 lands at the end, never the front, so it
       breaks nothing: 320 is a perfectly good decreasing 3-digit number.
     </p>
-    <pre class="math">choose 3 digits from 0–9  =  C(10,3) = (10 × 9 × 8)/6 = 120</pre>
+    <pre class="math">choose 3 digits from 0–9 = C(10,3)
+  = (10 × 9 × 8)/6
+  = 120</pre>
     <p>
       84 increasing versus 120 decreasing. The asymmetry is entirely down to whether 0 can
       play — worth pausing on, because it is the kind of detail a symmetry argument hides.

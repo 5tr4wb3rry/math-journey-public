@@ -24,144 +24,233 @@
 
   <header>
     <p class="eyebrow">Lesson · The x + 1/x family, iterated</p>
-    <h1>Climbing a ladder you built yourself</h1>
+    <h1>A machine you can feed its own output</h1>
     <p class="lede">
-      There is a family of problems that hand you x + 1/x and ask for a much bigger power.
-      You are never told what x is, and you never need it. The interesting part is what
-      happens when you have to use the same move twice.
+      There is a family of problems that hand you x + 1/x and ask for a much larger power.
+      They all fall to one move. The thing worth owning is not the move itself, though —
+      it is that the move's <em>output is the same kind of thing as its input</em>, so you
+      can put it straight back in and go again.
     </p>
   </header>
 
   <section class="card">
     <h2>Start here</h2>
-    <pre class="math">If x + 1/x = 4, what is x⁴ + 1/x⁴?</pre>
+    <pre class="math">If x + 1/x = 3, what is x⁴ + 1/x⁴?</pre>
     <p>
-      You could try to find x. Doing so means solving x² − 4x + 1 = 0, which gives
-      2 ± √3 — irrational, ugly, and then you would have to raise it to the fourth power.
-      That road is open and it is terrible.
+      You are not told what x is. You could go and find it — that means solving
+      x² − 3x + 1 = 0, which gives (3 ± √5)/2 — and then raising that to the fourth power
+      by hand. That road is open, and it is genuinely awful.
     </p>
     <p>
-      The other road never finds x at all. It builds a ladder: from the first power to the
-      second, then from the second to the fourth. Each rung is the same move.
-    </p>
-  </section>
-
-  <section class="card">
-    <h2>The move</h2>
-    <p>Square both sides and watch what appears in the middle.</p>
-    <pre class="math">(x + 1/x)²  =  x² + 2·x·(1/x) + 1/x²
-            =  x² + 2 + 1/x²</pre>
-    <p>
-      The middle term is the whole point of this family. x times 1/x is 1, so 2·x·(1/x) is
-      just 2 — a plain number, no x in it. Rearranging:
-    </p>
-    <pre class="math">x² + 1/x²  =  (x + 1/x)² − 2</pre>
-    <p>With x + 1/x = 4:</p>
-    <pre class="math">x² + 1/x² = 4² − 2 = 16 − 2 = 14</pre>
-    <div class="hint">
-      <span class="label">Why the middle term vanishes so neatly</span>
-      <span>Because x and 1/x are reciprocals, their product is exactly 1. That is the
-      only reason this family works at all — it would not happen for x + y.</span>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>The second rung — where it gets interesting</h2>
-    <p>
-      Now you want x⁴ + 1/x⁴, and you already have x² + 1/x² = 14. Here is the key idea:
-      <strong>x⁴ + 1/x⁴ stands in the same relationship to x² + 1/x² as x² + 1/x² does to
-      x + 1/x.</strong> Let u = x². Then 1/u = 1/x², and you are asking for u² + 1/u²
-      given u + 1/u. Same problem. Same move.
-    </p>
-    <pre class="math">(x² + 1/x²)²  =  x⁴ + 2·x²·(1/x²) + 1/x⁴
-              =  x⁴ + 2 + 1/x⁴
-
-so   x⁴ + 1/x⁴  =  (x² + 1/x²)² − 2</pre>
-    <p>Apply it to the 14 you just built:</p>
-    <pre class="math">x⁴ + 1/x⁴ = 14² − 2 = 196 − 2 = 194</pre>
-    <div class="hint">
-      <span class="label">Easy to miss</span>
-      <span>Squaring the <em>original</em> 4 again instead of the <em>result</em> 14. The
-      second rung starts from where the first rung left you, not from the ground. Each
-      squaring doubles the exponent: 1 → 2 → 4. To reach the 4th power you square twice,
-      and the second squaring acts on 14.</span>
-    </div>
-    <p>Written as one chain, so the shape is visible:</p>
-    <pre class="math">x + 1/x   = 4
-x² + 1/x² = 4²  − 2 = 14
-x⁴ + 1/x⁴ = 14² − 2 = 194</pre>
-  </section>
-
-  <section class="card">
-    <h2>The cube is a different rung</h2>
-    <p>
-      Odd powers do not come from squaring, so the ladder needs a different step. Cube
-      instead:
-    </p>
-    <pre class="math">(x + 1/x)³  =  x³ + 3x²·(1/x) + 3x·(1/x²) + 1/x³
-            =  x³ + 3x + 3/x + 1/x³
-            =  x³ + 1/x³ + 3(x + 1/x)
-
-so   x³ + 1/x³  =  (x + 1/x)³ − 3(x + 1/x)</pre>
-    <p>With x + 1/x = 4:</p>
-    <pre class="math">x³ + 1/x³ = 4³ − 3·4 = 64 − 12 = 52</pre>
-    <p>
-      Note the leftover here is not a plain number — it is 3(x + 1/x), which you happen to
-      know. Different rung, different leftover; same principle of subtracting whatever the
-      expansion added.
+      So here is the question this lesson is really about: <strong>what is the smallest
+      thing you could build that gets you from the first power to the fourth?</strong>
     </p>
   </section>
 
   <section class="card">
-    <h2>The ladder, in one place</h2>
-    <pre class="math">Let s = x + 1/x.
-
-x² + 1/x² = s² − 2
-x³ + 1/x³ = s³ − 3s
-x⁴ + 1/x⁴ = (x² + 1/x²)² − 2   ← built from the rung below, not from s</pre>
+    <h2>The machine</h2>
     <p>
-      Memorising the third line as a formula in s is possible but pointless. Building it
-      from the rung below is the same work and never goes wrong.
+      Square any expression of the form xⁿ + 1/xⁿ and watch what comes out:
+    </p>
+    <pre class="math">(xⁿ + 1/xⁿ)² = x²ⁿ + 2·xⁿ·(1/xⁿ) + 1/x²ⁿ
+              = x²ⁿ + 2 + 1/x²ⁿ</pre>
+    <p>
+      The middle term collapses. xⁿ times 1/xⁿ is 1 no matter what x is and no matter what
+      n is, so the middle term is exactly 2, always. Move it across:
+    </p>
+    <pre class="math">x²ⁿ + 1/x²ⁿ = (xⁿ + 1/xⁿ)² − 2</pre>
+    <p>
+      Read that as a machine. <strong>You feed it the value at some power, and it hands
+      back the value at double that power.</strong> Square, subtract two.
+    </p>
+    <p>
+      Now look hard at what went in and what came out. In went a number that was the value
+      of "some power plus its reciprocal". Out came a number that is <em>also</em> the value
+      of "some power plus its reciprocal" — a different power, same shape. The machine's
+      output is a legal input.
+    </p>
+    <p>
+      That is the whole lesson. Everything below is consequences.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Feeding it its own output</h2>
+    <p>Start with x + 1/x = 3. Press the button once:</p>
+    <pre class="math">x² + 1/x² = 3² − 2 = 9 − 2 = 7</pre>
+    <p>
+      Seven is now a value of the same shape, so it is a legal input. Press again — and
+      note carefully that what goes in is <strong>7, the number that came out</strong>, not
+      the 3 you started with:
+    </p>
+    <pre class="math">x⁴ + 1/x⁴ = 7² − 2 = 49 − 2 = 47</pre>
+    <p>
+      Done. x⁴ + 1/x⁴ = 47, and x was never found, never needed, never mentioned after the
+      first line.
+    </p>
+    <p>
+      The machine has no memory. It cannot tell where its input came from, and it does not
+      change on the second press. This is why "do it again" really does mean exactly the
+      same thing the second time — there is no harder version of the move waiting further
+      up.
+    </p>
+    <p>
+      A third press, just to see that nothing new happens:
+    </p>
+    <pre class="math">x⁸ + 1/x⁸ = 47² − 2 = 2209 − 2 = 2207</pre>
+    <p>
+      The numbers get big quickly. The <em>method</em> does not get harder at all — which
+      means that from here on, the only thing that can go wrong is arithmetic. That is worth
+      knowing, and the next section is the defence against it.
+    </p>
+    <table>
+      <tr><th>Press</th><th>Goes in</th><th>Comes out</th><th>Which power</th></tr>
+      <tr><td>—</td><td>—</td><td>3</td><td>x¹ + 1/x¹</td></tr>
+      <tr><td>1st</td><td>3</td><td>3² − 2 = 7</td><td>x² + 1/x²</td></tr>
+      <tr><td>2nd</td><td>7</td><td>7² − 2 = 47</td><td>x⁴ + 1/x⁴</td></tr>
+      <tr><td>3rd</td><td>47</td><td>47² − 2 = 2207</td><td>x⁸ + 1/x⁸</td></tr>
+    </table>
+    <p>
+      Each press <em>doubles</em> the power. That is why this machine alone can reach the
+      2nd, 4th, 8th, 16th… and cannot reach the 3rd.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>The free self-check</h2>
+    <p>
+      Every number this machine produces is <strong>two less than a perfect square</strong>
+      — by construction, since the last thing it did was square something and subtract 2.
+    </p>
+    <p>
+      So any answer can be tested without redoing the work. Add 2 back. If the result is not
+      a perfect square, the answer is wrong, and you know it in about five seconds:
+    </p>
+    <pre class="math">47 + 2 = 49 = 7²   ✓ survives the check
+2207 + 2 = 2209 = 47²   ✓ survives the check</pre>
+    <p>
+      And a made-up wrong answer, to show the check biting. Suppose someone reports
+      x⁴ + 1/x⁴ = 200:
+    </p>
+    <pre class="math">200 + 2 = 202.  14² = 196, 15² = 225.  202 is neither.
+So 200 cannot be right, whatever route produced it.</pre>
+    <p>
+      This is worth doing every single time, because the method here is short and the
+      arithmetic is where the real risk lives. A slip inside a two-digit square looks
+      exactly like a wrong method from the outside — the check tells them apart.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Do it once with a letter, and you never do it again</h2>
+    <p>
+      Everything above pressed the button on a <em>number</em>. Nothing forces that. Press
+      it on a letter instead — say x + 1/x = a, with a standing for whatever it happens to
+      be — and the arithmetic disappears entirely:
+    </p>
+    <pre class="math">x² + 1/x² = a² − 2</pre>
+    <p>Now feed <em>that</em> back in. Square it and subtract 2, exactly as before:</p>
+    <pre class="math">x⁴ + 1/x⁴ = (a² − 2)² − 2
+          = a⁴ − 4a² + 4 − 2
+          = a⁴ − 4a² + 2</pre>
+    <p>
+      That is the whole family, solved at once. Any problem of this shape is now a
+      substitution rather than a calculation — and notice there is nowhere in the last three
+      lines for an arithmetic slip to hide, because there is no arithmetic.
+    </p>
+    <p>
+      The cube machine gives its own formula the same way:
+    </p>
+    <pre class="math">x³ + 1/x³ = a³ − 3a</pre>
+    <p>
+      <strong>Two ways to use this, and both are worth having.</strong> Given
+      x + 1/x = 10 you can now go straight to a⁴ − 4a² + 2 = 10000 − 400 + 2 = 9602. Or you
+      can climb rung by rung: 10² − 2 = 98, then 98² − 2 = 9602. Same answer, necessarily —
+      and running both is the strongest arithmetic check there is, because the two routes
+      have almost no steps in common.
+    </p>
+    <p>
+      Do not throw the numeric route away. Working with a letter is faster and safer once
+      you trust it, but the rung-by-rung version is what tells you the formula is true, and
+      it is the one you can rebuild from scratch if you ever forget the formula. Aim to be
+      able to do it either way, and to use each to check the other.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>A second machine, for odd powers</h2>
+    <p>
+      Doubling can never land on an odd power, so the third power needs a different button.
+      Cube instead of square:
+    </p>
+    <pre class="math">(x + 1/x)³ = x³ + 3x + 3/x + 1/x³
+           = x³ + 1/x³ + 3(x + 1/x)</pre>
+    <p>
+      The leftover is not a bare number this time — it is 3 times the thing you already
+      know. Move it across:
+    </p>
+    <pre class="math">x³ + 1/x³ = (x + 1/x)³ − 3(x + 1/x)</pre>
+    <p>With x + 1/x = 3:</p>
+    <pre class="math">x³ + 1/x³ = 3³ − 3·3 = 27 − 9 = 18</pre>
+    <p>
+      Two machines, then. One doubles the power, one triples it. Combining them reaches
+      lots of places: press the cube button then the square button and you land on the
+      sixth power.
     </p>
   </section>
 
   <section class="card">
     <h2>Your turn</h2>
-    <ol>
+    <p>Answers are here — open them after you have committed to something.</p>
+    <ol class="practice">
       <li>
-        If x + 1/x = 5, what is x² + 1/x²?
-        <details><summary>Answer</summary><span>23 — that is 5² − 2.</span></details>
+        Feed the machine 5. What comes out, and which power is it?
+        <details><summary>Answer</summary><span>5² − 2 = 23. If the 5 was x + 1/x, then 23 is x² + 1/x². If the 5 had been x² + 1/x², then 23 would be x⁴ + 1/x⁴ — the machine genuinely does not care which.</span></details>
       </li>
       <li>
-        Same x + 1/x = 5: now find x⁴ + 1/x⁴.
-        <details><summary>Answer</summary><span>527 — square the 23 from the rung below and subtract 2: 529 − 2.</span></details>
+        If x + 1/x = 9, what is x² + 1/x²?
+        <details><summary>Answer</summary><span>79 — that is 81 − 2. Self-check: 79 + 2 = 81 = 9². ✓</span></details>
+      </li>
+      <li>
+        You are told directly that x² + 1/x² = 7. Find x⁴ + 1/x⁴, without being told
+        x + 1/x at all.
+        <details><summary>Answer</summary><span>47 — that is 7² − 2. Nothing about x + 1/x was needed. This is the same press as before, started from the middle: proof that the machine only ever looks at the number you hand it.</span></details>
       </li>
       <li>
         If x + 1/x = 3, what is x³ + 1/x³?
-        <details><summary>Answer</summary><span>18 — that is 3³ − 3·3 = 27 − 9.</span></details>
+        <details><summary>Answer</summary><span>18 — that is 3³ − 3·3 = 27 − 9. Note the self-check from earlier does <em>not</em> apply here: 18 + 2 = 20 is not a perfect square, and that is fine, because this answer came out of the cube machine, not the square one.</span></details>
       </li>
       <li>
-        If x + 1/x = 2, what is x⁴ + 1/x⁴?
-        <details><summary>Answer</summary><span>2 — since 2² − 2 = 2, then 2² − 2 = 2 again. Worth noticing: here x is actually 1, so every power is 1 + 1 = 2. The method agrees with the obvious answer.</span></details>
+        Someone tells you that for some x, x⁴ + 1/x⁴ = 50. Can that be right?
+        <details><summary>Answer</summary><span>No. 50 + 2 = 52, and 7² = 49 while 8² = 64, so 52 is not a perfect square. Since x⁴ + 1/x⁴ must be 2 less than the square of x² + 1/x², no x can produce 50.</span></details>
       </li>
       <li>
-        Harder: if x + 1/x = 3, what is x⁶ + 1/x⁶?
-        <details><summary>Answer</summary><span>322. Two routes, both fine. Square the cube: x³ + 1/x³ = 18, then 18² − 2 = 322. Or cube the square: x² + 1/x² = 7, then 7³ − 3·7 = 343 − 21 = 322. They must agree, and checking that they do is a free way to catch a slip.</span></details>
+        Harder: if x + 1/x = 3, what is x⁶ + 1/x⁶? There are two routes — take both and
+        make them agree.
+        <details><summary>Answer</summary><span>322. Route one: cube first to get x³ + 1/x³ = 18, then press the square machine: 18² − 2 = 324 − 2 = 322. Route two: press the square machine first to get x² + 1/x² = 7, then cube that: 7³ − 3·7 = 343 − 21 = 322. Two independent routes agreeing is the strongest arithmetic check there is.</span></details>
+      </li>
+      <li>
+        With a letter: if x + 1/x = a, find a formula for x⁶ + 1/x⁶ in terms of a. Then
+        check your formula by putting a = 3 into it.
+        <details><summary>Answer</summary><span>a⁶ − 6a⁴ + 9a² − 2. Get it by cubing first — x³ + 1/x³ = a³ − 3a — and then pressing the square machine on that: (a³ − 3a)² − 2 = a⁶ − 6a⁴ + 9a² − 2. Check with a = 3: 729 − 486 + 81 − 2 = 322, which is exactly what the previous question got the long way. A formula that agrees with a number you already trust is a formula you can use.</span></details>
+      </li>
+      <li>
+        Why does the self-check (add 2, look for a perfect square) have to work? Answer it
+        with a letter rather than with an example.
+        <details><summary>Answer</summary><span>Because the last thing the machine ever does is subtract 2 from a square. Whatever value v goes in, what comes out is v² − 2, so adding 2 back always returns v² — a perfect square by construction, regardless of what v was. That is why no example is needed and no example could ever be enough.</span></details>
       </li>
     </ol>
   </section>
 
   <section class="card">
     <h2>What the check will ask</h2>
-    <p class="lede" style="margin-bottom:0">
-      A two-step climb to a fourth or sixth power from a value of x + 1/x you have not seen
-      here, and at least one where you must decide which rung to build first. Different
-      numbers throughout.
+    <p>
+      Three problems, different numbers from every one above, and the numbers are kept
+      small on purpose — the point is whether you know which button to press and what to
+      feed it, not whether you can square a big number in your head. One of them starts you
+      in the middle of the ladder, with no x + 1/x given at all.
     </p>
-    <div class="nav" style="margin-top:1.25rem">
-      <div class="spacer"></div>
-      <a class="btn btn-primary" href="the-x-plus-1-over-x-family-iterated-check.html" style="text-decoration:none">Take the check →</a>
-    </div>
+    <p><a href="the-x-plus-1-over-x-family-iterated-check.html">Take the check →</a></p>
   </section>
 
 </div>

@@ -226,6 +226,22 @@
     var label = 'Unit ' + cfg.unit + ' · ' + pretty + (cfg.topicLabel ? ' · ' + cfg.topicLabel : '');
     var storeKey = 'mathjourney:' + slug;
 
+    // A fingerprint of the actual problems, so a saved sitting cannot outlive the quiz
+    // it belongs to. The key above is built from the address alone, so rewriting a
+    // check's problems used to leave last week's answers sitting under the same key —
+    // and a restored save could land straight on the review screen, showing which
+    // answers were wrong. That happened: a rewritten check was opened and the previous
+    // quiz came back instead. Cheap string hash; this guards against staleness, not
+    // tampering.
+    var fingerprint = (function () {
+      var src = problems.map(function (p) {
+        return String(p.question) + '|' + (p.answers || []).join(',');
+      }).join('||');
+      var h = 5381;
+      for (var i = 0; i < src.length; i++) h = ((h * 33) ^ src.charCodeAt(i)) >>> 0;
+      return String(h);
+    })();
+
     var state = problems.map(function () {
       return { answer: '', hints: 0, stuck: [], note: '', confidence: '' };
     });
@@ -233,6 +249,10 @@
     var reflection = { hardest: '', note: '', owns: {} };
     var index = 0;
     var screen = 'start';           // 'start' -> 'climb' -> 'review'
+    // Set once the quiz has been handed in. A handed-in quiz is a record of what he
+    // knew at that moment, so it is never edited afterwards — retaking means starting
+    // over, which is what the "Start again" button on the review screen does.
+    var submitted = false;
     // True only when the review screen was restored from storage rather than just
     // finished — drives the "this is an old report" notice on the report card.
     var restoredReview = false;
@@ -242,6 +262,13 @@
     // back to the report instead of dropping him on the start screen.
     try {
       var saved = JSON.parse(localStorage.getItem(storeKey) || 'null');
+      // A save from a different set of problems is not a save of this quiz. Matching
+      // the problem COUNT is not enough — a rewritten check usually has the same
+      // number of problems, which is exactly how the stale sitting got through.
+      if (saved && saved.fingerprint !== fingerprint) {
+        localStorage.removeItem(storeKey);
+        saved = null;
+      }
       if (saved && saved.state && saved.state.length === state.length &&
           (saved.screen === 'climb' || saved.screen === 'review')) {
         state = saved.state;
@@ -257,14 +284,17 @@
             owns: saved.reflection.owns || {}
           };
         }
-        if (screen === 'review') restoredReview = true;
+        if (saved.submitted) submitted = true;
+        if (screen === 'review') { restoredReview = true; submitted = true; }
       }
     } catch (e) { /* storage unavailable; carry on */ }
 
     function save() {
       try {
         localStorage.setItem(storeKey, JSON.stringify({
-          state: state, index: index, screen: screen, reflection: reflection
+          fingerprint: fingerprint,
+          state: state, index: index, screen: screen, reflection: reflection,
+          submitted: submitted
         }));
       } catch (e) { /* ignore */ }
     }
@@ -468,6 +498,7 @@
         : 'Ready to check your answers? You can look back but not change them after this.';
       if (!global.confirm(msg)) return;
       screen = 'review';
+      submitted = true;
       save();
       render();
       global.scrollTo(0, 0);
@@ -484,6 +515,41 @@
       head.appendChild(el('p', { class: 'score' }, [
         document.createTextNode(n + ' / ' + problems.length + ' '),
         el('small', { text: 'correct' })
+      ]));
+
+      // Retaking has to be possible and obvious. Without this, reopening a finished
+      // quiz restored the old report with no way forward, which reads as "the browser
+      // won't let me take it again". Two taps rather than a confirm dialog: a modal
+      // here would be one more thing to read, and the second tap says what it does.
+      var againArmed = false;
+      var again = el('button', {
+        class: 'again',
+        text: 'Start again',
+        onclick: function () {
+          if (!againArmed) {
+            againArmed = true;
+            again.textContent = 'Tap again to clear this attempt';
+            again.classList.add('armed');
+            return;
+          }
+          try { localStorage.removeItem(storeKey); } catch (e) { /* ignore */ }
+          state = problems.map(function () {
+            return { answer: '', hints: 0, stuck: [], note: '', confidence: '' };
+          });
+          reflection = { hardest: '', note: '', owns: {} };
+          index = 0;
+          screen = 'start';
+          submitted = false;
+          restoredReview = false;
+          render();
+        }
+      });
+      head.appendChild(el('p', { class: 'again-wrap' }, [
+        again,
+        el('span', {
+          class: 'again-note',
+          text: 'Answers stay as they were handed in. Starting again wipes this attempt and begins from the first problem.'
+        })
       ]));
       frag.appendChild(head);
 

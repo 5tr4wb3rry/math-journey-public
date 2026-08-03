@@ -43,10 +43,10 @@
 
     var PROBLEMS = [
       {
-            "question": "If x + 1/x = 6, what is x² + 1/x²?",
-            "math": "x + 1/x = 6",
+            "question": "If x + 1/x = 10, what is x² + 1/x²?",
+            "math": "x + 1/x = 10",
             "answers": [
-                  "34"
+                  "98"
             ],
             "hints": [
                   "Square both sides.",
@@ -57,27 +57,27 @@
             "level": "core"
       },
       {
-            "question": "Same x + 1/x = 6. Now find x⁴ + 1/x⁴.",
-            "math": "x + 1/x = 6",
+            "question": "For some other number x, you are told directly that x² + 1/x² = 11. Find x⁴ + 1/x⁴. (You are not told what x + 1/x is, and you do not need it.)",
+            "math": "x² + 1/x² = 11",
             "answers": [
-                  "1154"
+                  "119"
             ],
             "hints": [
-                  "You already built one rung. Use it.",
-                  "Apply the same squaring move to the result you just got, not to the 6.",
-                  "Square that result, then subtract 2 again."
+                  "The machine takes a value and returns the value at double that power.",
+                  "You are starting from the second power, so one press lands on the fourth.",
+                  "Square the number you were given, then subtract 2."
             ],
             "topic": "The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)",
             "level": "stretch"
       },
       {
-            "question": "If x + 1/x = 8, what is x³ + 1/x³?",
-            "math": "x + 1/x = 8",
+            "question": "Back to x + 1/x = 10. What is x³ + 1/x³?",
+            "math": "x + 1/x = 10",
             "answers": [
-                  "488"
+                  "970"
             ],
             "hints": [
-                  "An odd power does not come from squaring. Try cubing instead.",
+                  "An odd power does not come from doubling. Try cubing instead.",
                   "Cubing the left gives x³ + 1/x³ plus a leftover that contains x + 1/x.",
                   "The leftover is 3(x + 1/x), and you know that value."
             ],

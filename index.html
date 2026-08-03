@@ -1,16 +1,15 @@
 <!doctype html>
 <!--
-  Landing page. TWO TABS: Lessons and Syllabus. This file replaces the old
-  syllabus.html — the topic map now lives in the Syllabus tab so there is one
-  address, not two.
+  Landing page. THREE TABS: Syllabus, Units, Lessons.
 
-  Regenerate whenever a lesson is added or a topic's status changes:
-    - add the lesson to the Lessons tab under its syllabus area, as one
-      <div class="pair"> holding the lesson tile then its check tile — a topic
-      is always one row, lesson left, check right
-    - link the topic's row in the Syllabus tab to it
-    - the Unit column says which unit is handling each topic, which is the
-      correspondence between the unit numbering and the syllabus
+  NOTHING HERE IS HAND-MAINTAINED. All three tabs are rendered from
+  assets/syllabus.js, which is the single source of truth for topics, statuses,
+  units and lessons. To change what this page says, edit that file — adding a
+  lesson, moving a topic to a unit or changing a status is a one-line edit there
+  and every tab follows. The same file drives scripts/build-plan.js, so the plan
+  and the page cannot drift apart.
+
+  Only the page's own copy (the headings and the explanatory paragraphs) lives here.
 
   PUBLISHED. Nothing here may name the learner. Never link anything in _template/.
 -->
@@ -65,11 +64,31 @@
   .s-prog { background:var(--warm-soft); color:var(--warm); }
   .s-cov  { background:var(--accent-soft); color:var(--accent); }
   .s-mast { background:var(--good-soft); color:var(--good); }
+  /* his own verdict, where it disagrees with the record — displayed, never hidden */
+  .self { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.72rem;
+          color:var(--warm); white-space:nowrap; margin-left:.4rem; }
   .legend { display:flex; gap:8px; flex-wrap:wrap; margin:.75rem 0 0; }
   .toc { margin-top:.6rem; font-size:.9rem; }
   .toc a { color:var(--accent); text-decoration:none; }
   .toc a:hover { text-decoration:underline; }
   @media (max-width:34rem) { td.unit { display:none; } th:last-child { display:none; } }
+  /* what's waiting: the only part of this page that asks him to do something */
+  .nextup { border-left:4px solid var(--warm); }
+  .nextup.none { border-left-color:var(--line); }
+  .nextup-list { display:grid; gap:.6rem; margin-top:1rem; }
+  .nextup-row { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+                gap:.75rem; padding:.75rem .9rem; border:1px solid var(--line);
+                border-radius:var(--radius-sm); background:var(--paper); }
+  .nextup-topic { font-family:"Space Grotesk",system-ui,sans-serif; font-weight:600; }
+  .nextup-links { display:flex; gap:.5rem; align-items:center; }
+  .nextup-lesson, .nextup-check {
+    font-family:"Space Grotesk",system-ui,sans-serif; font-size:.9rem; font-weight:600;
+    text-decoration:none; border-radius:999px; padding:.35rem .95rem; white-space:nowrap;
+  }
+  .nextup-lesson { color:var(--ink-soft); border:1px solid var(--line); }
+  .nextup-lesson:hover { border-color:var(--accent); color:var(--accent); }
+  .nextup-check { background:var(--warm); color:var(--paper); border:1px solid var(--warm); }
+  .nextup-check:hover { filter:brightness(1.06); }
 </style>
 </head>
 <body>
@@ -87,8 +106,14 @@
     </p>
   </header>
 
+  <!-- What is actually waiting for him. Without this the site says what exists but
+       never what to do next, so "which one am I meant to open?" needs a parent to
+       answer it. Rendered from the topic map, so it can never point at the wrong one. -->
+  <div id="next-up"></div>
+
   <div class="tabs" role="tablist">
     <button role="tab" aria-selected="true"  aria-controls="tab-syllabus">Syllabus</button>
+    <button role="tab" aria-selected="false" aria-controls="tab-units">Units</button>
     <button role="tab" aria-selected="false" aria-controls="tab-lessons">Lessons</button>
   </div>
 
@@ -99,56 +124,29 @@
         One lesson per topic, written only for topics a quiz showed were not yet secure.
         Grouped by where they sit on the syllabus.
       </p>
-  <h3 class="area">Algebra</h3>
-  <div class="tiles">
-    <div class="pair">
-      <a class="tile" href="lessons/the-x-plus-1-over-x-family-iterated.html">
-        <span class="n">Lesson</span>
-        <span><span class="t">The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)</span><br><span class="d">Climbing from x + 1/x to a fourth power, and what changes when you use the same move twice.</span></span>
-      </a>
-      <a class="tile check" href="lessons/the-x-plus-1-over-x-family-iterated-check.html">
-        <span class="n">Check</span>
-        <span class="d">Three problems, new numbers. After the lesson.</span>
-      </a>
-    </div>
-    <div class="pair">
-      <a class="tile" href="lessons/rate-work-and-mixture-problems.html">
-        <span class="n">Lesson</span>
-        <span><span class="t">Rate, work, and mixture problems</span><br><span class="d">Rates add, times don’t — and the flip back to a time is the step that gets dropped.</span></span>
-      </a>
-      <a class="tile check" href="lessons/rate-work-and-mixture-problems-check.html">
-        <span class="n">Check</span>
-        <span class="d">Three problems, new numbers. After the lesson.</span>
-      </a>
-    </div>
-  </div>
-  <h3 class="area">Counting &amp; probability</h3>
-  <div class="tiles">
-    <div class="pair">
-      <a class="tile" href="lessons/choosing-vs-arranging-combinations.html">
-        <span class="n">Lesson</span>
-        <span><span class="t">Choosing vs. arranging; combinations</span><br><span class="d">When a constraint decides the order for you, and when it genuinely doesn’t.</span></span>
-      </a>
-      <a class="tile check" href="lessons/choosing-vs-arranging-combinations-check.html">
-        <span class="n">Check</span>
-        <span class="d">Three problems, new numbers. After the lesson.</span>
-      </a>
-    </div>
-  </div>
-  <h3 class="area">Number theory</h3>
-  <div class="tiles">
-    <div class="pair">
-      <a class="tile" href="lessons/counting-factors-and-divisors.html">
-        <span class="n">Lesson</span>
-        <span><span class="t">Counting factors and divisors</span><br><span class="d">Trailing zeros of a factorial, and how many divisors a number has — without listing them.</span></span>
-      </a>
-      <a class="tile check" href="lessons/counting-factors-and-divisors-check.html">
-        <span class="n">Check</span>
-        <span class="d">Three problems, new numbers. After the lesson.</span>
-      </a>
-    </div>
-  </div>
+      <div id="lessons-body"></div>
     </section>
+  </div>
+
+  <div id="tab-units" hidden>
+    <section class="card">
+      <h2>What a unit is</h2>
+      <p class="lede">
+        The syllabus is the whole territory: every topic, in no particular order. A
+        <b>unit</b> is the working batch — a named set of those topics taken on together.
+        It opens with an assessment that finds which of them are missing, each missing
+        topic gets its own lesson and check, and once every one of those checks has been
+        passed the unit closes with a <b>unit assessment</b> covering it and everything
+        before it.
+      </p>
+      <p class="lede" style="margin:.9rem 0 0">
+        A topic can only be in one unit at a time, and topics with no unit are simply not
+        being worked on yet — that is the entire relationship between this tab and the
+        syllabus. The Unit column over there names the unit each topic belongs to.
+      </p>
+    </section>
+
+    <div id="units-body"></div>
   </div>
 
   <div id="tab-syllabus">
@@ -171,120 +169,180 @@
         parent agrees, and <b>he says he owns it</b>. Any one saying no keeps it at
         <i>covered</i>.
       </p>
-      <p class="toc"><a href="#alg">Algebra</a> · <a href="#count">Counting & probability</a> · <a href="#nt">Number theory</a> · <a href="#fn">Functions & graphs</a> · <a href="#geo">Geometry</a> · <a href="#calc">Toward calculus</a> · <a href="#meta">Problem-solving craft</a></p>
+      <p class="toc" id="syllabus-toc"></p>
     </section>
 
-  <section class="card" id="alg">
-    <h2>Algebra</h2>
-    <table>
-      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
-      <tr><td>Variables, expressions, evaluating and translating</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
-      <tr><td>Linear equations, one unknown (all forms)</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td>Sign discipline with negatives and powers</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
-      <tr><td>Squaring identities: (a±b)², sum &amp; product → a²+b²</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td>Symmetric expressions in three variables</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td><a href="lessons/the-x-plus-1-over-x-family-iterated.html">The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)</a></td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td>Difference of squares; factoring as un-multiplying</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Cubes: sum and difference; the cube identities</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Exponent laws, including zero and negative exponents</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Substitution as a simplifying weapon</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Systems of two equations: substitution, elimination</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Word problems: age, money, consecutive numbers</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
-      <tr><td><a href="lessons/rate-work-and-mixture-problems.html">Rate, work, and mixture problems</a></td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td>Inequalities and absolute value</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Quadratics: factoring, completing the square, the discriminant</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Radicals and irrational numbers</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-    </table>
-  </section>
-  <section class="card" id="count">
-    <h2>Counting &amp; probability</h2>
-    <table>
-      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
-      <tr><td>Multiplication principle; simple product counting</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td>Inclusion–exclusion, two sets</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td>Organized casework decided before counting</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
-      <tr><td><a href="lessons/choosing-vs-arranging-combinations.html">Choosing vs. arranging; combinations</a></td><td class="st"><span class="s s-none">not started</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td>Permutations, including with repetition</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Counting the complement</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Inclusion–exclusion, three or more sets</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Basic probability; equally likely outcomes</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Expected value</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Counterintuitive classics (birthday, Monty Hall)</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-    </table>
-  </section>
-  <section class="card" id="nt">
-    <h2>Number theory</h2>
-    <table>
-      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
-      <tr><td>Units-digit and last-digit cycles <span class="self">he says: not yet</span></td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
-      <tr><td>Remainder cycles; modular arithmetic informally</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td>Divisibility rules</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
-      <tr><td>Prime factorization as a tool</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td><a href="lessons/counting-factors-and-divisors.html">Counting factors and divisors</a></td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit">U1 · Naming the Unknown</td></tr>
-      <tr><td>GCD and LCM, and what they mean</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Modular arithmetic formally; congruences</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-    </table>
-  </section>
-  <section class="card" id="fn">
-    <h2>Functions &amp; graphs</h2>
-    <table>
-      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
-      <tr><td>Coordinates; plotting points</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
-      <tr><td>Function machines; f(x) notation</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Lines: slope, intercepts, slope as a rate</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Graphs of quadratics; the parabola and its vertex</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Reading graphs as stories; a zoo of shapes</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Transformations of graphs</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Exponential growth and decay</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Logarithms as the inverse question</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-    </table>
-  </section>
-  <section class="card" id="geo">
-    <h2>Geometry</h2>
-    <table>
-      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
-      <tr><td>Area and perimeter as algebra in disguise</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Angles, parallel lines, triangle facts</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>The Pythagorean theorem and its proofs</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Similarity and scaling</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Circles: arcs, sectors, inscribed angles</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Coordinate geometry</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Writing a proof</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Trigonometry: ratios, the unit circle</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-    </table>
-  </section>
-  <section class="card" id="calc">
-    <h2>Toward calculus</h2>
-    <table>
-      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
-      <tr><td>Sequences and series; arithmetic and geometric</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Optimization: best-possible problems without calculus</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Limits, informally then formally</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Rate of change; the derivative</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Differentiation rules; curve sketching</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Accumulation; the integral</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>The fundamental theorem</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Differential equations and modeling</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-    </table>
-  </section>
-  <section class="card" id="meta">
-    <h2>Problem-solving craft</h2>
-    <table>
-      <tr><th>Topic</th><th>Status</th><th>Unit</th></tr>
-      <tr><td>The Opening Playbook: six first moves on an alien problem</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
-      <tr><td>Reaching for structure before examples</td><td class="st"><span class="s s-cov">covered</span></td><td class="unit none">—</td></tr>
-      <tr><td>Carrying a method through to the actual question asked</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
-      <tr><td>Checking an answer for plausibility before submitting</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Knowing how sure you are (calibrated confidence)</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Reapplying a weapon in a multi-step chain</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
-      <tr><td>Explaining a solution so someone else understands it</td><td class="st"><span class="s s-none">not started</span></td><td class="unit none">—</td></tr>
-      <tr><td>Tolerating being stuck; treating it as information</td><td class="st"><span class="s s-prog">in progress</span></td><td class="unit none">—</td></tr>
-    </table>
-  </section>
+    <div id="syllabus-body"></div>
   </div>
 
 </div>
+
+<script src="assets/syllabus.js"></script>
 <script>
+(function () {
+  var S = window.SYLLABUS;
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  var TONE = { 'not started': 'none', 'in progress': 'prog', 'covered': 'cov', 'mastered': 'mast' };
+
+  function pill(label, tone) {
+    return '<span class="s s-' + tone + '">' + esc(label) + '</span>';
+  }
+  // The Unit column links across tabs; the hashchange handler below opens the other tab.
+  function unitCell(t) {
+    var u = t.unit && S.unitNamed(t.unit);
+    if (!u) return '<td class="unit none">—</td>';
+    return '<td class="unit"><a href="#' + u.id + '">' + esc(u.name.replace('Unit ', 'U')) + '</a></td>';
+  }
+
+  /* ---------- Syllabus tab: one card per area, one row per topic ---------- */
+  function renderSyllabus() {
+    var toc = [], html = '';
+    S.areas.forEach(function (area) {
+      var rows = S.inArea(area.id);
+      if (!rows.length) return;
+      toc.push('<a href="#' + area.id + '">' + esc(area.name) + '</a>');
+      html += '<section class="card" id="' + area.id + '"><h2>' + esc(area.name) + '</h2><table>' +
+              '<tr><th>Topic</th><th>Status</th><th>Unit</th></tr>';
+      rows.forEach(function (t) {
+        var label = t.lesson
+          ? '<a href="lessons/' + t.lesson.slug + '.html">' + esc(t.name) + '</a>'
+          : esc(t.name);
+        if (t.heSays) label += '<span class="self">he says: ' + esc(t.heSays) + '</span>';
+        html += '<tr><td>' + label + '</td><td class="st">' +
+                pill(t.status, TONE[t.status]) + '</td>' + unitCell(t) + '</tr>';
+      });
+      html += '</table></section>';
+    });
+    document.getElementById('syllabus-body').innerHTML = html;
+    document.getElementById('syllabus-toc').innerHTML = toc.join(' · ');
+  }
+
+  /* ---------- Units tab ---------- */
+  // Written from the counts so it cannot go stale: how many topics, how many needed a
+  // lesson, and where those lessons' checks stand.
+  function whereItStands(topics) {
+    var taught = topics.filter(function (t) { return t.lesson; });
+    var passed = taught.filter(function (t) { return t.check === 'passed'; }).length;
+    var waiting = taught.filter(function (t) { return t.check === 'not taken'; }).length;
+    var partial = taught.filter(function (t) { return t.check === 'partial'; }).length;
+    var retaught = taught.filter(function (t) { return t.lesson.retaught; }).length;
+
+    if (!taught.length) return 'Not opened yet — no assessment has been taken, so no topic has a lesson.';
+    var s = 'Of its ' + topics.length + ' topics, ' + taught.length +
+            ' came back short of the assessment and have lessons. ';
+    var bits = [];
+    if (passed) bits.push(passed + (passed === 1 ? ' check has passed' : ' checks have passed'));
+    if (waiting) bits.push(waiting + (waiting === 1 ? ' is waiting to be taken' : ' are waiting to be taken'));
+    if (partial) bits.push(partial + (partial === 1 ? ' came back partial' : ' came back partial'));
+    s += bits.length ? (bits.join(', ') + '. ') : '';
+    if (retaught) {
+      s += retaught + (retaught === 1 ? ' lesson was' : ' lessons were') +
+           ' rewritten and taught a different way after a check came back short. ';
+    }
+    s += (passed === taught.length)
+      ? 'Every check has passed, so the unit assessment can be built.'
+      : 'The unit assessment is gated on every one of these checks passing.';
+    return s;
+  }
+
+  function renderUnits() {
+    var html = '';
+    S.units.filter(function (u) { return u.open; }).forEach(function (u) {
+      var topics = S.inUnit(u.id);
+      html += '<section class="card" id="' + u.id + '"><h2>' + esc(u.name) + '</h2>';
+      if (u.lede) html += '<p class="lede">' + u.lede + '</p>';
+      html += '<p class="lede" style="margin:.9rem 0 0"><b>Where it stands:</b> ' +
+              whereItStands(topics) + '</p>' +
+              '<table><tr><th>Topic</th><th>Stage</th><th>Where</th></tr>';
+      topics.forEach(function (t) {
+        var stage = S.stageOf(t);
+        var where = t.lesson
+          ? '<a href="lessons/' + t.lesson.slug + '.html">lesson</a> · ' +
+            '<a href="lessons/' + t.lesson.slug + '-check.html">check</a>'
+          : '—';
+        html += '<tr><td>' + esc(t.short || t.name) + '</td>' +
+                '<td class="st">' + pill(stage.label, stage.tone) + '</td>' +
+                '<td class="unit' + (t.lesson ? '' : ' none') + '">' + where + '</td></tr>';
+      });
+      html += '</table><p class="lede" style="margin:1rem 0 0">' +
+              '<b>“No lesson needed”</b> means the assessment showed it was already solid. Nothing ' +
+              'is taught that a quiz has not returned as shaky — that is the rule the whole ' +
+              'system runs on.</p></section>';
+    });
+
+    var later = S.units.filter(function (u) { return !u.open; });
+    if (later.length) {
+      html += '<section class="card"><h2>Units after this one</h2>' +
+              '<p class="lede">Named but not yet opened; their topics still sit unassigned on the ' +
+              'syllabus until the unit actually begins.</p>' +
+              '<table><tr><th>Unit</th><th>What it takes on</th></tr>';
+      later.forEach(function (u) {
+        html += '<tr><td>' + esc(u.name) + '</td><td>' + esc(u.takes) + '</td></tr>';
+      });
+      html += '</table></section>';
+    }
+    document.getElementById('units-body').innerHTML = html;
+  }
+
+  /* ---------- Lessons tab: a topic is one row, lesson left, its check right ---------- */
+  function renderLessons() {
+    var html = '';
+    S.areas.forEach(function (area) {
+      var taught = S.inArea(area.id).filter(function (t) { return t.lesson; });
+      if (!taught.length) return;
+      html += '<h3 class="area">' + esc(area.name) + '</h3><div class="tiles">';
+      taught.forEach(function (t) {
+        html += '<div class="pair">' +
+          '<a class="tile" href="lessons/' + t.lesson.slug + '.html">' +
+            '<span class="n">Lesson</span>' +
+            '<span><span class="t">' + esc(t.name) + '</span><br>' +
+            '<span class="d">' + esc(t.lesson.blurb) + '</span></span>' +
+          '</a>' +
+          '<a class="tile check" href="lessons/' + t.lesson.slug + '-check.html">' +
+            '<span class="n">Check</span>' +
+            '<span class="d">Same shapes, new numbers. After the lesson.</span>' +
+          '</a></div>';
+      });
+      html += '</div>';
+    });
+    document.getElementById('lessons-body').innerHTML = html;
+  }
+
+  /* ---------- what's waiting for him ---------- */
+  // A check that has been written but not taken is the only thing he is ever asked to
+  // do. Lessons are readable any time; everything else on this page is a map.
+  function renderNextUp() {
+    var waiting = S.withLessons().filter(function (t) { return t.check === 'not taken'; });
+    var host = document.getElementById('next-up');
+    if (!waiting.length) {
+      host.innerHTML = '<section class="card nextup none"><h2>Nothing waiting</h2>' +
+        '<p class="lede">Every check written so far has been taken. Next one lands when a quiz says a topic needs it.</p></section>';
+      return;
+    }
+    var html = '<section class="card nextup"><h2>' +
+      (waiting.length === 1 ? 'One check is waiting for you' : waiting.length + ' checks are waiting for you') +
+      '</h2><p class="lede">Read the lesson first if you want to. Then take the check — it uses the same shapes with different numbers.</p><div class="nextup-list">';
+    waiting.forEach(function (t) {
+      html += '<div class="nextup-row">' +
+        '<span class="nextup-topic">' + esc(t.short || t.name) + '</span>' +
+        '<span class="nextup-links">' +
+          '<a class="nextup-lesson" href="lessons/' + t.lesson.slug + '.html">Lesson</a>' +
+          '<a class="nextup-check" href="lessons/' + t.lesson.slug + '-check.html">Take the check</a>' +
+        '</span></div>';
+    });
+    html += '</div></section>';
+    host.innerHTML = html;
+  }
+
+  renderNextUp();
+  renderSyllabus();
+  renderUnits();
+  renderLessons();
+
+  /* ---------- tabs ---------- */
   var tabs = [].slice.call(document.querySelectorAll('.tabs button'));
   function show(name) {
     tabs.forEach(function (b) {
@@ -292,20 +350,38 @@
       b.setAttribute('aria-selected', String(on));
       document.getElementById(b.getAttribute('aria-controls')).hidden = !on;
     });
-    history.replaceState(null, '', name === 'tab-lessons' ? '#lessons' : '#syllabus');
+    history.replaceState(null, '', '#' + name.replace('tab-', ''));
   }
   tabs.forEach(function (b) {
     b.addEventListener('click', function () { show(b.getAttribute('aria-controls')); });
   });
+
+  // A link from the Syllabus tab's Unit column to a unit lives in a DIFFERENT tab, so
+  // following it has to open that tab as well as scroll — the hash changes without the
+  // page reloading, and nothing else would notice.
+  function paneOf(id) {
+    if (S.units.some(function (u) { return u.id === id; })) return 'tab-units';
+    if (S.areas.some(function (a) { return a.id === id; })) return 'tab-syllabus';
+    return null;
+  }
+  window.addEventListener('hashchange', function () {
+    var target = location.hash.replace('#', '');
+    var pane = paneOf(target);
+    if (!pane) return;
+    show(pane);
+    var section = document.getElementById(target);
+    if (section) section.scrollIntoView();
+  });
+
   // deep links: #syllabus opens that tab, and so does any anchor into one of its sections
   var h = location.hash.replace('#', '');
-  var ids = [].slice.call(document.querySelectorAll('#tab-syllabus section')).map(function (s) { return s.id; });
-  if (h === 'lessons') {
-    show('tab-lessons');
-  } else if (ids.indexOf(h) !== -1) {
-    show('tab-syllabus');
+  if (h === 'lessons' || h === 'units' || h === 'syllabus') {
+    show('tab-' + h);
+  } else if (paneOf(h)) {
+    show(paneOf(h));
     document.getElementById(h).scrollIntoView();
   }
+})();
 </script>
 </body>
 </html>
