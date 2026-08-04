@@ -1,0 +1,265 @@
+<!doctype html>
+<!--
+  CANONICAL QUIZ — copy to public/unitN/assessment.html or
+  public/lessons/<topic-slug>-check.html and edit
+  only the two blocks marked CONFIG and PROBLEMS at the bottom. Never edit the engine
+  from a session file; if behavior needs to change, change ../assets/quiz.js so every
+  quiz inherits the fix.
+
+  PUBLISHING BOUNDARY: everything under public/ is mirrored to a world-readable repo.
+  No solutions, no answer key commentary, no learner's name, nothing from state/ or
+  guides/ goes in this file. The accepted-answers array is unavoidable (the engine has
+  to score), so keep it terse — reasoning and full worked solutions live in the parent
+  guide under guides/, which is never published.
+
+  MIND THE RELATIVE PATHS: the paths below are written for this file's DESTINATION, not
+  for _template/, so opening this file where it sits will not load the stylesheet or the
+  engine. Both public/unitN/ and public/lessons/ are ONE level below public/, so
+  ../assets/ is correct — fix both <link> and <script> when you copy.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unit 1 · Unit assessment — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Unit N · Assessment</p>
+      <h1>Quiz title goes here</h1>
+      <p class="lede">
+        One or two sentences of framing. No time limit. Get it wrong as many times as you
+        like before you finish — nothing is checked until the last button.
+      </p>
+    </header>
+
+    <!-- The engine renders everything into this element. Leave it empty. -->
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    /* ---------------------------------------------------------------- CONFIG
+       unit            — which unit this belongs to.
+       stage           — 'assessment' | 'check' | 'unit-assessment'. Drives the
+                         start-screen framing: an assessment is meant to beat him
+                         somewhere, a check is meant to go his way.
+       slug            — optional override for the report filename. Use it on a check
+                         so the file names the topic, e.g. 'check_counting-factors'.
+       topicLabel      — optional; shown in the report heading, for a check.
+       confidence      — true shows the "How sure are you?" tags on every problem.
+                         Always on for a check and for unit assessments: correct-but-unsure
+                         means the lesson's patch has not really set.
+       stuckChips      — optional. Omit it to use the engine's default playbook moves;
+                         pass an array to match the moves this quiz is drilling.
+       topics          — normally OMIT. The topic list derives from the problems' own
+                         `topic` fields; this exists only as an override. */
+    var CONFIG = {
+          "unit": 1,
+          "stage": "unit-assessment",
+          "slug": "unit1_assessment",
+          "title": "Unit 1 · Unit assessment",
+          "confidence": true
+    };
+
+    /* -------------------------------------------------------------- PROBLEMS
+       ASSESSMENT: ramp them, across several topics. First problem is a warm-up he
+       clears without thinking; the last sits at or past the top of his demonstrated
+       range. An assessment he aces clean produced no information.
+
+       CHECK: ONE TOPIC ONLY — the one its lesson taught. Same structures the assessment
+       used, DIFFERENT NUMBERS, and do not secretly steepen it: he is supposed to clear a
+       check. Build it alongside the lesson so the two cannot share numbers, or the
+       published lesson is this quiz's answer key.
+
+       TOPICS ARE THE POINT. Verdicts are computed per topic and drive the whole
+       downstream model: every topic coming back `partial` or `not solved` gets its own
+       lesson, and nothing else does.
+
+         solved      all its problems correct, none tagged "I guessed"
+         partial     some correct, OR all correct but at least one guessed
+         not solved  none correct
+
+       So: EVERY PROBLEM NEEDS A `topic`, spelled exactly as in index.html (Syllabus tab) — a typo
+       silently splits one topic in two. And EVERY TOPIC NEEDS AT LEAST TWO PROBLEMS at
+       different levels: with one, `partial` is unreachable and the middle verdict
+       vanishes with no visible sign. The engine warns in the console for both; check it.
+
+       question  the prompt, plain text, no markup
+       math      optional monospace block — an expression, a table, an ASCII diagram
+       answers   every form you will accept. Numeric and fraction forms are already
+                 interchangeable (3/4 matches 0.75 and 6/8), so list alternates only
+                 when the answer has genuinely different valid spellings.
+       hints     up to three, ordered: a nudge, then stronger, then the strongest you
+                 are willing to give. The third hint should still stop short of the
+                 answer.
+       topic     REQUIRED. The syllabus topic this problem tests, verbatim.
+       level     'core' | 'stretch' | 'reach' */
+    var PROBLEMS = [
+          {
+                "question": "If a + b = 9 and ab = 14, what is a² + b²?",
+                "answers": [
+                      "53"
+                ],
+                "hints": [
+                      "You are not being asked to find a and b.",
+                      "(a + b)² = a² + 2ab + b².",
+                      "So a² + b² = 81 − 28."
+                ],
+                "topic": "Squaring identities: (a±b)², sum & product → a²+b²",
+                "level": "warm"
+          },
+          {
+                "question": "If a − b = 4 and ab = 5, what is a² + b²?",
+                "answers": [
+                      "26"
+                ],
+                "hints": [
+                      "Same weapon as before, one sign different.",
+                      "(a − b)² = a² − 2ab + b².",
+                      "So a² + b² = 16 + 10."
+                ],
+                "topic": "Squaring identities: (a±b)², sum & product → a²+b²",
+                "level": "hard"
+          },
+          {
+                "question": "If x + 1/x = 7, what is x² + 1/x²?",
+                "answers": [
+                      "47"
+                ],
+                "hints": [
+                      "Square what you were given.",
+                      "(x + 1/x)² = x² + 2 + 1/x².",
+                      "So subtract the 2."
+                ],
+                "topic": "The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)",
+                "level": "warm"
+          },
+          {
+                "question": "You are told directly that x² + 1/x² = 9. What is x⁴ + 1/x⁴?",
+                "answers": [
+                      "79"
+                ],
+                "hints": [
+                      "No x + 1/x is given, and you do not need one.",
+                      "The same machine takes any of these as input.",
+                      "Square 9, then subtract 2."
+                ],
+                "topic": "The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)",
+                "level": "hard"
+          },
+          {
+                "question": "Two taps fill a tank in 12 hours and 24 hours on their own. How many hours if both run together?",
+                "answers": [
+                      "8"
+                ],
+                "hints": [
+                      "Times do not add.",
+                      "Work in tank-per-hour: 1/12 + 1/24.",
+                      "That is 1/8 of a tank each hour."
+                ],
+                "topic": "Rate, work, and mixture problems",
+                "level": "warm"
+          },
+          {
+                "question": "Working alone, A takes 12 hours. A and B together take 4 hours. How many hours does B take alone?",
+                "answers": [
+                      "6"
+                ],
+                "hints": [
+                      "Rates add, so B's rate is the difference.",
+                      "1/4 − 1/12.",
+                      "Then flip the rate back into a time."
+                ],
+                "topic": "Rate, work, and mixture problems",
+                "level": "hard"
+          },
+          {
+                "question": "Eight athletes run a race. In how many ways can gold and silver be awarded?",
+                "answers": [
+                      "56"
+                ],
+                "hints": [
+                      "Swap the two medallists. Different result?",
+                      "It is — the medals differ, so this is arranging.",
+                      "8 × 7, and do not divide."
+                ],
+                "topic": "Choosing vs. arranging; combinations",
+                "level": "warm"
+          },
+          {
+                "question": "In a league of 11 teams, every team plays every other team exactly once. How many matches are played?",
+                "answers": [
+                      "55"
+                ],
+                "hints": [
+                      "Nothing here says choose or arrange. Use the swap test.",
+                      "A plays B is the same match as B plays A.",
+                      "So count ordered pairs and halve."
+                ],
+                "topic": "Choosing vs. arranging; combinations",
+                "level": "hard"
+          },
+          {
+                "question": "How many zeros does 50! end in?",
+                "answers": [
+                      "12"
+                ],
+                "hints": [
+                      "Every zero is a factor of 10, and every 10 is a 2 and a 5.",
+                      "The 5s are the ones in short supply.",
+                      "Count multiples of 5, then remember 25 brings a second one."
+                ],
+                "topic": "Counting factors and divisors",
+                "level": "warm"
+          },
+          {
+                "question": "How many divisors does 720 have?",
+                "answers": [
+                      "30"
+                ],
+                "hints": [
+                      "Break it into primes first.",
+                      "720 = 2⁴ × 3² × 5.",
+                      "Each prime's exponent gives one more choice than itself."
+                ],
+                "topic": "Counting factors and divisors",
+                "level": "hard"
+          },
+          {
+                "question": "What is the remainder when 3¹⁰⁰ is divided by 5?",
+                "answers": [
+                      "1"
+                ],
+                "hints": [
+                      "Work out the first few remainders and look for a cycle.",
+                      "3, 4, 2, 1, then it repeats.",
+                      "The cycle has length 4, and 100 is a multiple of 4."
+                ],
+                "topic": "Remainder cycles; modular arithmetic informally",
+                "level": "hard"
+          },
+          {
+                "question": "What is the units digit of 2⁵⁰?",
+                "answers": [
+                      "4"
+                ],
+                "hints": [
+                      "List the units digits of 2, 4, 8, 16, 32 …",
+                      "They cycle 2, 4, 8, 6.",
+                      "Where does 50 land in a cycle of 4?"
+                ],
+                "topic": "Remainder cycles; modular arithmetic informally",
+                "level": "warm"
+          }
+    ];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>

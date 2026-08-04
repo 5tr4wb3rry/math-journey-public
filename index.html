@@ -316,7 +316,19 @@
   // do. Lessons are readable any time; everything else on this page is a map.
   function renderNextUp() {
     var waiting = S.withLessons().filter(function (t) { return t.check === 'not taken'; });
+    // A unit assessment is the other thing he can be asked to sit, and it outranks a
+    // check: it closes the unit.
+    var openUnit = S.units.filter(function (u) { return u.open && u.assessment; })[0];
     var host = document.getElementById('next-up');
+    if (!waiting.length && openUnit) {
+      host.innerHTML = '<section class="card nextup"><h2>The unit assessment is ready</h2>' +
+        '<p class="lede">Every topic in Unit 1 has been closed, so this is the one that covers all of it at once. Twelve problems, and it is meant to get hard.</p>' +
+        '<div class="nextup-list"><div class="nextup-row">' +
+        '<span class="nextup-topic">' + esc(openUnit.name) + '</span>' +
+        '<span class="nextup-links"><a class="nextup-check" href="' + openUnit.assessment + '">Take the unit assessment</a></span>' +
+        '</div></div></section>';
+      return;
+    }
     if (!waiting.length) {
       host.innerHTML = '<section class="card nextup none"><h2>Nothing waiting</h2>' +
         '<p class="lede">Every check written so far has been taken. Next one lands when a quiz says a topic needs it.</p></section>';

@@ -36,6 +36,7 @@
       id: 'unit1',
       name: 'Unit 1 · Naming the Unknown',
       open: true,
+      assessment: 'unit1/unit-assessment.html',
       lede: 'Ten topics. The theme is giving a name to what you do not know and then working ' +
             'with the name instead of the number: identities, rates, counting and cycles all ' +
             'turn out to be the same habit.',
@@ -107,14 +108,14 @@
     { name: 'Organized casework decided before counting', area: 'count', status: 'in progress', unit: null },
     {
       name: 'Choosing vs. arranging; combinations',
-      area: 'count', status: 'in progress', unit: 'unit1', heSays: 'not yet',
+      area: 'count', status: 'mastered', unit: 'unit1',
       lesson: {
         slug: 'choosing-vs-arranging-combinations',
         retaught: true,
         blurb: 'Rewritten: one test that works even when the problem never says which it is — ' +
                'swap two of the things you picked and see whether anything changed.'
       },
-      check: 'not taken'
+      check: 'passed'
     },
     { name: 'Permutations, including with repetition', area: 'count', status: 'not started', unit: null },
     { name: 'Counting the complement', area: 'count', status: 'not started', unit: null },
