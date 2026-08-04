@@ -42,46 +42,46 @@
     };
 
     var PROBLEMS = [
-      {
-            "question": "From 7 people, how many different committees of 3 can be formed?",
-            "answers": [
-                  "35"
-            ],
-            "hints": [
-                  "Does swapping two members give you a different committee?",
-                  "It does not, so this is choosing, not arranging.",
-                  "Count the ordered picks, then divide by the shuffles of the 3 you chose."
-            ],
-            "topic": "Choosing vs. arranging; combinations",
-            "level": "core"
-      },
-      {
-            "question": "From those same 7 people, how many ways are there to pick a president, a treasurer and a secretary?",
-            "answers": [
-                  "210"
-            ],
-            "hints": [
-                  "Does swapping two of them give you a different outcome here?",
-                  "It does — the roles are distinct, so order matters now.",
-                  "Count the ordered picks and do not divide."
-            ],
-            "topic": "Choosing vs. arranging; combinations",
-            "level": "stretch"
-      },
-      {
-            "question": "Fifteen people each shake hands once with everyone else. How many handshakes happen?",
-            "answers": [
-                  "105"
-            ],
-            "hints": [
-                  "Is a handshake ordered?",
-                  "You shaking my hand is not a second, separate handshake.",
-                  "Every pair of people gives exactly one handshake."
-            ],
-            "topic": "Choosing vs. arranging; combinations",
-            "level": "stretch"
-      }
-];
+          {
+                "question": "From 9 people, how many different pairs can be formed?",
+                "answers": [
+                      "36"
+                ],
+                "hints": [
+                      "Swap the two people you picked. Is it a different pair?",
+                      "It is not, so this is choosing.",
+                      "Count the ordered picks, then divide by the ways to shuffle the 2 you chose."
+                ],
+                "topic": "Choosing vs. arranging; combinations",
+                "level": "core"
+          },
+          {
+                "question": "Five runners finish a race. How many different ways can gold, silver and bronze be handed out?",
+                "answers": [
+                      "60"
+                ],
+                "hints": [
+                      "Swap two of the three medallists. Is it a different result?",
+                      "It is — the medals are different from each other, so order matters.",
+                      "Count the ordered picks and do not divide."
+                ],
+                "topic": "Choosing vs. arranging; combinations",
+                "level": "stretch"
+          },
+          {
+                "question": "Eight points are marked on a circle, no three of them in a straight line. How many straight lines can be drawn joining two of the points?",
+                "answers": [
+                      "28"
+                ],
+                "hints": [
+                      "Nothing here says choose or arrange. Use the swap test.",
+                      "The line from P to Q is the same line as the line from Q to P.",
+                      "So every pair of points gives exactly one line."
+                ],
+                "topic": "Choosing vs. arranging; combinations",
+                "level": "stretch"
+          }
+    ];
 
     MathQuiz.start(CONFIG, PROBLEMS);
   </script>

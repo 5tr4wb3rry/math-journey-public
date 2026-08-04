@@ -17,7 +17,8 @@
     unit     a UNITS[].id, or null when no unit is working on it yet
     heSays   set to 'not yet' when his own verdict disagrees with the record — shown, never hidden
     lesson   null, or { slug, blurb, retaught } — retaught means it was rewritten a different way
-    check    null, or 'not taken' | 'passed' | 'partial' — the state of that lesson's check
+    check    null, or 'not taken' | 'passed' | 'partial' | 'retired' — the state of that
+             lesson's check; 'retired' means it was closed without being taken
 */
 (function () {
   var AREAS = [
@@ -72,14 +73,14 @@
     {
       name: 'The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)',
       short: 'The x + 1/x family, iterated',
-      area: 'alg', status: 'in progress', unit: 'unit1',
+      area: 'alg', status: 'covered', unit: 'unit1',
       lesson: {
         slug: 'the-x-plus-1-over-x-family-iterated',
         retaught: true,
         blurb: 'Rewritten: one move, treated as a machine whose output you can feed straight ' +
                'back in — plus a five-second check that catches a wrong answer without redoing the work.'
       },
-      check: 'not taken'
+      check: 'retired'
     },
     { name: 'Difference of squares; factoring as un-multiplying', area: 'alg', status: 'not started', unit: null },
     { name: 'Cubes: sum and difference; the cube identities', area: 'alg', status: 'not started', unit: null },
@@ -106,10 +107,12 @@
     { name: 'Organized casework decided before counting', area: 'count', status: 'in progress', unit: null },
     {
       name: 'Choosing vs. arranging; combinations',
-      area: 'count', status: 'not started', unit: 'unit1',
+      area: 'count', status: 'in progress', unit: 'unit1', heSays: 'not yet',
       lesson: {
         slug: 'choosing-vs-arranging-combinations',
-        blurb: 'When a constraint decides the order for you, and when it genuinely doesn’t.'
+        retaught: true,
+        blurb: 'Rewritten: one test that works even when the problem never says which it is — ' +
+               'swap two of the things you picked and see whether anything changed.'
       },
       check: 'not taken'
     },
@@ -183,6 +186,9 @@
   function stageOf(t) {
     if (!t.lesson) return { label: 'no lesson needed', tone: 'cov' };
     if (t.check === 'passed') return { label: 'check passed', tone: 'cov' };
+    // Closed by decision rather than by a check. Recorded as its own state so the page
+    // never claims a quiz was taken that was not.
+    if (t.check === 'retired') return { label: 'closed without a check', tone: 'cov' };
     if (t.check === 'partial') return { label: 'check came back partial', tone: 'prog' };
     if (t.lesson.retaught) return { label: 'retaught · check waiting', tone: 'prog' };
     return { label: 'check not taken', tone: 'prog' };
