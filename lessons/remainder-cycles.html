@@ -1,0 +1,109 @@
+<!doctype html>
+<!--
+  ONE LESSON PER TOPIC, keyed by topic. Its check sits beside it and shares no numbers
+  with it. PUBLISHED and world-readable: nothing here names the learner or refers to
+  how he performed.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Landing inside the cycle — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="sitenav"><a href="../index.html#lessons">← All lessons</a></nav>
+  <header>
+    <p class="eyebrow">Lesson · Number theory</p>
+    <h1>When the exponent is not a multiple</h1>
+    <p class="lede">Finding the cycle is the easy half. The half that catches people is working out where a big exponent lands inside it — especially when it does not land neatly at the end.</p>
+  </header>
+  <section class="card">
+    <h2>The cycle itself</h2>
+    <p>Units digits of the powers of 3:</p>
+    <pre class="math">3¹ = 3      3⁵ = 243  → 3
+3² = 9      3⁶ = 729  → 9
+3³ = 27 → 7 3⁷        → 7
+3⁴ = 81 → 1 3⁸        → 1
+
+cycle:  3, 9, 7, 1   then it repeats.   LENGTH 4</pre>
+    <p>So the units digit of 3ⁿ depends only on where n sits in a repeating block of four.</p>
+  </section>
+
+  <section class="card">
+    <h2>The step that catches people</h2>
+    <p>Line the exponents up against their position in the block:</p>
+    <pre class="math">n:        1  2  3  4  5  6  7  8
+digit:    3  9  7  1  3  9  7  1
+position: 1  2  3  4  1  2  3  4</pre>
+    <p>
+      The position is the <strong>remainder when n is divided by 4</strong> — with one trap.
+      When n is an exact multiple of 4 the remainder is 0, and there is no position 0; that
+      case is the <strong>last</strong> entry, position 4.
+    </p>
+    <div class="hint">
+      <span class="label">The rule</span>
+      <span>Divide the exponent by the cycle length. A remainder of 1, 2 or 3 sends you to
+      that position. A remainder of <b>0</b> sends you to the <b>end</b> of the cycle, not
+      the start.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Worked, off the multiple</h2>
+    <pre class="math">Units digit of 3¹¹ ?
+
+cycle 3, 9, 7, 1 — length 4
+11 ÷ 4 = 2 remainder 3
+remainder 3 → third entry → 7</pre>
+    <p>And one with a different base, to show the method is the same:</p>
+    <pre class="math">Units digit of 8¹⁷ ?
+
+8¹ = 8   8² = 64 → 4   8³ = 512 → 2   8⁴ → 6
+cycle 8, 4, 2, 6 — length 4
+17 ÷ 4 = 4 remainder 1
+remainder 1 → first entry → 8</pre>
+    <p>
+      Notice you never computed 8¹⁷. You computed four small powers and did one division.
+      That is the entire technique, and it does not get harder as the exponent grows.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>The same thing with remainders instead of digits</h2>
+    <p>Units digits are just remainders after dividing by 10. Nothing changes for other divisors:</p>
+    <pre class="math">Remainder of 2ⁿ when divided by 7?
+
+2¹ = 2   2² = 4   2³ = 8 → 1   2⁴ = 16 → 2
+cycle 2, 4, 1 — LENGTH 3, not 4
+
+So divide the exponent by 3 this time.</pre>
+    <p>The cycle length is whatever it turns out to be. Find it, then divide by it.</p>
+  </section>
+
+  <section class="card">
+    <h2>Practice</h2>
+    <ol class="practice">
+      <li>Units digit of 3⁹?
+        <details><summary>Answer</summary><p>9 ÷ 4 = 2 remainder 1 → first entry → <strong>3</strong>.</p></details></li>
+      <li>Units digit of 7¹⁰?
+        <details><summary>Answer</summary><p>Cycle 7, 9, 3, 1. 10 ÷ 4 = 2 remainder 2 → <strong>9</strong>.</p></details></li>
+      <li>Units digit of 4²¹?
+        <details><summary>Answer</summary><p>Cycle 4, 6 — length 2. 21 ÷ 2 = 10 remainder 1 → <strong>4</strong>.</p></details></li>
+      <li>Remainder of 2¹² divided by 7?
+        <details><summary>Answer</summary><p>Cycle 2, 4, 1 — length 3. 12 ÷ 3 = 4 remainder 0, so the <em>end</em> of the cycle → <strong>1</strong>.</p></details></li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What the check will ask</h2>
+    <p>The same shapes, different numbers.</p>
+    <p><a class="btn btn-primary" href="remainder-cycles-check.html">Take the check →</a></p>
+  </section>
+</div>
+</body>
+</html>

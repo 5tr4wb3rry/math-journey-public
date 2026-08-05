@@ -1,0 +1,98 @@
+<!doctype html>
+<!--
+  ONE LESSON PER TOPIC, keyed by topic. Its check sits beside it and shares no numbers
+  with it. PUBLISHED and world-readable: nothing here names the learner or refers to
+  how he performed.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The minus version — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+<div class="wrap">
+  <nav class="sitenav"><a href="../index.html#lessons">← All lessons</a></nav>
+  <header>
+    <p class="eyebrow">Lesson · Algebra</p>
+    <h1>When the sign flips</h1>
+    <p class="lede">You already turn a sum and a product into a² + b². This is the same move with a minus in it, and the only thing that changes is which way 2ab goes.</p>
+  </header>
+  <section class="card">
+    <h2>The one you know</h2>
+    <pre class="math">a + b = 8,  ab = 3.   Find a² + b².
+
+(a + b)² = a² + 2ab + b²
+    64   = a² + b² + 6
+a² + b² = 58</pre>
+    <p>Nothing there needs a or b. That is the whole appeal of the move.</p>
+  </section>
+
+  <section class="card">
+    <h2>Now with a minus</h2>
+    <pre class="math">a − b = 3,  ab = 2.   Find a² + b².</pre>
+    <p>Square what you were given, exactly as before:</p>
+    <pre class="math">(a − b)² = a² − 2ab + b²
+     9   = a² + b² − 4</pre>
+    <p>
+      And here is the step worth slowing down on. The 2ab is being <strong>taken away</strong>
+      on the right, so to get a² + b² on its own you <strong>add it back</strong>:
+    </p>
+    <pre class="math">a² + b² = 9 + 4 = 13</pre>
+    <div class="hint">
+      <span class="label">The tell</span>
+      <span>Plus version: <b>subtract</b> 2ab. Minus version: <b>add</b> it. The sign you
+      apply is always the <em>opposite</em> of the sign in the bracket, because you are
+      undoing what the squaring did.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Why the opposite, every time</h2>
+    <p>Write the two expansions next to each other and it stops being a rule to remember:</p>
+    <pre class="math">(a + b)² = a² + b²  PLUS  2ab   → so a² + b² = (a+b)² − 2ab
+(a − b)² = a² + b²  MINUS 2ab   → so a² + b² = (a−b)² + 2ab</pre>
+    <p>
+      In both lines a² + b² is the thing you want and 2ab is the passenger. You move the
+      passenger to the other side, and moving it flips its sign. That is all.
+    </p>
+    <p>A quick sanity check that costs nothing: a² + b² can never be negative, and it is
+    never smaller than 2ab. If your answer comes out below 2ab, the sign went the wrong way.</p>
+  </section>
+
+  <section class="card">
+    <h2>One more, worked</h2>
+    <pre class="math">a − b = 5,  ab = 6.   Find a² + b².
+
+(a − b)² = a² + b² − 2ab
+    25   = a² + b² − 12
+a² + b² = 25 + 12 = 37</pre>
+    <p>Check it against the sanity rule: 2ab is 12, and 37 is comfortably bigger. Good.</p>
+  </section>
+
+  <section class="card">
+    <h2>Practice</h2>
+    <ol class="practice">
+      <li>a − b = 4, ab = 3. Find a² + b².
+        <details><summary>Answer</summary><p>16 + 6 = <strong>22</strong>.</p></details></li>
+      <li>a + b = 7, ab = 5. Find a² + b².
+        <details><summary>Answer</summary><p>Plus version, so subtract: 49 − 10 = <strong>39</strong>.</p></details></li>
+      <li>a − b = 1, ab = 12. Find a² + b².
+        <details><summary>Answer</summary><p>1 + 24 = <strong>25</strong>. Small bracket, large passenger — the answer is almost all 2ab.</p></details></li>
+      <li>a − b = 10, ab = 0. Find a² + b².
+        <details><summary>Answer</summary><p>100 + 0 = <strong>100</strong>. If ab = 0 then one of them is 0, so the two versions agree — the only case where the sign cannot catch you out.</p></details></li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What the check will ask</h2>
+    <p>The same shapes, different numbers.</p>
+    <p><a class="btn btn-primary" href="squaring-identities-check.html">Take the check →</a></p>
+  </section>
+</div>
+</body>
+</html>

@@ -163,6 +163,64 @@ That is ONE handshake, not two. Nothing changed.
     </ul>
   </section>
 
+
+  <section class="card">
+    <h2>Once you know it is arranging: how to actually count it</h2>
+    <p>
+      The swap test tells you <em>which</em> question you have. This is the other half —
+      producing the number once the answer is "arranging". It is one idea and it does not
+      get harder as the numbers grow.
+    </p>
+    <p><strong>Fill the positions one at a time, and multiply.</strong></p>
+    <pre class="math">10 people. One becomes captain, one becomes vice-captain.
+
+Captain:      10 people could take it       → 10 ways
+Vice-captain:  9 people are left            →  9 ways
+
+10 × 9 = 90</pre>
+    <p>
+      Why multiply? Because every one of the 10 captains can be paired with any of the 9
+      remaining vice-captains. Ten separate lists of nine.
+    </p>
+    <p>Three positions works the same way — you just keep going:</p>
+    <pre class="math">8 people. Gold, silver and bronze.
+
+Gold:   8 ways
+Silver: 7 left
+Bronze: 6 left
+
+8 × 7 × 6 = 336</pre>
+    <div class="hint">
+      <span class="label">The shape</span>
+      <span>Start at the number of people and count <b>down</b>, one factor per position
+      you are filling. Two positions, two factors. Three positions, three factors. Stop
+      when the positions are full — not when you reach 1.</span>
+    </div>
+    <p>
+      That last line is the step most often overrun. Filling 3 roles from 8 people is
+      8 × 7 × 6 and <em>stops there</em>. It is not 8 × 7 × 6 × 5 × 4 × 3 × 2 × 1 — the
+      other five people simply do not get a job.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>The two counts, side by side</h2>
+    <p>Same eight people, same three picked, and the only difference is whether the three
+    are distinguishable once chosen:</p>
+    <pre class="math">THREE ROLES (arranging)
+  8 × 7 × 6 = 336
+
+A COMMITTEE OF THREE (choosing)
+  8 × 7 × 6 = 336 ordered ways
+  each committee counted 3 × 2 × 1 = 6 times
+  336 ÷ 6 = 56</pre>
+    <p>
+      Both start identically. Arranging stops at the multiplication; choosing does one more
+      step and divides. If you can produce the first number, the second is never more than
+      a division away.
+    </p>
+  </section>
+
   <section class="card">
     <h2>Practice</h2>
     <p>Do the swap test out loud first, before any arithmetic.</p>
@@ -201,6 +259,25 @@ That is ONE handshake, not two. Nothing changed.
           <p>Committee: 6 × 5 × 4 = 120, ÷ 6 = <strong>20</strong>. Roles: <strong>120</strong>,
           no dividing. The roles version is <strong>6 times</strong> bigger — and 6 is exactly
           the number of ways to shuffle three people, which is the whole relationship.</p>
+        </details>
+      </li>
+      <li>
+        Ten people. One is president, one is treasurer. How many outcomes?
+        <details><summary>Answer</summary>
+          <p>Swap them — different outcome, so arranging. 10 × 9 = <strong>90</strong>.</p>
+        </details>
+      </li>
+      <li>
+        Seven people. Three of them get first, second and third prize. How many outcomes?
+        <details><summary>Answer</summary>
+          <p>Arranging, three positions: 7 × 6 × 5 = <strong>210</strong>. Three factors, then stop.</p>
+        </details>
+      </li>
+      <li>
+        Seven people. Three of them get an identical prize each. How many outcomes now?
+        <details><summary>Answer</summary>
+          <p>The prizes are the same, so swapping two winners changes nothing — choosing.
+          210 ÷ 6 = <strong>35</strong>. Same first step, one extra division.</p>
         </details>
       </li>
     </ol>

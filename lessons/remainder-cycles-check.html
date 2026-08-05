@@ -21,7 +21,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Check · Choosing vs. arranging; combinations — Math Journey</title>
+  <title>Check · Remainder cycles — Math Journey</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -62,9 +62,9 @@
     var CONFIG = {
           "unit": 1,
           "stage": "check",
-          "slug": "check_choosing-vs-arranging-combinations",
-          "topicLabel": "Choosing vs. arranging; combinations",
-          "title": "Choosing vs. arranging; combinations",
+          "slug": "check_remainder-cycles",
+          "topicLabel": "Remainder cycles; modular arithmetic informally",
+          "title": "Remainder cycles",
           "confidence": true
     };
 
@@ -103,42 +103,42 @@
        level     'core' | 'stretch' | 'reach' */
     var PROBLEMS = [
           {
-                "question": "Twelve people. One becomes president and one becomes secretary. How many different outcomes are there?",
+                "question": "What is the units digit of 3²²?",
                 "answers": [
-                      "132"
+                      "9"
                 ],
                 "hints": [
-                      "Swap the two. Different outcome?",
-                      "It is — the two jobs are different, so this is arranging.",
-                      "Fill the jobs one at a time: 12 ways, then 11 ways."
+                      "Find the cycle first.",
+                      "It is 3, 9, 7, 1 — length 4.",
+                      "22 ÷ 4 leaves remainder 2."
                 ],
-                "topic": "Choosing vs. arranging; combinations",
+                "topic": "Remainder cycles; modular arithmetic informally",
                 "level": "core"
           },
           {
-                "question": "Ten athletes. Gold, silver and bronze are awarded. How many different outcomes are there?",
+                "question": "What is the units digit of 7¹⁵?",
                 "answers": [
-                      "720"
+                      "3"
                 ],
                 "hints": [
-                      "Three positions to fill.",
-                      "One factor per position, counting down.",
-                      "10 × 9 × 8, and stop there."
+                      "Work out the first four powers of 7 and take their last digits.",
+                      "Cycle 7, 9, 3, 1 — length 4.",
+                      "15 ÷ 4 leaves remainder 3."
                 ],
-                "topic": "Choosing vs. arranging; combinations",
+                "topic": "Remainder cycles; modular arithmetic informally",
                 "level": "stretch"
           },
           {
-                "question": "Twelve people. How many different pairs can be formed?",
+                "question": "What is the remainder when 2⁴⁵ is divided by 7?",
                 "answers": [
-                      "66"
+                      "1"
                 ],
                 "hints": [
-                      "Use the swap test before computing anything.",
-                      "A pair is the same pair whichever way round you say it — choosing.",
-                      "Count the ordered picks, then divide by the 2 ways to shuffle them."
+                      "Same method, different divisor.",
+                      "Remainders of powers of 2 mod 7 go 2, 4, 1 — length 3.",
+                      "45 ÷ 3 leaves remainder 0, so take the end of the cycle."
                 ],
-                "topic": "Choosing vs. arranging; combinations",
+                "topic": "Remainder cycles; modular arithmetic informally",
                 "level": "stretch"
           }
     ];

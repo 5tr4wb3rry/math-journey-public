@@ -69,19 +69,28 @@
     { name: 'Variables, expressions, evaluating and translating', area: 'alg', status: 'covered', unit: null },
     { name: 'Linear equations, one unknown (all forms)', area: 'alg', status: 'covered', unit: 'unit1' },
     { name: 'Sign discipline with negatives and powers', area: 'alg', status: 'covered', unit: null },
-    { name: 'Squaring identities: (a±b)², sum & product → a²+b²', area: 'alg', status: 'covered', unit: 'unit1' },
+    {
+      name: 'Squaring identities: (a±b)², sum & product → a²+b²',
+      short: 'Squaring identities',
+      area: 'alg', status: 'in progress', unit: 'unit1',
+      lesson: {
+        slug: 'squaring-identities',
+        blurb: 'The minus version: why 2ab gets added rather than subtracted, and how to see which one you have.'
+      },
+      check: 'not taken'
+    },
     { name: 'Symmetric expressions in three variables', area: 'alg', status: 'covered', unit: 'unit1' },
     {
       name: 'The x + 1/x family, iterated (x²+1/x², x³+1/x³, x⁴+1/x⁴)',
       short: 'The x + 1/x family, iterated',
-      area: 'alg', status: 'covered', unit: 'unit1',
+      area: 'alg', status: 'covered', unit: 'unit1', heSays: 'getting there',
       lesson: {
         slug: 'the-x-plus-1-over-x-family-iterated',
         retaught: true,
         blurb: 'Rewritten: one move, treated as a machine whose output you can feed straight ' +
                'back in — plus a five-second check that catches a wrong answer without redoing the work.'
       },
-      check: 'retired'
+      check: 'passed'
     },
     { name: 'Difference of squares; factoring as un-multiplying', area: 'alg', status: 'not started', unit: null },
     { name: 'Cubes: sum and difference; the cube identities', area: 'alg', status: 'not started', unit: null },
@@ -91,7 +100,7 @@
     { name: 'Word problems: age, money, consecutive numbers', area: 'alg', status: 'covered', unit: null },
     {
       name: 'Rate, work, and mixture problems',
-      area: 'alg', status: 'covered', unit: 'unit1',
+      area: 'alg', status: 'mastered', unit: 'unit1',
       lesson: {
         slug: 'rate-work-and-mixture-problems',
         blurb: 'Rates add, times don’t — and the flip back to a time is the step that gets dropped.'
@@ -108,14 +117,14 @@
     { name: 'Organized casework decided before counting', area: 'count', status: 'in progress', unit: null },
     {
       name: 'Choosing vs. arranging; combinations',
-      area: 'count', status: 'mastered', unit: 'unit1',
+      area: 'count', status: 'in progress', unit: 'unit1', heSays: 'not yet',
       lesson: {
         slug: 'choosing-vs-arranging-combinations',
         retaught: true,
-        blurb: 'Rewritten: one test that works even when the problem never says which it is — ' +
-               'swap two of the things you picked and see whether anything changed.'
+        blurb: 'Rewritten again: keeps the swap test, and adds the half that was missing — ' +
+               'actually producing the count once you know it is arranging.'
       },
-      check: 'passed'
+      check: 'not taken'
     },
     { name: 'Permutations, including with repetition', area: 'count', status: 'not started', unit: null },
     { name: 'Counting the complement', area: 'count', status: 'not started', unit: null },
@@ -126,12 +135,21 @@
 
     /* ---- Number theory ---- */
     { name: 'Units-digit and last-digit cycles', area: 'nt', status: 'covered', unit: null, heSays: 'not yet' },
-    { name: 'Remainder cycles; modular arithmetic informally', area: 'nt', status: 'covered', unit: 'unit1' },
+    {
+      name: 'Remainder cycles; modular arithmetic informally',
+      short: 'Remainder cycles',
+      area: 'nt', status: 'in progress', unit: 'unit1',
+      lesson: {
+        slug: 'remainder-cycles',
+        blurb: 'Finding the cycle is the easy half. Landing a big exponent inside it — especially off the multiple — is the half that catches people.'
+      },
+      check: 'not taken'
+    },
     { name: 'Divisibility rules', area: 'nt', status: 'covered', unit: null },
     { name: 'Prime factorization as a tool', area: 'nt', status: 'not started', unit: null },
     {
       name: 'Counting factors and divisors',
-      area: 'nt', status: 'covered', unit: 'unit1', heSays: 'getting there',
+      area: 'nt', status: 'mastered', unit: 'unit1',
       lesson: {
         slug: 'counting-factors-and-divisors',
         blurb: 'Trailing zeros of a factorial, and how many divisors a number has — without listing them.'
