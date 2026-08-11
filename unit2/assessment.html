@@ -1,0 +1,189 @@
+<!doctype html>
+<!--
+  Unit 2 opening assessment. Copied from public/_template/quiz.html; only CONFIG and
+  PROBLEMS below are edited. Never edit the engine from a session file — behavior changes
+  go in ../assets/quiz.js so every quiz inherits them.
+
+  PUBLISHING BOUNDARY: everything under public/ is mirrored to a world-readable repo.
+  No solutions, no answer-key commentary, no learner's name, nothing from state/ or
+  guides/ goes in this file. Full worked solutions live in
+  guides/unit2/assessment_guide.html, which is never published.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unit 2 · Assessment — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Unit 2 · Structure Hunting · Opening assessment</p>
+      <h1>What shape is hiding in this?</h1>
+      <p class="lede">
+        Twelve problems, and nobody clears them all. Every one of them is asking the same
+        question underneath: you were handed something messy, so what shape is hiding in it?
+        No time limit, hints cost nothing, and you can stop partway and come back — this page
+        remembers where you were. Nothing is checked until the last button.
+      </p>
+    </header>
+
+    <!-- The engine renders everything into this element. Leave it empty. -->
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+      unit: 2,
+      stage: 'assessment',
+      slug: 'unit2_assessment',
+      title: 'Unit 2 · Opening assessment',
+      confidence: true
+    };
+
+    var PROBLEMS = [
+      {
+        question: 'Work this out without a calculator and without squaring either number.',
+        math: '43² − 42² = ?',
+        answers: ['85'],
+        hints: [
+          'Squaring both and subtracting is the long way round. There is a shape here.',
+          'Anything of the form a² − b² can be un-multiplied into two brackets.',
+          'a² − b² = (a − b)(a + b). Here a − b is 1.'
+        ],
+        topic: 'Difference of squares; factoring as un-multiplying',
+        level: 'warm'
+      },
+      {
+        question: 'Five people are at a party. Alice knows Bob and Carla. Bob knows Carla. Dan knows Eve. Nobody else knows anybody. Draw a dot for each person and a line joining each pair who know each other. How many lines are there?',
+        answers: ['4'],
+        hints: [
+          'Draw it. Five dots, then read the sentences one at a time.',
+          'One line per pair who know each other — a line is the pair, not the person.',
+          'Alice gives you two lines. Bob and Carla give you one more. Dan and Eve are off on their own.'
+        ],
+        topic: 'Graphs: dots and lines as a picture of relationships',
+        level: 'warm'
+      },
+      {
+        question: 'A deli sells 6 different sandwiches. You are going to walk out with 3 different ones. How many different trios could you walk out with?',
+        answers: ['20'],
+        hints: [
+          'Try the swap test before you compute anything: swap two of the sandwiches you picked up. Is that a different trio?',
+          'It is not — the bag looks the same. So the order you grabbed them in must not be counted.',
+          'Count them as if order mattered, then divide by the number of orders each trio could have been grabbed in.'
+        ],
+        topic: 'Choosing vs. arranging; combinations',
+        level: 'warm'
+      },
+      {
+        question: 'Six people are in a room. The number of people each one shook hands with is 2, 2, 3, 3, 1 and 1. How many handshakes happened altogether?',
+        answers: ['6'],
+        hints: [
+          'Add up those six numbers first and see whether the total is the answer.',
+          'It is not — every handshake got counted twice, once by each person in it.',
+          'Add them and halve.'
+        ],
+        topic: 'Degree, and the handshake lemma',
+        level: 'warm'
+      },
+      {
+        question: 'Six people sit at a table and every single person shakes hands with every other person exactly once. How many handshakes happen?',
+        answers: ['15'],
+        hints: [
+          'Six dots, and a line between every pair. Count the lines.',
+          'Each person shakes 5 hands, which gives 30 — but that is not the answer.',
+          'A shakes B is the same handshake as B shakes A, so halve it.'
+        ],
+        topic: 'Complete graphs, and why handshakes are edges',
+        level: 'warm'
+      },
+      {
+        question: 'You are told that (x + 3) + 1/(x + 3) = 5. What is (x + 3)² + 1/(x + 3)²?',
+        answers: ['23'],
+        hints: [
+          'Do not try to find x. The messy chunk is doing no harm.',
+          'Give the whole chunk x + 3 a single new letter and look at what you now have.',
+          'It is a shape you have met: u + 1/u = 5, and you want u² + 1/u².'
+        ],
+        topic: 'Substitution as a simplifying weapon',
+        level: 'warm'
+      },
+      {
+        question: 'n is a positive whole number and n² − 1 = 143. What is n?',
+        answers: ['12'],
+        hints: [
+          'Adding 1 to both sides works. There is also a way that never squares anything.',
+          'n² − 1 is a difference of squares: it is (n − 1)(n + 1).',
+          'So you need two numbers, two apart, that multiply to 143.'
+        ],
+        topic: 'Difference of squares; factoring as un-multiplying',
+        level: 'hard'
+      },
+      {
+        question: 'Six students are numbered 1 to 6. Two students are friends exactly when their numbers differ by 1 or by 2. Draw a dot per student and a line per friendship. How many lines are there?',
+        answers: ['9'],
+        hints: [
+          'Do not try to see it all at once. Handle "differ by 1" first, then "differ by 2".',
+          'Differ by 1: 1–2, 2–3, and so on. How many of those are there?',
+          'Five of those. Now count the pairs differing by 2 the same way and add.'
+        ],
+        topic: 'Graphs: dots and lines as a picture of relationships',
+        level: 'hard'
+      },
+      {
+        question: 'At a meeting, every person shook hands with every other person exactly once, and there were 28 handshakes in total. How many people were at the meeting?',
+        answers: ['8'],
+        hints: [
+          'You know how to go from the number of people to the number of handshakes. Run it backwards.',
+          'With n people the count is n(n − 1) ÷ 2, and that equals 28.',
+          'So n(n − 1) = 56. Two whole numbers one apart, multiplying to 56.'
+        ],
+        topic: 'Complete graphs, and why handshakes are edges',
+        level: 'hard'
+      },
+      {
+        question: 'In a group, every single person shook hands with exactly 3 other people, and there were 9 handshakes altogether. How many people were in the group?',
+        answers: ['6'],
+        hints: [
+          'Count the same thing two ways: once from the people, once from the handshakes.',
+          'If there are n people each shaking 3 hands, adding up everyone’s count gives 3n — and that double-counts every handshake.',
+          'So 3n ÷ 2 = 9.'
+        ],
+        topic: 'Degree, and the handshake lemma',
+        level: 'hard'
+      },
+      {
+        question: 'This number turns out to be a perfect square. What is its square root?',
+        math: '3⁴ + 4 × 3² + 4',
+        answers: ['11'],
+        hints: [
+          'You can just work it out. But look at the shape first — you have met it before with letters.',
+          'Call 3² something short, say u. The expression becomes u² + 4u + 4.',
+          'u² + 4u + 4 is (u + 2)². So the answer is 3² + 2.'
+        ],
+        topic: 'Substitution as a simplifying weapon',
+        level: 'hard'
+      },
+      {
+        question: 'How many three-digit numbers have digits that are strictly decreasing from left to right? (952 counts; 955 and 259 do not.)',
+        answers: ['120'],
+        hints: [
+          'Do not list them. Ask what a valid number is really made of.',
+          'Once you have picked which three digits appear, how many valid numbers can you build from them?',
+          'Exactly one — the decreasing order. So count the possible sets of three digits out of 0 to 9, and check whether a leading zero can ever happen.'
+        ],
+        topic: 'Choosing vs. arranging; combinations',
+        level: 'hard'
+      }
+    ];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>

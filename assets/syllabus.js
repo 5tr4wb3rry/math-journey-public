@@ -18,12 +18,13 @@
     heSays   set to 'not yet' when his own verdict disagrees with the record — shown, never hidden
     lesson   null, or { slug, blurb, retaught } — retaught means it was rewritten a different way
     check    null, or 'not taken' | 'passed' | 'partial' | 'retired' — the state of that
-             lesson's check; 'retired' means it was closed without being taken
+             lesson's check; 'retired' means closed by decision rather than by passing,
+             whether or not it was ever taken
 */
 (function () {
   var AREAS = [
     { id: 'alg',   name: 'Algebra' },
-    { id: 'count', name: 'Counting & probability' },
+    { id: 'count', name: 'Counting, combinatorics & graphs' },
     { id: 'nt',    name: 'Number theory' },
     { id: 'fn',    name: 'Functions & graphs' },
     { id: 'geo',   name: 'Geometry' },
@@ -31,6 +32,11 @@
     { id: 'meta',  name: 'Problem-solving craft' }
   ];
 
+  /* A unit carries up to two quiz paths, and they are not the same thing:
+       opening      the assessment that OPENS the unit and finds which of its topics are
+                    missing. Everything downstream — which topics get lessons — comes from it.
+       assessment   the cumulative one that CLOSES the unit, gated on every check passing.
+     Both are optional; a unit has neither until the file exists on disk. */
   var UNITS = [
     {
       id: 'unit1',
@@ -45,16 +51,24 @@
     {
       id: 'unit2',
       name: 'Unit 2 · Structure Hunting',
-      open: false,
-      takes: 'Factoring, difference of squares, cube identities, exponent laws, substitution as ' +
-             'a weapon — with multi-step chains as the organising constraint.'
+      open: true,
+      opening: 'unit2/assessment.html',
+      lede: 'Five topics. Unit 1 was about naming what you do not know; this one is about ' +
+            'looking at something you were handed and spotting the shape hiding in it — a ' +
+            'difference of squares, a messy chunk worth renaming in one letter, or a word ' +
+            'problem that is really a set of dots joined by lines.',
+      takes: 'Difference of squares and substitution as a weapon, plus the first three graph ' +
+             'topics — with multi-step chains as the organising constraint rather than a ' +
+             'topic of their own.'
     },
     {
       id: 'unit3',
-      name: 'Unit 3 · Counting & Casework',
+      name: 'Unit 3 · Counting, Combinatorics & Graphs',
       open: false,
       takes: 'Promoted from later in the year because counting is the thinnest strand: organised ' +
-             'casework, counting the complement, inclusion–exclusion beyond two sets.'
+             'casework, counting the complement, inclusion–exclusion beyond two sets, Pascal’s ' +
+             'triangle, stars and bars, pigeonhole, and the rest of the graph topics including ' +
+             'the bridges of Königsberg.'
     },
     {
       id: 'later',
@@ -92,10 +106,12 @@
       },
       check: 'passed'
     },
-    { name: 'Difference of squares; factoring as un-multiplying', area: 'alg', status: 'not started', unit: null },
+    { name: 'Difference of squares; factoring as un-multiplying', area: 'alg', status: 'in progress', unit: 'unit2' },
+    /* Both were in Unit 2 until 2026-08-10, when the three graph topics joined it. Balancing
+       a unit is a swap and not an addition, so these came back out at the same size. */
     { name: 'Cubes: sum and difference; the cube identities', area: 'alg', status: 'not started', unit: null },
     { name: 'Exponent laws, including zero and negative exponents', area: 'alg', status: 'not started', unit: null },
-    { name: 'Substitution as a simplifying weapon', area: 'alg', status: 'not started', unit: null },
+    { name: 'Substitution as a simplifying weapon', area: 'alg', status: 'in progress', unit: 'unit2' },
     { name: 'Systems of two equations: substitution, elimination', area: 'alg', status: 'not started', unit: null },
     { name: 'Word problems: age, money, consecutive numbers', area: 'alg', status: 'covered', unit: null },
     {
@@ -117,21 +133,37 @@
     { name: 'Organized casework decided before counting', area: 'count', status: 'in progress', unit: null },
     {
       name: 'Choosing vs. arranging; combinations',
-      area: 'count', status: 'in progress', unit: 'unit1', heSays: 'not yet',
+      area: 'count', status: 'covered', unit: 'unit1', heSays: 'getting there',
       lesson: {
         slug: 'choosing-vs-arranging-combinations',
         retaught: true,
         blurb: 'Rewritten again: keeps the swap test, and adds the half that was missing — ' +
                'actually producing the count once you know it is arranging.'
       },
-      check: 'not taken'
+      check: 'retired'
     },
     { name: 'Permutations, including with repetition', area: 'count', status: 'not started', unit: null },
     { name: 'Counting the complement', area: 'count', status: 'not started', unit: null },
     { name: 'Inclusion–exclusion, three or more sets', area: 'count', status: 'not started', unit: null },
+    { name: 'Binomial coefficients and Pascal’s triangle', area: 'count', status: 'not started', unit: null },
+    { name: 'Stars and bars: sharing identical things out', area: 'count', status: 'not started', unit: null },
+    { name: 'Counting the same set two ways', area: 'count', status: 'not started', unit: null },
+    { name: 'The pigeonhole principle', area: 'count', status: 'not started', unit: null },
+    { name: 'Bijections: counting one set by counting another', area: 'count', status: 'not started', unit: null },
+    { name: 'Recursion in counting', area: 'count', status: 'not started', unit: null },
     { name: 'Basic probability; equally likely outcomes', area: 'count', status: 'not started', unit: null },
     { name: 'Expected value', area: 'count', status: 'not started', unit: null },
     { name: 'Counterintuitive classics (birthday, Monty Hall)', area: 'count', status: 'not started', unit: null },
+    /* Graphs. The first three go into Unit 2 rather than waiting: they are the counting
+       shape he keeps missing, drawn instead of worded. */
+    { name: 'Graphs: dots and lines as a picture of relationships', short: 'Graphs: dots and lines', area: 'count', status: 'in progress', unit: 'unit2' },
+    { name: 'Degree, and the handshake lemma', area: 'count', status: 'in progress', unit: 'unit2' },
+    { name: 'Complete graphs, and why handshakes are edges', short: 'Complete graphs', area: 'count', status: 'in progress', unit: 'unit2' },
+    { name: 'Paths, cycles and connectedness', area: 'count', status: 'not started', unit: null },
+    { name: 'Trees, and why they have one line fewer than dots', short: 'Trees', area: 'count', status: 'not started', unit: null },
+    { name: 'Euler paths, and the bridges of Königsberg', short: 'Euler paths; Königsberg', area: 'count', status: 'not started', unit: null },
+    { name: 'Graph colouring, and the map problem', short: 'Graph colouring', area: 'count', status: 'not started', unit: null },
+    { name: 'Planar graphs and Euler’s formula', area: 'count', status: 'not started', unit: null },
 
     /* ---- Number theory ---- */
     { name: 'Units-digit and last-digit cycles', area: 'nt', status: 'covered', unit: null, heSays: 'not yet' },
@@ -195,6 +227,9 @@
     { name: 'Carrying a method through to the actual question asked', area: 'meta', status: 'in progress', unit: null },
     { name: 'Checking an answer for plausibility before submitting', area: 'meta', status: 'not started', unit: null },
     { name: 'Knowing how sure you are (calibrated confidence)', area: 'meta', status: 'not started', unit: null },
+    /* Out of Unit 2 on 2026-08-10 with the two algebra rows above. It stays the way Unit 2's
+       problems are built — a second move that only appears once the first is done — rather
+       than a row carrying its own verdict. */
     { name: 'Reapplying a weapon in a multi-step chain', area: 'meta', status: 'in progress', unit: null },
     { name: 'Explaining a solution so someone else understands it', area: 'meta', status: 'not started', unit: null },
     { name: 'Tolerating being stuck; treating it as information', area: 'meta', status: 'in progress', unit: null }
@@ -203,11 +238,17 @@
   // The Units table's Stage column and the plan's "where it stands" both need one phrase per
   // topic. Derived here so the page and the generated plan can never disagree.
   function stageOf(t) {
-    if (!t.lesson) return { label: 'no lesson needed', tone: 'cov' };
+    // No lesson means one of two very different things: the assessment showed it was
+    // already solid, or the unit's assessment has not been taken yet.
+    if (!t.lesson) {
+      return (t.status === 'covered' || t.status === 'mastered')
+        ? { label: 'no lesson needed', tone: 'cov' }
+        : { label: 'not assessed yet', tone: 'prog' };
+    }
     if (t.check === 'passed') return { label: 'check passed', tone: 'cov' };
-    // Closed by decision rather than by a check. Recorded as its own state so the page
-    // never claims a quiz was taken that was not.
-    if (t.check === 'retired') return { label: 'closed without a check', tone: 'cov' };
+    // Closed by decision rather than by passing. Recorded as its own state so the page
+    // never claims a check closed a topic when a decision did.
+    if (t.check === 'retired') return { label: 'closed by decision', tone: 'cov' };
     if (t.check === 'partial') return { label: 'check came back partial', tone: 'prog' };
     if (t.lesson.retaught) return { label: 'retaught · check waiting', tone: 'prog' };
     return { label: 'check not taken', tone: 'prog' };

@@ -228,15 +228,22 @@
     var passed = taught.filter(function (t) { return t.check === 'passed'; }).length;
     var waiting = taught.filter(function (t) { return t.check === 'not taken'; }).length;
     var partial = taught.filter(function (t) { return t.check === 'partial'; }).length;
+    var retired = taught.filter(function (t) { return t.check === 'retired'; }).length;
     var retaught = taught.filter(function (t) { return t.lesson.retaught; }).length;
 
-    if (!taught.length) return 'Not opened yet — no assessment has been taken, so no topic has a lesson.';
+    // An open unit whose assessment has not been taken has no lessons yet, which is not the
+    // same as a unit nobody has started. Say which.
+    if (!taught.length) {
+      return 'Its ' + topics.length + ' topics are set, and its assessment has not been taken yet — ' +
+             'so nothing here has a lesson, because nothing has been shown to need one.';
+    }
     var s = 'Of its ' + topics.length + ' topics, ' + taught.length +
             ' came back short of the assessment and have lessons. ';
     var bits = [];
     if (passed) bits.push(passed + (passed === 1 ? ' check has passed' : ' checks have passed'));
     if (waiting) bits.push(waiting + (waiting === 1 ? ' is waiting to be taken' : ' are waiting to be taken'));
     if (partial) bits.push(partial + (partial === 1 ? ' came back partial' : ' came back partial'));
+    if (retired) bits.push(retired + (retired === 1 ? ' was closed by decision' : ' were closed by decision'));
     s += bits.length ? (bits.join(', ') + '. ') : '';
     if (retaught) {
       s += retaught + (retaught === 1 ? ' lesson was' : ' lessons were') +
@@ -268,7 +275,8 @@
                 '<td class="unit' + (t.lesson ? '' : ' none') + '">' + where + '</td></tr>';
       });
       html += '</table><p class="lede" style="margin:1rem 0 0">' +
-              '<b>“No lesson needed”</b> means the assessment showed it was already solid. Nothing ' +
+              '<b>“No lesson needed”</b> means the assessment showed it was already solid, and ' +
+              '<b>“not assessed yet”</b> means this unit’s assessment has not been taken. Nothing ' +
               'is taught that a quiz has not returned as shaky — that is the rule the whole ' +
               'system runs on.</p></section>';
     });
@@ -316,36 +324,62 @@
   // do. Lessons are readable any time; everything else on this page is a map.
   function renderNextUp() {
     var waiting = S.withLessons().filter(function (t) { return t.check === 'not taken'; });
-    // A unit assessment is the other thing he can be asked to sit, and it outranks a
-    // check: it closes the unit.
-    var openUnit = S.units.filter(function (u) { return u.open && u.assessment; })[0];
+    // An open unit whose opening assessment has not produced any lessons yet has not been
+    // sat. That assessment outranks everything else on the page: nothing in the unit can
+    // be taught until it comes back. Checks left over from the unit before stay listed
+    // underneath rather than being displaced — opening a unit does not close them.
+    var opening = S.units.filter(function (u) {
+      return u.open && u.opening && !S.inUnit(u.id).some(function (t) { return t.lesson; });
+    })[0];
+    // The cumulative one that closes a unit, gated on every written check having passed.
+    var closing = S.units.filter(function (u) { return u.open && u.assessment; })[0];
     var host = document.getElementById('next-up');
-    if (!waiting.length && openUnit) {
-      host.innerHTML = '<section class="card nextup"><h2>The unit assessment is ready</h2>' +
-        '<p class="lede">Every topic in Unit 1 has been closed, so this is the one that covers all of it at once. Twelve problems, and it is meant to get hard.</p>' +
+    var html = '';
+
+    if (opening) {
+      html += '<section class="card nextup"><h2>' + esc(opening.name) + ' is open</h2>' +
+        '<p class="lede">Start with its assessment. It goes past what you can do yet on purpose — ' +
+        'that is how it works out which parts of the unit need teaching, and nothing gets taught ' +
+        'until it comes back.</p>' +
         '<div class="nextup-list"><div class="nextup-row">' +
-        '<span class="nextup-topic">' + esc(openUnit.name) + '</span>' +
-        '<span class="nextup-links"><a class="nextup-check" href="' + openUnit.assessment + '">Take the unit assessment</a></span>' +
+        '<span class="nextup-topic">' + esc(opening.takes || opening.name) + '</span>' +
+        '<span class="nextup-links"><a class="nextup-check" href="' + opening.opening + '">Take the assessment</a></span>' +
         '</div></div></section>';
-      return;
     }
-    if (!waiting.length) {
-      host.innerHTML = '<section class="card nextup none"><h2>Nothing waiting</h2>' +
-        '<p class="lede">Every check written so far has been taken. Next one lands when a quiz says a topic needs it.</p></section>';
-      return;
+
+    if (!waiting.length && closing) {
+      html += '<section class="card nextup"><h2>The unit assessment is ready</h2>' +
+        '<p class="lede">Every topic in this unit has been closed, so this is the one that covers ' +
+        'all of it at once — and everything before it. It is meant to get hard.</p>' +
+        '<div class="nextup-list"><div class="nextup-row">' +
+        '<span class="nextup-topic">' + esc(closing.name) + '</span>' +
+        '<span class="nextup-links"><a class="nextup-check" href="' + closing.assessment + '">Take the unit assessment</a></span>' +
+        '</div></div></section>';
     }
-    var html = '<section class="card nextup"><h2>' +
-      (waiting.length === 1 ? 'One check is waiting for you' : waiting.length + ' checks are waiting for you') +
-      '</h2><p class="lede">Read the lesson first if you want to. Then take the check — it uses the same shapes with different numbers.</p><div class="nextup-list">';
-    waiting.forEach(function (t) {
-      html += '<div class="nextup-row">' +
-        '<span class="nextup-topic">' + esc(t.short || t.name) + '</span>' +
-        '<span class="nextup-links">' +
-          '<a class="nextup-lesson" href="lessons/' + t.lesson.slug + '.html">Lesson</a>' +
-          '<a class="nextup-check" href="lessons/' + t.lesson.slug + '-check.html">Take the check</a>' +
-        '</span></div>';
-    });
-    html += '</div></section>';
+
+    if (waiting.length) {
+      html += '<section class="card nextup"><h2>' +
+        (waiting.length === 1
+          ? (opening ? 'One check is still waiting' : 'One check is waiting for you')
+          : waiting.length + (opening ? ' checks are still waiting' : ' checks are waiting for you')) +
+        '</h2><p class="lede">Read the lesson first if you want to. Then take the check — it uses ' +
+        'the same shapes with different numbers.</p><div class="nextup-list">';
+      waiting.forEach(function (t) {
+        html += '<div class="nextup-row">' +
+          '<span class="nextup-topic">' + esc(t.short || t.name) + '</span>' +
+          '<span class="nextup-links">' +
+            '<a class="nextup-lesson" href="lessons/' + t.lesson.slug + '.html">Lesson</a>' +
+            '<a class="nextup-check" href="lessons/' + t.lesson.slug + '-check.html">Take the check</a>' +
+          '</span></div>';
+      });
+      html += '</div></section>';
+    }
+
+    if (!html) {
+      html = '<section class="card nextup none"><h2>Nothing waiting</h2>' +
+        '<p class="lede">Every check written so far has been taken. Next one lands when a quiz ' +
+        'says a topic needs it.</p></section>';
+    }
     host.innerHTML = html;
   }
 
