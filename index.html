@@ -285,7 +285,13 @@
   // A check that has been written but not taken is the only thing he is ever asked to
   // do. Lessons are readable any time; everything else on this page is a map.
   function renderNextUp() {
-    var waiting = S.withLessons().filter(function (t) { return t.check === 'not taken'; });
+    // A deferred check is written but deliberately not being offered — it waits for a later
+    // cumulative assessment. Its row in the unit still reads "check not taken", which is
+    // true; what must not happen is this panel asking him to take something a decision
+    // already took off the table.
+    var waiting = S.withLessons().filter(function (t) {
+      return t.check === 'not taken' && !t.deferred;
+    });
     // An open unit whose opening assessment has not produced any lessons yet has not been
     // sat. That assessment outranks everything else on the page: nothing in the unit can
     // be taught until it comes back. Checks left over from the unit before stay listed
@@ -293,8 +299,18 @@
     var opening = S.units.filter(function (u) {
       return u.open && u.opening && !S.inUnit(u.id).some(function (t) { return t.lesson; });
     })[0];
-    // The cumulative one that closes a unit, gated on every written check having passed.
-    var closing = S.units.filter(function (u) { return u.open && u.assessment; })[0];
+    // The cumulative one that closes a unit, gated on every check written FOR THAT UNIT being
+    // closed — passed, or closed by decision. The gate used to be "no check is waiting
+    // anywhere", which is a different question: the moment a unit's last outstanding check
+    // stopped being offered, this would have advertised a unit assessment that unit had not
+    // earned, and in Unit 1's case had already been sat.
+    var closing = S.units.filter(function (u) {
+      if (!u.open || !u.assessment) return false;
+      var taught = S.inUnit(u.id).filter(function (t) { return t.lesson; });
+      return taught.length && taught.every(function (t) {
+        return t.check === 'passed' || t.check === 'retired';
+      });
+    })[0];
     var host = document.getElementById('next-up');
     var html = '';
 
@@ -309,7 +325,7 @@
         '</div></div></section>';
     }
 
-    if (!waiting.length && closing) {
+    if (closing) {
       html += '<section class="card nextup"><h2>The unit assessment is ready</h2>' +
         '<p class="lede">Every topic in this unit has been closed, so this is the one that covers ' +
         'all of it at once — and everything before it. It is meant to get hard.</p>' +

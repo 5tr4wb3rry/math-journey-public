@@ -20,6 +20,11 @@
     check    null, or 'not taken' | 'passed' | 'partial' | 'retired' — the state of that
              lesson's check; 'retired' means closed by decision rather than by passing,
              whether or not it was ever taken
+    deferred true when a written check is deliberately not being offered as a sitting of its
+             own, and the topic waits for a later cumulative assessment instead. The check
+             state is unchanged and the Units table still reads 'check not taken', because
+             that is what is true; this only stops the front page asking him to take it.
+             A decision, so the reason is always in state/evidence.md with its date.
 */
 (function () {
   var AREAS = [
@@ -91,7 +96,8 @@
         slug: 'squaring-identities',
         blurb: 'The minus version: why 2ab gets added rather than subtracted, and how to see which one you have.'
       },
-      check: 'not taken'
+      check: 'not taken',
+      deferred: true
     },
     { name: 'Symmetric expressions in three variables', area: 'alg', status: 'covered', unit: 'unit1' },
     {
@@ -175,7 +181,8 @@
         slug: 'remainder-cycles',
         blurb: 'Finding the cycle is the easy half. Landing a big exponent inside it — especially off the multiple — is the half that catches people.'
       },
-      check: 'not taken'
+      check: 'not taken',
+      deferred: true
     },
     { name: 'Divisibility rules', area: 'nt', status: 'covered', unit: null },
     { name: 'Prime factorization as a tool', area: 'nt', status: 'not started', unit: null },
