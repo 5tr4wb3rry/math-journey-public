@@ -70,10 +70,12 @@
       id: 'unit3',
       name: 'Unit 3 · Counting, Combinatorics & Graphs',
       open: false,
-      takes: 'Promoted from later in the year because counting is the thinnest strand: organised ' +
-             'casework, counting the complement, inclusion–exclusion beyond two sets, Pascal’s ' +
-             'triangle, stars and bars, pigeonhole, and the rest of the graph topics including ' +
-             'the bridges of Königsberg.'
+      opening: 'unit3/assessment.html',
+      lede: 'Five topics. Counting without listing — the complement, the pigeonhole principle, ' +
+            'and the bridges of Königsberg as the capstone graph topic. Balanced with two algebra ' +
+            'rows pushed out of Unit 2: the cube identities and the exponent laws.',
+      takes: 'Counting the complement, the pigeonhole principle, Euler paths and Königsberg, ' +
+             'cube identities, and exponent laws including zero and negative exponents.'
     },
     {
       id: 'later',
@@ -115,8 +117,8 @@
     { name: 'Difference of squares; factoring as un-multiplying', area: 'alg', status: 'in progress', unit: 'unit2' },
     /* Both were in Unit 2 until 2026-08-10, when the three graph topics joined it. Balancing
        a unit is a swap and not an addition, so these came back out at the same size. */
-    { name: 'Cubes: sum and difference; the cube identities', area: 'alg', status: 'not started', unit: null },
-    { name: 'Exponent laws, including zero and negative exponents', area: 'alg', status: 'not started', unit: null },
+    { name: 'Cubes: sum and difference; the cube identities', area: 'alg', status: 'not started', unit: 'unit3' },
+    { name: 'Exponent laws, including zero and negative exponents', area: 'alg', status: 'not started', unit: 'unit3' },
     { name: 'Substitution as a simplifying weapon', area: 'alg', status: 'in progress', unit: 'unit2',
       lesson: {
         slug: 'substitution-as-a-simplifying-weapon',
@@ -156,12 +158,12 @@
       check: 'partial'
     },
     { name: 'Permutations, including with repetition', area: 'count', status: 'not started', unit: null },
-    { name: 'Counting the complement', area: 'count', status: 'not started', unit: null },
+    { name: 'Counting the complement', area: 'count', status: 'not started', unit: 'unit3' },
     { name: 'Inclusion–exclusion, three or more sets', area: 'count', status: 'not started', unit: null },
     { name: 'Binomial coefficients and Pascal’s triangle', area: 'count', status: 'not started', unit: null },
     { name: 'Stars and bars: sharing identical things out', area: 'count', status: 'not started', unit: null },
     { name: 'Counting the same set two ways', area: 'count', status: 'not started', unit: null },
-    { name: 'The pigeonhole principle', area: 'count', status: 'not started', unit: null },
+    { name: 'The pigeonhole principle', area: 'count', status: 'not started', unit: 'unit3' },
     { name: 'Bijections: counting one set by counting another', area: 'count', status: 'not started', unit: null },
     { name: 'Recursion in counting', area: 'count', status: 'not started', unit: null },
     { name: 'Basic probability; equally likely outcomes', area: 'count', status: 'not started', unit: null },
@@ -186,7 +188,7 @@
     { name: 'Complete graphs, and why handshakes are edges', short: 'Complete graphs', area: 'count', status: 'in progress', unit: 'unit2' },
     { name: 'Paths, cycles and connectedness', area: 'count', status: 'not started', unit: null },
     { name: 'Trees, and why they have one line fewer than dots', short: 'Trees', area: 'count', status: 'not started', unit: null },
-    { name: 'Euler paths, and the bridges of Königsberg', short: 'Euler paths; Königsberg', area: 'count', status: 'not started', unit: null },
+    { name: 'Euler paths, and the bridges of Königsberg', short: 'Euler paths; Königsberg', area: 'count', status: 'not started', unit: 'unit3' },
     { name: 'Graph colouring, and the map problem', short: 'Graph colouring', area: 'count', status: 'not started', unit: null },
     { name: 'Planar graphs and Euler’s formula', area: 'count', status: 'not started', unit: null },
 

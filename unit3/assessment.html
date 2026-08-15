@@ -1,0 +1,180 @@
+<!doctype html>
+<!--
+  Unit 3 opening assessment. Copied from public/_template/quiz.html; only CONFIG and
+  PROBLEMS below are edited. Never edit the engine from a session file — behavior changes
+  go in ../assets/quiz.js so every quiz inherits them.
+
+  PUBLISHING BOUNDARY: everything under public/ is mirrored to a world-readable repo.
+  No solutions, no answer-key commentary, no learner's name, nothing from state/ or
+  guides/ goes in this file. Full worked solutions live in
+  guides/unit3/assessment_guide.html, which is never published.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unit 3 · Assessment — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Unit 3 · Counting, Combinatorics & Graphs · Opening assessment</p>
+      <h1>What can you count without listing?</h1>
+      <p class="lede">
+        Eleven problems across five topics — three you've never been taught, so finding
+        where they get hard is the whole point. Nobody clears all of them. No time limit,
+        hints cost nothing, and you can stop partway and come back — this page remembers
+        where you were. Nothing is checked until the last button.
+      </p>
+    </header>
+
+    <!-- The engine renders everything into this element. Leave it empty. -->
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+      unit: 3,
+      stage: 'assessment',
+      slug: 'unit3_assessment',
+      title: 'Unit 3 · Opening assessment',
+      confidence: true
+    };
+
+    var PROBLEMS = [
+      {
+        question: 'How many two-digit numbers (from 10 to 99) are NOT divisible by 3?',
+        answers: ['60'],
+        hints: [
+          'How many two-digit numbers are there in total?',
+          'How many of those are divisible by 3? Count them: 12, 15, 18, … 99.',
+          'Total minus the divisible ones. There are 30 two-digit multiples of 3.'
+        ],
+        topic: 'Counting the complement',
+        level: 'warm'
+      },
+      {
+        question: 'There are 12 months in a year. What is the smallest number of people you need in a room to GUARANTEE that at least two of them share a birthday month?',
+        answers: ['13'],
+        hints: [
+          'Think of the months as boxes and the people as objects going into the boxes.',
+          'If 12 people each have a different month, that fills every box once. One more person must share.',
+          'You need one more than the number of months.'
+        ],
+        topic: 'The pigeonhole principle',
+        level: 'warm'
+      },
+      {
+        question: 'Four islands are connected by bridges in a loop: bridge from A to B, B to C, C to D, and D back to A. An Euler path is a path that crosses every bridge exactly once. Does this arrangement have an Euler path? Enter 1 for yes, 0 for no.',
+        math: 'A ── B\n│        │\nD ── C',
+        answers: ['1'],
+        hints: [
+          'How many bridges does each island touch?',
+          'Each island has exactly 2 bridges. That matters.',
+          'An Euler path exists when every island has an even number of bridges (or exactly two have an odd number).'
+        ],
+        topic: 'Euler paths, and the bridges of Königsberg',
+        level: 'warm'
+      },
+      {
+        question: 'Use the identity below to compute 4³ + 1³ without cubing either number. What do you get?',
+        math: 'a³ + b³ = (a + b)(a² − ab + b²)',
+        answers: ['65'],
+        hints: [
+          'Plug in a = 4 and b = 1 directly into the factored form.',
+          'You get (4 + 1)(16 − 4 + 1).',
+          '5 × 13 — what is that?'
+        ],
+        topic: 'Cubes: sum and difference; the cube identities',
+        level: 'warm'
+      },
+      {
+        question: 'Simplify and compute:',
+        math: '2³ × 2² ÷ 2⁴ = ?',
+        answers: ['2'],
+        hints: [
+          'When you multiply powers of the same base, the exponents add.',
+          'When you divide, the exponents subtract.',
+          '2^(3+2−4) = 2^1.'
+        ],
+        topic: 'Exponent laws, including zero and negative exponents',
+        level: 'warm'
+      },
+      {
+        question: 'In how many ways can 4 people (Alice, Bob, Carla, Dan) sit in a row of 4 chairs so that Alice and Bob are NOT sitting next to each other?',
+        answers: ['12'],
+        hints: [
+          'It is easier to count the opposite: the arrangements where Alice and Bob ARE next to each other, then subtract from the total.',
+          'Total arrangements: 4 × 3 × 2 × 1 = 24. How many have Alice and Bob adjacent? Treat them as a block.',
+          'The block AB or BA can sit in 3 positions, and the other two people arrange in 2 ways. So 2 × 3 × 2 = 12 are adjacent. Subtract: 24 − 12.'
+        ],
+        topic: 'Counting the complement',
+        level: 'hard'
+      },
+      {
+        question: 'The numbers 1 through 20 are written on cards. Each number can be paired with another so the two differ by exactly 10: (1,11), (2,12), …, (10,20). How many cards must you pick to GUARANTEE that at least two of your picked cards form one of these pairs?',
+        answers: ['11'],
+        hints: [
+          'How many pairs are there? Each pair is a "box".',
+          'There are 10 pairs — 10 boxes. If you pick 10 cards, you could have exactly one from each pair.',
+          'One more than the number of boxes: 11.'
+        ],
+        topic: 'The pigeonhole principle',
+        level: 'hard'
+      },
+      {
+        question: 'The city of Königsberg has 4 land masses connected by 7 bridges. The number of bridges touching each land mass is 5, 3, 3, and 3 respectively. How many land masses have an odd number of bridges?',
+        answers: ['3'],
+        hints: [
+          ' Odd or even — just check each number.',
+          '5 is odd. 3 is odd. 3 is odd. 3 is odd.',
+          'Count how many of the four numbers are odd.'
+        ],
+        topic: 'Euler paths, and the bridges of Königsberg',
+        level: 'hard'
+      },
+      {
+        question: 'If a + b = 6 and ab = 5, what is a³ + b³?',
+        answers: ['126'],
+        hints: [
+          'Use the identity: a³ + b³ = (a + b)(a² − ab + b²).',
+          'You know a + b and ab, but not a² + b² directly. Can you find a² + b² from what you know?',
+          'a² + b² = (a + b)² − 2ab = 36 − 10 = 26. Then a³ + b³ = 6 × (26 − 5).'
+        ],
+        topic: 'Cubes: sum and difference; the cube identities',
+        level: 'hard'
+      },
+      {
+        question: 'What is the value of this expression?',
+        math: '(3⁰ × 2⁻² × 5³) ÷ (5 × 2⁻³) = ?',
+        answers: ['50'],
+        hints: [
+          'Simplify the numerator and denominator separately. Remember: anything to the power 0 is 1, and a negative power means a fraction.',
+          'Numerator: 1 × ¼ × 125 = 125/4. Denominator: 5 × ⅛ = 5/8.',
+          'Dividing by a fraction is multiplying by its flip: (125/4) × (8/5).'
+        ],
+        topic: 'Exponent laws, including zero and negative exponents',
+        level: 'hard'
+      },
+      {
+        question: 'Thirteen people serve on a committee. They need to pick a sub-committee of 3 to draft a report. How many different sub-committees of 3 are possible?',
+        answers: ['286'],
+        hints: [
+          'A sub-committee is a set of people — the order you name them does not matter.',
+          'Count ordered selections first: 13 × 12 × 11. Then divide by how many orders each group of 3 can be listed.',
+          'Each group of 3 can be listed in 3 × 2 × 1 = 6 orders. So divide 1716 by 6.'
+        ],
+        topic: 'Choosing vs. arranging; combinations',
+        level: 'warm'
+      }
+    ];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>
