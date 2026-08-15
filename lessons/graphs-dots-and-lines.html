@@ -1,0 +1,213 @@
+<!doctype html>
+<!--
+  FIRST LESSON — Graphs: dots and lines as a picture of relationships
+  This topic came back partial on the Unit 2 opening assessment (2026-08-14):
+  warm problem right (party, 5 people, 4 lines), hard problem wrong (6 students,
+  differ by 1 or 2 → answered 10, correct 9).
+
+  The assessment supplied the definition in the warm problem and asked something
+  about it. The hard problem gave a rule for drawing lines and asked for the count.
+  That is the live gap: building the picture from a rule, and splitting the count
+  into cases before counting.
+
+  NUMBERS: this lesson uses 5, 6, and 7 people. Its check will use 4, 8, and 9,
+  and the assessment used 5 and 6. No value is shared.
+
+  PUBLISHED, world-readable. Nothing here names the learner or refers to performance.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Graphs: dots and lines — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="sitenav">
+    <a href="../index.html#units">← All units</a>
+  </nav>
+
+  <header>
+    <p class="eyebrow">Lesson · Counting, combinatorics & graphs</p>
+    <h1>Graphs: dots and lines as a picture of relationships</h1>
+    <p class="lede">
+      A graph is nothing more than dots joined by lines. Every problem in this topic
+      describes a situation, you draw the dots and lines, and then you count.
+    </p>
+  </header>
+
+  <section class="card">
+    <h2>What a graph is</h2>
+    <p>
+      Five people at a party. Alice knows Bob and Carla. Bob knows Carla. Dan knows
+      Eve. Nobody else knows anybody.
+    </p>
+    <p>Draw a dot for each person. Draw a line between two dots if those two people
+    know each other.</p>
+    <pre class="math">A ●───● B
+    ╲   ╱
+     ● C
+
+D ●───● E</pre>
+    <p>
+      The lines are the <strong>relationships</strong>. The dots are the
+      <strong>people</strong>. That is the whole object.
+    </p>
+    <div class="hint">
+      <span class="label">Vocabulary</span>
+      <span>Each dot is a <strong>vertex</strong> (or <strong>node</strong>). Each line
+      is an <strong>edge</strong>. Two vertices joined by an edge are
+      <strong>adjacent</strong>. The number of edges touching a vertex is its
+      <strong>degree</strong>.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Counting edges, systematically</h2>
+    <p>
+      In the party picture: Alice has degree 2 (knows Bob and Carla). Bob has degree
+      2 (knows Alice and Carla). Carla has degree 2. Dan has degree 1. Eve has
+      degree 1. Sum of degrees = 2 + 2 + 2 + 1 + 1 = 8.
+    </p>
+    <p>Every edge was counted <strong>twice</strong> — once at each end. So the total
+    number of edges is 8 ÷ 2 = 4. That matches the four lines in the picture.
+    This is the <strong>handshake lemma</strong> (it has its own topic and lesson).
+    </p>
+    <p>For small pictures you can just count lines. For larger ones, you need a
+    method that does not require drawing the whole thing.</p>
+  </section>
+
+  <section class="card">
+    <h2>When the rule builds the graph</h2>
+    <p>
+      Six students are numbered 1 to 6. Two students are friends exactly when their
+      numbers differ by 1 <strong>or</strong> by 2. Draw a dot per student and a
+      line per friendship. How many lines?
+    </p>
+    <p>
+      This is the hard problem from the assessment. The graph is not given — it is
+      defined by a rule. You have to build it, then count.
+    </p>
+    <p><strong>Split the rule into cases before counting.</strong> Here there are two
+    separate conditions for drawing a line:</p>
+    <ul>
+      <li>Numbers differ by 1</li>
+      <li>Numbers differ by 2</li>
+    </ul>
+    <p>Count each case separately, then add. The cases do not overlap (a difference
+    cannot be both 1 and 2), so no double-counting to worry about.</p>
+  </section>
+
+  <section class="card">
+    <h2>Case 1: differ by 1</h2>
+    <p>
+      Pairs with difference 1: (1,2), (2,3), (3,4), (4,5), (5,6). That is 5 edges.
+      In general, for <em>n</em> dots in a line, <em>n</em> − 1 edges.
+    </p>
+    <pre class="math">1 ── 2 ── 3 ── 4 ── 5 ── 6
+edges:  1   2   3   4   5   → 5 edges</pre>
+  </section>
+
+  <section class="card">
+    <h2>Case 2: differ by 2</h2>
+    <p>
+      Pairs with difference 2: (1,3), (2,4), (3,5), (4,6). That is 4 edges.
+      In general, for <em>n</em> dots, <em>n</em> − 2 edges.
+    </p>
+    <pre class="math">1 ── 3     2 ── 4     3 ── 5     4 ── 6
+edges:  1        2        3        4   → 4 edges</pre>
+  </section>
+
+  <section class="card">
+    <h2>Put it together</h2>
+    <p>
+      Total edges = 5 + 4 = 9. The full picture looks like this:
+    </p>
+    <pre class="math">1 ●───● 2 ●───● 3 ●───● 4 ●───● 5 ●───● 6
+  ╲   ╱  ╲   ╱  ╲   ╱  ╲   ╱  ╲   ╱
+   ●──●──●──●──●──●──●──●──●──●──●
+  1   3    2   4    3   5    4   6
+(just the extra lines shown for clarity)</pre>
+    <div class="hint">
+      <span class="label">The move</span>
+      <span>When a problem gives a rule for drawing lines, <strong>split the rule into
+      cases</strong>. Count each case on its own, then add. If a line could satisfy
+      more than one rule, you must check for overlap — that is the next level of
+      carefulness.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Another shape: a circle</h2>
+    <p>
+      Seven people sit in a circle. Each person shakes hands with the person on their
+      left and the person on their right. How many handshakes?
+    </p>
+    <p>Difference by 1 around the circle: (1,2), (2,3), (3,4), (4,5), (5,6), (6,7),
+    (7,1). That is 7 edges — same as the number of people, because the line from 7
+    back to 1 closes the loop.</p>
+    <pre class="math">1 ── 2
+│    │
+7    3
+│    │
+6 ── 5
+   4   (7 edges forming a cycle)</pre>
+  </section>
+
+  <section class="card">
+    <h2>Practice</h2>
+    <ol class="practice">
+      <li>
+        Four people at a party. Everyone knows everyone. Draw the graph and count the
+        lines.
+        <details><summary>Answer</summary>
+          <p>4 dots, all connected: C(4,2) = 4 × 3 ÷ 2 = <strong>6</strong> lines.
+          This is a <strong>complete graph</strong> — its own topic coming up.</p>
+        </details>
+      </li>
+      <li>
+        Five students numbered 1 to 5. Two are friends if their numbers differ by 2.
+        How many friendships?
+        <details><summary>Answer</summary>
+          <p>Pairs with difference 2: (1,3), (2,4), (3,5). That is <strong>3</strong>
+          edges. (n − 2 = 5 − 2 = 3.)</p>
+        </details>
+      </li>
+      <li>
+        Six people sit in a row. Each person shakes hands with the person immediately
+        to their left and right (where those people exist). How many handshakes?
+        <details><summary>Answer</summary>
+          <p>Edges: (1,2), (2,3), (3,4), (4,5), (5,6). That is <strong>5</strong>
+          handshakes. End people only have one neighbour.</p>
+        </details>
+      </li>
+      <li>
+        Eight students numbered 1 to 8. Two are friends if their numbers differ by 1
+        <strong>or</strong> by 3. How many friendships?
+        <details><summary>Answer</summary>
+          <p>Case 1 (differ by 1): (1,2)...(7,8) = 7 edges. Case 2 (differ by 3):
+          (1,4), (2,5), (3,6), (4,7), (5,8) = 5 edges. No overlap (difference cannot
+          be both 1 and 3). Total = <strong>12</strong>.</p>
+        </details>
+      </li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What the check will ask</h2>
+    <p>
+      Three problems. One that gives the picture and asks for a count, one that gives
+      a rule and asks you to build and count, and one that mixes cases. Different
+      numbers throughout.
+    </p>
+    <p><a class="btn btn-primary" href="graphs-dots-and-lines-check.html">Take the check →</a></p>
+  </section>
+
+</div>
+</body>
+</html>

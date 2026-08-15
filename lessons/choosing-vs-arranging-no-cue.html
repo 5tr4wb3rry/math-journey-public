@@ -1,0 +1,212 @@
+<!doctype html>
+<!--
+  THIRD REWRITE — the no-cue choosing half. Two previous lessons taught the
+  swap test and the arranging count. Both times the arranging half moved; the
+  choosing half did not. The live gap across six sittings: problems that
+  require choosing (combinations) but never use the word "choose" — strictly
+  increasing digits, handshakes, lines through points, league matches, pairs
+  from a set, strictly decreasing digits. The student does not recognise that
+  the problem is asking for choosing. This lesson targets only that recognition.
+
+  NUMBERS: this lesson uses 9 (dinner pairs), 11 (pick 3 books), 7
+  (round-robin matches). Its check uses 9 (tents), 14 (2-topping pizzas),
+  13 (chess tournament). The assessment used 12 (pairs), 8 points (28 lines),
+  11 teams (55 matches), and 3-digit decreasing digits. No value is shared.
+  The previous lesson used 4, 6, 8, 10, 5, 7. The previous check used 12, 10.
+  No overlap anywhere.
+
+  PUBLISHED, world-readable. Nothing here names the learner or refers to performance.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Choosing vs. arranging — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="sitenav">
+    <a href="../index.html#units">← All units</a>
+  </nav>
+
+  <header>
+    <p class="eyebrow">Lesson · Counting, combinatorics & graphs</p>
+    <h1>Choosing vs. arranging — the half that hides</h1>
+    <p class="lede">
+      You already know the swap test: pick your things, swap two of them.
+      If the answer changes, you are <strong>arranging</strong>. If it stays
+      the same, you are <strong>choosing</strong>. That test works on every
+      problem — including the ones that never say "choose" or "arrange".
+      This lesson is about spotting the choosing problems when they wear a
+      disguise.
+    </p>
+  </header>
+
+  <section class="card">
+    <h2>The problem: some problems never say "choose"</h2>
+    <p>
+      A problem says "committee" — you know it is choosing. A problem says
+      "captain and vice-captain" — you know it is arranging. But most real
+      problems describe a situation and name neither operation:
+    </p>
+    <ul>
+      <li>Nine people at a dinner. Every pair toasts once. How many toasts?</li>
+      <li>A pizza place offers fourteen toppings. How many different
+          two-topping pizzas can you order?</li>
+      <li>Thirteen players enter a round-robin chess tournament. Every pair
+          plays one game. How many games?</li>
+      <li>A bookshelf holds eleven titles. You are taking three for the trip.
+          How many different sets of three?</li>
+    </ul>
+    <p>
+      All four are choosing problems. None uses the word "choose". The skill
+      is recognising that before you do any arithmetic.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>The recognition move</h2>
+    <p>
+      When a problem does not tell you what it is, ask two questions out loud:
+    </p>
+    <ol>
+      <li><strong>What is being picked?</strong> List the actual objects —
+          people, toppings, games, books, lines, handshakes, teams.</li>
+      <li><strong>Does the order I list them matter?</strong> Swap two of the
+          picked things. Is it a different outcome? That is the swap test you
+          already own.</li>
+    </ol>
+    <p>
+      If swapping changes nothing — the pair {Amy, Ben} is the same pair as
+      {Ben, Amy}; the pizza with pepperoni and mushrooms is the same pizza —
+      you are <strong>choosing</strong>. Count the ordered version, then divide
+      by the number of ways to shuffle what you picked.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Disguises that are always choosing</h2>
+    <p>
+      These descriptions <strong>always</strong> mean choosing — they never
+      mean arranging. Learn to recognise them on sight.
+    </p>
+    <ul>
+      <li><strong>Pairs / handshakes / toasts / matches / lines / chords /
+          diagonals.</strong> A handshake between A and B is one handshake,
+          not two.</li>
+      <li><strong>Teams / committees / groups / sets / subsets.</strong> A
+          team of three is the same team whoever you list first.</li>
+      <li><strong>Connections / friendships / edges / roads between two
+          places.</strong> The road from X to Y is the road from Y to X.</li>
+      <li><strong>Toppings on a pizza / ingredients in a mix / flavours in a
+          combo.</strong> Pepperoni + mushroom = mushroom + pepperoni.</li>
+      <li><strong>Books for the trip / cards in a hand / numbers in a
+          combination lock (ironic name).</strong></li>
+    </ul>
+    <div class="hint">
+      <span class="label">The common thread</span>
+      <span>Every one of these describes an <strong>unordered set</strong>.
+      Swapping two members of the set never produces a different set. That is
+      the definition of choosing.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Once you recognise it: how to count it</h2>
+    <p>
+      You have already done the hard part — recognising it is choosing. The
+      arithmetic is the same pattern every time:
+    </p>
+    <ol>
+      <li>Count the <strong>ordered</strong> version: multiply down from the
+          total, one factor per thing you are picking.</li>
+      <li>Divide by <strong>the number of ways to shuffle what you picked</strong>:
+          k! for k things. Pairs divide by 2, trios divide by 6, etc.</li>
+    </ol>
+    <p><strong>Nine people at a dinner. Every pair toasts once.</strong></p>
+    <pre class="math">What is picked? A pair of people.
+Swap them — same pair. Choosing.
+Ordered picks: 9 × 8 = 72
+Each pair counted twice: 72 ÷ 2 = <strong>36 toasts</strong></pre>
+    <p><strong>Eleven books on the shelf. Pick three for the trip.</strong></p>
+    <pre class="math">What is picked? A set of three books.
+Swap two books — same set. Choosing.
+Ordered picks: 11 × 10 × 9 = 990
+Each set counted 3 × 2 × 1 = 6 times: 990 ÷ 6 = <strong>165 sets</strong></pre>
+    <p><strong>Seven players in a round-robin tournament. Every pair plays one match.</strong></p>
+    <pre class="math">What is picked? A pair of players for one match.
+Swap them — same match. Choosing.
+Ordered picks: 7 × 6 = 42
+Each match counted twice: 42 ÷ 2 = <strong>21 matches</strong></pre>
+    <div class="hint">
+      <span class="label">The pattern</span>
+      <span>Both steps are mechanical once you have recognised choosing. The
+      only step that requires thinking is step 0: "What is being picked, and
+      does order matter?" Everything after is the same every time.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Practice</h2>
+    <p>Do the swap test out loud first, before any arithmetic.</p>
+    <ol class="practice">
+      <li>
+        Ten people at a party. Everyone shakes hands with everyone else, once.
+        How many handshakes?
+        <details><summary>Answer</summary>
+          <p>What is picked? A pair of people shaking hands. Swap them — same
+          handshake. Choosing. 10 × 9 = 90 ordered, ÷ 2 = <strong>45</strong>.</p>
+        </details>
+      </li>
+      <li>
+        A club has twelve members. They need to pick a committee of four.
+        How many different committees?
+        <details><summary>Answer</summary>
+          <p>A committee is a set — order does not matter. Choosing. 12 × 11 ×
+          10 × 9 = 11880 ordered. Each committee counted 4 × 3 × 2 × 1 = 24
+          times. 11880 ÷ 24 = <strong>495</strong>.</p>
+        </details>
+      </li>
+      <li>
+        Six points are marked on a circle, no three in a line. How many
+        straight lines can be drawn joining two of them?
+        <details><summary>Answer</summary>
+          <p>The line from P to Q is the line from Q to P. Choosing. 6 × 5 = 30,
+          ÷ 2 = <strong>15</strong>. Same shape as handshakes and toasts.</p>
+        </details>
+      </li>
+      <li>
+        A sandwich shop offers nine fillings. How many different 3-filling
+        sandwiches can you make?
+        <details><summary>Answer</summary>
+          <p>A sandwich with ham, cheese, and lettuce is the same sandwich with
+          lettuce, cheese, ham. Choosing. 9 × 8 × 7 = 504, ÷ 6 = <strong>84</strong>.</p>
+        </details>
+      </li>
+      <li>
+        Eight people. How many different pairs can be formed?
+        <details><summary>Answer</summary>
+          <p>Pairs are choosing. 8 × 7 = 56, ÷ 2 = <strong>28</strong>.</p>
+        </details>
+      </li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What the check will ask</h2>
+    <p>
+      Three problems. Each one describes a situation and never uses the word
+      "choose" or "arrange". Your job is to recognise which are choosing, then
+      count them. Different numbers throughout.
+    </p>
+    <p><a class="btn btn-primary" href="choosing-vs-arranging-no-cue-check.html">Take the check →</a></p>
+  </section>
+
+</div>
+</body>
+</html>

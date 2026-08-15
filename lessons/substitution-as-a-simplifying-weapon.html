@@ -1,0 +1,221 @@
+<!doctype html>
+<!--
+  FIRST LESSON — Substitution as a simplifying weapon
+  Came back partial on the 2026-08-14 Unit 2 opening assessment:
+  warm problem right (given (x+3)+1/(x+3)=5, find (x+3)²+1/(x+3)² = 23),
+  hard problem wrong (√(3⁴+4·3²+4) answered 7, correct 11).
+
+  The warm problem is a direct application of the x+1/x machine — he already
+  owns that tool. The hard problem asks him to spot a quadratic shape hiding
+  inside plain numbers. That is the live gap: seeing (u+2)² in 3⁴+4·3²+4.
+
+  NUMBERS: this lesson uses u=2, u=4, u=5. Its check uses u=3, u=6, u=7. The
+  assessment used u=3 (in the hard problem) and (x+3) in the warm. No overlap
+  with the check.
+
+  PUBLISHED, world-readable. Nothing here names the learner or refers to performance.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Substitution as a simplifying weapon — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="sitenav">
+    <a href="../index.html#units">a← All units</a>
+  </nav>
+
+  <header>
+    <p class="eyebrow">Lesson · Algebra</p>
+    <h1>Substitution as a simplifying weapon</h1>
+    <p class="lede">
+      A messy expression is often a clean one wearing a disguise. Give the disguise
+      a single letter, and the mess disappears.
+    </p>
+  </header>
+
+  <section class="card">
+    <h2>You already own this move</h2>
+    <p>
+      You have seen this: if u + 1/u = 5, what is u² + 1/u²?
+    </p>
+    <pre class="math">(u + 1/u)² = u² + 2 + 1/u² = 25
+                   u² + 1/u² = 25 − 2 = 23</pre>
+    <p>
+      That is substitution in action: you never solved for u. You treated the whole
+      chunk <em>u + 1/u</em> as one thing, squared it, and read off what you
+      wanted. The letter <em>u</em> is not a variable to solve for — it is a
+      <strong>name for a shape</strong>.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>The move, stated plainly</h2>
+    <p>
+      When you see the <em>same messy chunk</em> appearing more than once, give it
+      a letter. The chunk becomes a single variable, and the expression becomes
+      something you already know how to handle.
+    </p>
+    <div class="hint">
+      <span class="label">The pattern</span>
+      <span>1. Spot a chunk that repeats.<br>
+      2. Name it (u, v, whatever).<br>
+      3. Rewrite in the new letter.<br>
+      4. Solve the simpler version.<br>
+      5. Translate back if the question asks about the original.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Spotting a shape inside plain numbers</h2>
+    <p>
+      Here is the step the assessment was testing:
+    </p>
+    <pre class="math">What is  √(2⁴ + 4·2² + 4) ?</pre>
+    <p>
+      You could grind this out: 2⁴ = 16, 4·2² = 16, so 16 + 16 + 4 = 36, √36 = 6.
+      Correct. But there is a shape hiding in it.
+    </p>
+    <p>
+      Let <em>u</em> = 2² = 4. Then:
+    </p>
+    <pre class="math">2⁴ = (2²)² = u²
+4·2² = 4u
+4  = 4
+
+So the expression becomes:
+  u² + 4u + 4</pre>
+    <p>
+      Do you recognise it? It is a <strong>perfect square</strong>:
+    </p>
+    <pre class="math">u² + 4u + 4 = (u + 2)²
+            = (4 + 2)²
+            = 6²
+            = 36
+  √36 = 6</pre>
+    <div class="hint">
+      <span class="label">What the shape is</span>
+      <span>The expression u² + 4u + 4 is (u + 2)² — the expansion of a perfect
+      square binomial. Once you see it, the square root is trivial. The entire move
+      is <strong>spotting the quadratic shape</strong>, not doing arithmetic.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Another one</h2>
+    <pre class="math">What is  √(5⁴ + 6·5² + 9) ?</pre>
+    <p>Let <em>u</em> = 5² = 25. Then:</p>
+    <pre class="math">u² + 6u + 9</pre>
+    <p>Recognise it:</p>
+    <pre class="math">u² + 6u + 9 = (u + 3)²
+            = (25 + 3)²
+            = 28²
+            = 784
+  √784 = 28</pre>
+    <p>
+      Same move, different shape. u² + 6u + 9 is (u + 3)². The 6 comes from 2 × 3,
+      and the 9 is 3² — it is the two-terms-times pattern (a + b)² = a² + 2ab + b²
+      in reverse.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>How to spot them</h2>
+    <p>
+      Not every u² + bu + c is a perfect square. It is one only when the middle
+      term is <strong>twice the square roots of the outer terms</strong>:
+    </p>
+    <pre class="math">u² + bu + c is (u + k)² when:
+  c = k²      (the last term is a perfect square)
+  b = 2k      (the middle term is exactly twice that root)
+</pre>
+    <div class="hint">
+      <span class="label">The check</span>
+      <span>Look at the first and last terms. Take their square roots. Double one
+      of them — if it equals the middle term, the whole thing is a perfect square.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Where else it lives</h2>
+    <p>
+      Substitution is not only for square roots. Any time a chunk repeats, naming
+      it can turn a wall of symbols into something familiar:
+    </p>
+    <ul>
+      <li><strong>Fractions with repeated chunks.</strong> If a mess contains
+        (x − 1) everywhere, let <em>v</em> = (x − 1) and rewrite.</li>
+      <li><strong>The x + 1/x family.</strong> Already yours — substitution is
+        exactly what makes it work.</li>
+      <li><strong>Equations that look quartic.</strong> An equation in x⁴ and x²
+        but with no x³ or x term is secretly quadratic if you let u = x².</li>
+    </ul>
+    <p>
+      The skill is not the algebra — that you can do. It is
+      <strong>noticing the shape</strong>. A blurred pattern is obvious once you
+      give it a name; it is invisible until you do.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Practice</h2>
+    <ol class="practice">
+      <li>
+        Let u = 4². What is √(u² + 8u + 16)?
+        <details><summary>Answer</summary>
+          <p>u² + 8u + 16 = (u + 4)² = (16 + 4)² = 20² = 400. √400 = <strong>20</strong>.</p>
+        </details>
+      </li>
+      <li>
+        √(4⁴ + 8·4² + 16)
+        <details><summary>Answer</summary>
+          <p>Let u = 4² = 16. Then u² + 8u + 16 = (u + 4)² = 20² = 400.
+          √400 = <strong>20</strong>. Same as above — the point is noticing
+          <em>without</em> the letter being given.</p>
+        </details>
+      </li>
+      <li>
+        √(6⁴ + 10·6² + 25)
+        <details><summary>Answer</summary>
+          <p>Let u = 6² = 36. Then u² + 10u + 25 = (u + 5)² = 41² = 1681.
+          √1681 = <strong>41</strong>. Check: c = 25 = 5², b = 10 = 2×5. Perfect
+          square — the test works.</p>
+        </details>
+      </li>
+      <li>
+        Let v = x + 2. Simplify: (x + 2)² − 5(x + 2) + 6
+        <details><summary>Answer</summary>
+          <p>v² − 5v + 6 = (v − 2)(v − 3) = (x + 2 − 2)(x + 2 − 3)
+          = (x)(x − 1) = <strong>x² − x</strong>.</p>
+        </details>
+      </li>
+      <li>
+        u² + 12u + 36 — is this a perfect square? If so, write it as a square.
+        <details><summary>Answer</summary>
+          <p>36 = 6² and 12 = 2 × 6, so yes: <strong>(u + 6)²</strong>.</p>
+        </details>
+      </li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What the check will ask</h2>
+    <p>
+      Three problems. One that names the substitution for you, one that does not
+      (you find the shape yourself), and one that gives a disguised expression
+      where the substitution trick turns it into something familiar. Different
+      numbers throughout.
+    </p>
+    <p><a class="btn btn-primary" href="substitution-as-a-simplifying-weapon-check.html">Take the check →</a></p>
+  </section>
+
+</div>
+</body>
+</html>

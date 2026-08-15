@@ -1,0 +1,197 @@
+<!doctype html>
+<!--
+  FIRST LESSON — Degree, and the handshake lemma
+  Came back partial on the 2026-08-14 Unit 2 opening assessment:
+  warm problem right (degree sum 12, divide by 2, 6 handshakes),
+  hard problem wrong (everyone shook 3 hands, 9 handshakes, so 3n/2=9, n=6;
+  answered 5).
+
+  The live gap is the backwards direction and the parity insight: 3n must be even
+  for the problem to have a solution at all.
+
+  NUMBERS: this lesson uses 4, 6, 7 people. Its check uses 5, 8, 10. The assessment
+  used 6. No value shared with the check.
+
+  PUBLISHED, world-readable. Nothing here names the learner or refers to performance.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Degree, and the handshake lemma — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="sitenav">
+    <a href="../index.html#units">← All units</a>
+  </nav>
+
+  <header>
+    <p class="eyebrow">Lesson · Counting, combinatorics & graphs</p>
+    <h1>Degree, and the handshake lemma</h1>
+    <p class="lede">
+      Every edge has two ends. That single fact halves every count in this topic —
+      and running it backwards is how you find a number nobody gave you.
+    </p>
+  </header>
+
+  <section class="card">
+    <h2>What degree is</h2>
+    <p>
+      The <strong>degree</strong> of a vertex is the number of edges touching it.
+      In a friendship graph, it is how many friends that person has. In a handshake
+      graph, it is how many hands that person shook.
+    </p>
+    <pre class="math">    ●               ●
+    │               ╱ ╲
+    │         degree 2   degree 3
+    ●───●───●
+  degree 1   degree 3   degree 1</pre>
+  </section>
+
+  <section class="card">
+    <h2>The handshake lemma</h2>
+    <p>
+      Six people are in a room. The number of people each one shook hands with is
+      2, 2, 3, 3, 1, and 1. How many handshakes happened?
+    </p>
+    <p>
+      Add the degrees: 2 + 2 + 3 + 3 + 1 + 1 = 12. But every handshake was counted
+      <strong>twice</strong> — once for each person in it. So the actual number of
+      handshakes is:
+    </p>
+    <pre class="math">sum of degrees ÷ 2 = edges
+
+12 ÷ 2 = 6 handshakes</pre>
+    <div class="hint">
+      <span class="label">Why it works</span>
+      <span>Each edge contributes exactly 1 to the degree of each of its two
+      endpoints. So the sum of all degrees counts every edge twice — once at each
+      end. That is all the lemma says.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>A fact hiding in plain sight</h2>
+    <p>
+      The sum of all degrees is always <strong>even</strong>, because it is 2 times
+      the number of edges. So:
+    </p>
+    <pre class="math">sum of degrees = 2 × (number of edges)</pre>
+    <p>
+      If you ever add up everyone's handshakes and get an odd number, something is
+      wrong — you have miscounted, or the problem is impossible.
+    </p>
+    <div class="hint">
+      <span class="label">Parity check</span>
+      <span>The sum of degrees is always even. This is a free check on any problem
+      in this topic: add the degrees, and if the sum is odd, the situation cannot
+      exist.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Running it backwards</h2>
+    <p>
+      In a group, every single person shook hands with exactly 3 other people, and
+      there were 9 handshakes altogether. How many people were in the group?
+    </p>
+    <p>
+      This is the hard problem from the assessment — the lemma pointed the other
+      way. Nobody tells you the sum of degrees; they tell you the <em>answer</em>
+      (9 handshakes) and the degree each person has (3). You have to find the
+      number of people.
+    </p>
+    <p>
+      Let <em>n</em> be the number of people. Each shakes 3 hands, so the sum of
+      degrees is 3<em>n</em>. The handshake lemma says:
+    </p>
+    <pre class="math">sum of degrees = 2 × edges
+      3n         = 2 × 9
+      3n         = 18
+      n          = 6</pre>
+    <p>
+      Six people. Each shakes 3 hands, total degree sum = 18, edges = 18 ÷ 2 = 9.
+      It checks.
+    </p>
+    <div class="hint">
+      <span class="label">Easy to miss</span>
+      <span>3<em>n</em> must be even for the problem to have a whole-number answer —
+      because 3<em>n</em> equals 2 × edges. So <em>n</em> must be even. If someone
+      says "each person shook 3 hands, total 10 handshakes", that is impossible:
+      3<em>n</em> = 20 gives <em>n</em> = 20/3, not a whole number.</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Another one backwards</h2>
+    <p>
+      At a party, everyone shook hands with exactly 4 other people, and there were
+      20 handshakes in total. How many people were at the party?
+    </p>
+    <pre class="math">4n = 2 × 20
+4n = 40
+ n = 10</pre>
+    <p>Ten people. Degree sum = 40, edges = 20. Checks.</p>
+  </section>
+
+  <section class="card">
+    <h2>Practice</h2>
+    <ol class="practice">
+      <li>
+        Five people. Degrees are 3, 2, 2, 1, 2. How many edges?
+        <details><summary>Answer</summary>
+          <p>Sum = 3 + 2 + 2 + 1 + 2 = 10. Edges = 10 ÷ 2 = <strong>5</strong>.</p>
+        </details>
+      </li>
+      <li>
+        Everyone in a group of 7 people shook exactly 2 hands. How many handshakes
+        happened?
+        <details><summary>Answer</summary>
+          <p>Degree sum = 7 × 2 = 14. Edges = 14 ÷ 2 = <strong>7</strong>.</p>
+        </details>
+      </li>
+      <li>
+        Everyone shook exactly 5 hands, and there were 20 handshakes. How many
+        people?
+        <details><summary>Answer</summary>
+          <p>5<em>n</em> = 2 × 20 = 40, so <em>n</em> = <strong>8</strong>.</p>
+        </details>
+      </li>
+      <li>
+        Everyone shook exactly 4 hands, and there were 14 handshakes. How many
+        people?
+        <details><summary>Answer</summary>
+          <p>4<em>n</em> = 2 × 14 = 28, so <em>n</em> = <strong>7</strong>.</p>
+        </details>
+      </li>
+      <li>
+        Can a group of 5 people each shake hands with exactly 3 others? ( Answer
+        yes or no, and say why. )
+        <details><summary>Answer</summary>
+          <p>5 × 3 = 15, which is odd. The sum of degrees must be even, so
+          <strong>no</strong> — this is impossible.</p>
+        </details>
+      </li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What the check will ask</h2>
+    <p>
+      Three problems. One that gives degrees and asks for the count (the lemma
+      forwards), one that gives the count and degree and asks for the number of
+      people (backwards), and one that tests the parity check. Different numbers
+      throughout.
+    </p>
+    <p><a class="btn btn-primary" href="degree-and-the-handshake-lemma-check.html">Take the check →</a></p>
+  </section>
+
+</div>
+</body>
+</html>

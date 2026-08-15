@@ -1,0 +1,84 @@
+<!doctype html>
+<!--
+  CHECK — Graphs: dots and lines as a picture of relationships
+  One topic only. Same structures as the assessment and lesson, different numbers.
+  Lesson uses 5, 6, 7. Assessment used 5 and 6. This check uses 4, 8, and 9 — no overlap.
+
+  PUBLISHING BOUNDARY: world-readable. No solutions, no learner names, nothing from
+  state/ or guides/.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check · Graphs: dots and lines — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Unit 2 · Check</p>
+      <h1>Graphs: dots and lines</h1>
+      <p class="lede">
+        Three problems on what this lesson taught. You should be able to clear this —
+        if you can't, that is the useful result and it tells us the lesson missed.
+      </p>
+    </header>
+
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+      unit: 2,
+      stage: 'check',
+      slug: 'check_graphs-dots-and-lines',
+      topicLabel: 'Graphs: dots and lines as a picture of relationships',
+      title: 'Graphs: dots and lines',
+      confidence: true
+    };
+
+    var PROBLEMS = [
+      {
+        question: 'Four people are at a party. Alice knows Bob and Carla. Bob knows Carla. Dan knows nobody. Draw a dot for each person and a line joining each pair who know each other. How many lines are there?',
+        answers: ['3'],
+        hints: [
+          'Draw the dots first, then add lines for each "knows" relationship.',
+          'Alice-Bob, Alice-Carla, Bob-Carla — and Dan has no lines.',
+          'Three lines among Alice, Bob, and Carla. Dan is isolated.'
+        ],
+        topic: 'Graphs: dots and lines as a picture of relationships',
+        level: 'core'
+      },
+      {
+        question: 'Eight students are numbered 1 to 8. Two students are friends exactly when their numbers differ by 1 or by 3. Draw a dot per student and a line per friendship. How many lines are there?',
+        answers: ['12'],
+        hints: [
+          'Split the rule into cases: differ by 1, and differ by 3.',
+          'Case 1 (differ by 1): (1,2), (2,3), ..., (7,8) — how many is that?',
+          'Case 1 gives 7 edges. Case 2 (differ by 3): (1,4), (2,5), (3,6), (4,7), (5,8) — 5 edges. No overlap. Add them.'
+        ],
+        topic: 'Graphs: dots and lines as a picture of relationships',
+        level: 'stretch'
+      },
+      {
+        question: 'Nine students are numbered 1 to 9. Two students are friends exactly when their numbers differ by 2. How many friendships are there?',
+        answers: ['7'],
+        hints: [
+          'Only one case this time: differ by 2.',
+          'List the pairs: (1,3), (2,4), (3,5), (4,6), (5,7), (6,8), (7,9).',
+          'That is 7 edges. In general, n minus 2.'
+        ],
+        topic: 'Graphs: dots and lines as a picture of relationships',
+        level: 'stretch'
+      }
+    ];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>

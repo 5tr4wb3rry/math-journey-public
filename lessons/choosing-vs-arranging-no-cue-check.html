@@ -1,0 +1,162 @@
+<!doctype html>
+<!--
+  CANONICAL QUIZ — copy to public/unitN/assessment.html or
+  public/lessons/<topic-slug>-check.html and edit
+  only the two blocks marked CONFIG and PROBLEMS at the bottom. Never edit the engine
+  from a session file; if behavior needs to change, change ../assets/quiz.js so every
+  quiz inherits the fix.
+
+  PUBLISHING BOUNDARY: everything under public/ is mirrored to a world-readable repo.
+  No solutions, no answer key commentary, no learner's name, nothing from state/ or
+  guides/ goes in this file. The accepted-answers array is unavoidable (the engine has
+  to score), so keep it terse — reasoning and full worked solutions live in the parent
+  guide under guides/, which is never published.
+
+  MIND THE RELATIVE PATHS: the paths below are written for this file's DESTINATION, not
+  for _template/, so opening this file where it sits will not load the stylesheet or the
+  engine. Both public/unitN/ and public/lessons/ are ONE level below public/, so
+  ../assets/ is correct — fix both <link> and <script> when you copy.
+
+  CHECK — choosing vs. arranging, no-cue choosing half. Three problems, all choosing in
+  disguise, none using the word "choose". Answers verified:
+    P1: 15×14/2 = 210/2 = 105
+    P2: 20×19/2 = 380/2 = 190
+    P3: 18×17/2 = 306/2 = 153
+
+  NUMBERS: lesson used 9 (dinner), 11 (books), 7 (round-robin), 10 (handshakes→45),
+  12 (committee→495), 6 (lines→15), 9 (sandwich→84), 8 (pairs→28). This check uses
+  15 (camping), 20 (ice cream), 18 (chess). No number shared with the lesson or any prior
+  assessment/check (which used 12→66, 10→720, 8→28, 11→55, 6→15, 7→21).
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check · Choosing vs. arranging; combinations — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Unit 1 · Check</p>
+      <h1>Choosing vs. arranging; combinations</h1>
+      <p class="lede">
+        Three problems. None of them uses the word "choose". Figure out which
+        are choosing, then count them. No time limit. Get it wrong as many
+        times as you like before you finish — nothing is checked until the
+        last button.
+      </p>
+    </header>
+
+    <!-- The engine renders everything into this element. Leave it empty. -->
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    /* ---------------------------------------------------------------- CONFIG
+       unit            — which unit this belongs to.
+       stage           — 'assessment' | 'check' | 'unit-assessment'. Drives the
+                         start-screen framing: an assessment is meant to beat him
+                         somewhere, a check is meant to go his way.
+       slug            — optional override for the report filename. Use it on a check
+                         so the file names the topic, e.g. 'check_counting-factors'.
+       topicLabel      — optional; shown in the report heading, for a check.
+       confidence      — true shows the "How sure are you?" tags on every problem.
+                         Always on for a check and for unit assessments: correct-but-unsure
+                         means the lesson's patch has not really set.
+       stuckChips      — optional. Omit it to use the engine's default playbook moves;
+                         pass an array to match the moves this quiz is drilling.
+       topics          — normally OMIT. The topic list derives from the problems' own
+                         `topic` fields; this exists only as an override. */
+    var CONFIG = {
+          "unit": 1,
+          "stage": "check",
+          "slug": "check_choosing-vs-arranging-no-cue",
+          "topicLabel": "Choosing vs. arranging; combinations",
+          "title": "Choosing vs. arranging; combinations",
+          "confidence": true
+    };
+
+    /* -------------------------------------------------------------- PROBLEMS
+       ASSESSMENT: ramp them, across several topics. First problem is a warm-up he
+       clears without thinking; the last sits at or past the top of his demonstrated
+       range. An assessment he aces clean produced no information.
+
+       CHECK: ONE TOPIC ONLY — the one its lesson taught. Same structures the assessment
+       used, DIFFERENT NUMBERS, and do not secretly steepen it: he is supposed to clear
+       a check. Build it alongside the lesson so the two cannot share numbers, or the
+       published lesson is this quiz's answer key.
+
+       TOPICS ARE THE POINT. Verdicts are computed per topic and drive the whole
+       downstream model: every topic coming back `partial` or `not solved` gets its own
+       lesson, and nothing else does.
+
+         solved      all its problems correct, none tagged "I guessed"
+         partial     some correct, OR all correct but at least one guessed
+         not solved  none correct
+
+       So: EVERY PROBLEM NEEDS A `topic`, spelled exactly as in index.html (Syllabus tab) — a typo
+       silently splits one topic in two. And EVERY TOPIC NEEDS AT LEAST TWO PROBLEMS at
+       different levels: with one, `partial` is unreachable and the middle verdict
+       vanishes with no visible sign. The engine warns in the console for both; check it.
+
+       question  the prompt, plain text, no markup
+       math      optional monospace block — an expression, a table, an ASCII diagram
+       answers   every form you will accept. Numeric and fraction forms are already
+                 interchangeable (3/4 matches 0.75 and 6/8), so list alternates only
+                 when the answer has genuinely different valid spellings.
+       hints     up to three, ordered: a nudge, then stronger, then the strongest you
+                 are willing to give. The third hint should still stop short of the
+                 answer.
+       topic     REQUIRED. The syllabus topic this problem tests, verbatim.
+       level     'core' | 'stretch' | 'reach' */
+    var PROBLEMS = [
+          {
+                "question": "Fifteen campers need to pair up for tents — two per tent. How many different pairs can be made?",
+                "answers": [
+                      "105"
+                ],
+                "hints": [
+                      "What is being picked? Does swapping the two people in a tent change anything?",
+                      "A tent with A and B is the same tent with B and A — order does not matter. This is choosing.",
+                      "Count ordered picks first, then divide by 2: 15 × 14, then ÷ 2."
+                ],
+                "topic": "Choosing vs. arranging; combinations",
+                "level": "core"
+          },
+          {
+                "question": "An ice cream shop offers twenty flavours. How many different two-scoop cones can you order? (Two scoops, different flavours — the order on the cone does not matter.)",
+                "answers": [
+                      "190"
+                ],
+                "hints": [
+                      "What is being picked? A cone with chocolate and vanilla — is that different from one with vanilla and chocolate?",
+                      "Same cone. Order does not matter, so this is choosing.",
+                      "20 × 19 = 380, then ÷ 2."
+                ],
+                "topic": "Choosing vs. arranging; combinations",
+                "level": "stretch"
+          },
+          {
+                "question": "Eighteen players enter a round-robin chess tournament — every pair plays exactly one game. How many games are played in total?",
+                "answers": [
+                      "153"
+                ],
+                "hints": [
+                      "What is being counted? A game between players A and B — is that different from a game between B and A?",
+                      "Same game. This is choosing — pairs from a set.",
+                      "18 × 17 = 306, then ÷ 2."
+                ],
+                "topic": "Choosing vs. arranging; combinations",
+                "level": "reach"
+          }
+    ];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>

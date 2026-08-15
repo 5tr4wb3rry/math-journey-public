@@ -1,0 +1,82 @@
+<!doctype html>
+<!--
+  CHECK — Substitution as a simplifying weapon
+  One topic only. Lesson uses u=2, u=4, u=5 and (x+2). Assessment used (x+3) and u=3.
+  This check uses u=6, u=7, and (x−1) — no overlap with lesson or assessment.
+
+  PUBLISHING BOUNDARY: world-readable. No solutions, no learner names.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check · Substitution as a simplifying weapon — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Unit 2 · Check</p>
+      <h1>Substitution as a simplifying weapon</h1>
+      <p class="lede">
+        Three problems on what this lesson taught. You should be able to clear this.
+      </p>
+    </header>
+
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+      unit: 2,
+      stage: 'check',
+      slug: 'check_substitution-as-a-simplifying-weapon',
+      topicLabel: 'Substitution as a simplifying weapon',
+      title: 'Substitution as a simplifying weapon',
+      confidence: true
+    };
+
+    var PROBLEMS = [
+      {
+        question: 'Let u = 7². What is √(u² + 14u + 49)?',
+        answers: ['56'],
+        hints: [
+          'u² + 14u + 49 — does this look like a perfect square?',
+          '49 = 7² and 14 = 2 × 7, so it is (u + 7)².',
+          '(u + 7)² = (49 + 7)² = 56² = 3136. √3136 = 56.'
+        ],
+        topic: 'Substitution as a simplifying weapon',
+        level: 'core'
+      },
+      {
+        question: 'What is √(6⁴ + 12·6² + 36)?',
+        answers: ['42'],
+        hints: [
+          'Spot the shape: what repeats? Let u = 6².',
+          'u² + 12u + 36 — check: 36 = 6², 12 = 2 × 6. Perfect square: (u + 6)².',
+          '(36 + 6)² = 42² = 1764. √1764 = 42.'
+        ],
+        topic: 'Substitution as a simplifying weapon',
+        level: 'stretch'
+      },
+      {
+        question: 'Let v = x − 1. Simplify (x − 1)² + 3(x − 1) − 4, then find the product of its roots.',
+        answers: ['-4'],
+        hints: [
+          'Rewrite in terms of v: v² + 3v − 4.',
+          'Factor: v² + 3v − 4 = (v + 4)(v − 1). Roots are v = −4 and v = 1.',
+          'The product of the roots is (−4)(1) = −4.'
+        ],
+        topic: 'Substitution as a simplifying weapon',
+        level: 'stretch'
+      }
+    ];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>
