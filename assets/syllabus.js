@@ -119,12 +119,12 @@
        a unit is a swap and not an addition, so these came back out at the same size. */
     { name: 'Cubes: sum and difference; the cube identities', area: 'alg', status: 'not started', unit: 'unit3' },
     { name: 'Exponent laws, including zero and negative exponents', area: 'alg', status: 'not started', unit: 'unit3' },
-    { name: 'Substitution as a simplifying weapon', area: 'alg', status: 'in progress', unit: 'unit2',
+    { name: 'Substitution as a simplifying weapon', area: 'alg', status: 'mastered', unit: 'unit2',
       lesson: {
         slug: 'substitution-as-a-simplifying-weapon',
         blurb: 'A messy expression is a clean one wearing a disguise — naming the disguise turns a wall of symbols into something familiar.'
       },
-      check: 'not taken'
+      check: 'passed'
     },
     { name: 'Systems of two equations: substitution, elimination', area: 'alg', status: 'not started', unit: null },
     { name: 'Word problems: age, money, consecutive numbers', area: 'alg', status: 'covered', unit: null },
@@ -171,19 +171,19 @@
     { name: 'Counterintuitive classics (birthday, Monty Hall)', area: 'count', status: 'not started', unit: null },
     /* Graphs. The first three go into Unit 2 rather than waiting: they are the counting
        shape he keeps missing, drawn instead of worded. */
-    { name: 'Graphs: dots and lines as a picture of relationships', short: 'Graphs: dots and lines', area: 'count', status: 'in progress', unit: 'unit2',
+    { name: 'Graphs: dots and lines as a picture of relationships', short: 'Graphs: dots and lines', area: 'count', status: 'mastered', unit: 'unit2',
       lesson: {
         slug: 'graphs-dots-and-lines',
         blurb: 'Drawing a picture of relationships and counting the lines — including when the graph is given by a rule, not a list.'
       },
-      check: 'not taken'
+      check: 'passed'
     },
-    { name: 'Degree, and the handshake lemma', area: 'count', status: 'in progress', unit: 'unit2',
+    { name: 'Degree, and the handshake lemma', area: 'count', status: 'mastered', unit: 'unit2',
       lesson: {
         slug: 'degree-and-the-handshake-lemma',
         blurb: 'Every edge has two ends, so the sum of degrees is always even — and running that backwards finds a number nobody gave you.'
       },
-      check: 'not taken'
+      check: 'passed'
     },
     { name: 'Complete graphs, and why handshakes are edges', short: 'Complete graphs', area: 'count', status: 'in progress', unit: 'unit2' },
     { name: 'Paths, cycles and connectedness', area: 'count', status: 'not started', unit: null },
