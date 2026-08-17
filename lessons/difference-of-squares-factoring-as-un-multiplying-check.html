@@ -1,0 +1,100 @@
+<!doctype html>
+<!--
+  CHECK — Difference of squares; factoring as un-multiplying. Three problems, same structures
+  as the Unit 2 opening assessment used, DIFFERENT NUMBERS.
+
+  NUMBERS: assessment used 43²−42² (warm), n²−1=143 (hard). This check uses 57²−55² (warm),
+  m²−1=195 (hard), and 72×68 (reach — product form). No number shared with assessment.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check · Difference of squares; factoring as un-multiplying — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <nav class="sitenav">
+      <a href="../index.html#units">← All units</a>
+      <a class="here" href="#">Check</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Unit 2 · Check</p>
+      <h1>Difference of squares; factoring as un-multiplying</h1>
+      <p class="lede">
+        Three problems. Each one has a difference of squares hiding in it.
+        Spot the shape, un-multiply, and compute without squaring large numbers.
+        No time limit. Get it wrong as many times as you like before you finish —
+        nothing is checked until the last button.
+      </p>
+    </header>
+
+    <!-- The engine renders everything into this element. Leave it empty. -->
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+          "unit": 2,
+          "stage": "check",
+          "slug": "check_difference-of-squares-factoring-as-un-multiplying",
+          "topicLabel": "Difference of squares; factoring as un-multiplying",
+          "title": "Difference of squares; factoring as un-multiplying",
+          "confidence": true
+    };
+
+    var PROBLEMS = [
+          {
+                "question": "Work this out without a calculator and without squaring either number.",
+                "math": "57² − 55² = ?",
+                "answers": [
+                      "224"
+                ],
+                "hints": [
+                      "Squaring both and subtracting is the long way round. There is a shape here.",
+                      "Anything of the form a² − b² can be un-multiplied into two brackets.",
+                      "a² − b² = (a − b)(a + b). Here a − b is 2, a + b is 112."
+                ],
+                "topic": "Difference of squares; factoring as un-multiplying",
+                "level": "core"
+          },
+          {
+                "question": "m is a positive whole number and m² − 1 = 195. What is m?",
+                "answers": [
+                      "14"
+                ],
+                "hints": [
+                      "Adding 1 to both sides works. There is also a way that never squares anything.",
+                      "m² − 1 is a difference of squares: it is (m − 1)(m + 1).",
+                      "So you need two numbers, two apart, that multiply to 195."
+                ],
+                "topic": "Difference of squares; factoring as un-multiplying",
+                "level": "stretch"
+          },
+          {
+                "question": "Work this out without a calculator and without multiplying 72 by 68 directly.",
+                "math": "72 × 68 = ?",
+                "answers": [
+                      "4896"
+                ],
+                "hints": [
+                      "72 and 68 are symmetric around 70. Write them as (70 + 2) and (70 − 2).",
+                      "That is a difference of squares: 70² − 2².",
+                      "70² is 4900. 2² is 4. 4900 − 4 = 4896."
+                ],
+                "topic": "Difference of squares; factoring as un-multiplying",
+                "level": "reach"
+          }
+    ];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>

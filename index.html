@@ -292,6 +292,15 @@
     var waiting = S.withLessons().filter(function (t) {
       return t.check === 'not taken' && !t.deferred;
     });
+    // Topics whose check came back partial — need a lesson rewrite and a new check.
+    var rewrites = S.withLessons().filter(function (t) {
+      return t.check === 'partial';
+    });
+    // Topics that were solved on an opening assessment but have no lesson and no check yet.
+    // These need a check built (no lesson needed).
+    var checksToBuild = S.topics.filter(function (t) {
+      return t.status === 'in progress' && !t.lesson && !t.check;
+    });
     // An open unit whose opening assessment has not produced any lessons yet has not been
     // sat. That assessment outranks everything else on the page: nothing in the unit can
     // be taught until it comes back. Checks left over from the unit before stay listed
@@ -348,6 +357,35 @@
           '<span class="nextup-links">' +
             '<a class="nextup-lesson" href="lessons/' + t.lesson.slug + '.html">Lesson</a>' +
             '<a class="nextup-check" href="lessons/' + t.lesson.slug + '-check.html">Take the check</a>' +
+          '</span></div>';
+      });
+      html += '</div></section>';
+    }
+
+    if (rewrites.length) {
+      html += '<section class="card nextup"><h2>' +
+        (rewrites.length === 1 ? 'Lesson rewrite needed' : rewrites.length + ' lesson rewrites needed') +
+        '</h2><p class="lede">The check came back partial. Read the lesson, then take the new check.</p><div class="nextup-list">';
+      rewrites.forEach(function (t) {
+        html += '<div class="nextup-row">' +
+          '<span class="nextup-topic">' + esc(t.short || t.name) + '</span>' +
+          '<span class="nextup-links">' +
+            '<a class="nextup-lesson" href="lessons/' + t.lesson.slug + '.html">Lesson</a>' +
+            '<a class="nextup-check" href="lessons/' + t.lesson.slug + '-check.html">Take the check</a>' +
+          '</span></div>';
+      });
+      html += '</div></section>';
+    }
+
+    if (checksToBuild.length) {
+      html += '<section class="card nextup"><h2>' +
+        (checksToBuild.length === 1 ? 'Check to build' : checksToBuild.length + ' checks to build') +
+        '</h2><p class="lede">This topic was solved on the opening assessment but has no check yet. A check needs to be built.</p><div class="nextup-list">';
+      checksToBuild.forEach(function (t) {
+        html += '<div class="nextup-row">' +
+          '<span class="nextup-topic">' + esc(t.short || t.name) + '</span>' +
+          '<span class="nextup-links">' +
+            '<span class="nextup-lesson" style="color:var(--ink-faint); border:1px solid var(--line);">No lesson</span>' +
           '</span></div>';
       });
       html += '</div></section>';

@@ -114,7 +114,8 @@
       },
       check: 'passed'
     },
-    { name: 'Difference of squares; factoring as un-multiplying', area: 'alg', status: 'in progress', unit: 'unit2' },
+    { name: 'Difference of squares; factoring as un-multiplying', area: 'alg', status: 'in progress', unit: 'unit2',
+      check: 'not taken' },
     /* Both were in Unit 2 until 2026-08-10, when the three graph topics joined it. Balancing
        a unit is a swap and not an addition, so these came back out at the same size. */
     { name: 'Cubes: sum and difference; the cube identities', area: 'alg', status: 'not started', unit: 'unit3' },
@@ -155,7 +156,7 @@
                'spotting that a problem is asking how many ways to pick, when nobody told you ' +
                'that is what it is.'
       },
-      check: 'partial'
+      check: 'not taken'
     },
     { name: 'Permutations, including with repetition', area: 'count', status: 'not started', unit: null },
     { name: 'Counting the complement', area: 'count', status: 'not started', unit: 'unit3' },
@@ -185,7 +186,8 @@
       },
       check: 'passed'
     },
-    { name: 'Complete graphs, and why handshakes are edges', short: 'Complete graphs', area: 'count', status: 'in progress', unit: 'unit2' },
+    { name: 'Complete graphs, and why handshakes are edges', short: 'Complete graphs', area: 'count', status: 'in progress', unit: 'unit2',
+      check: 'not taken' },
     { name: 'Paths, cycles and connectedness', area: 'count', status: 'not started', unit: null },
     { name: 'Trees, and why they have one line fewer than dots', short: 'Trees', area: 'count', status: 'not started', unit: null },
     { name: 'Euler paths, and the bridges of Königsberg', short: 'Euler paths; Königsberg', area: 'count', status: 'not started', unit: 'unit3' },

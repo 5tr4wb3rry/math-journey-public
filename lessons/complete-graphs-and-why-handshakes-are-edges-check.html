@@ -1,0 +1,99 @@
+<!doctype html>
+<!--
+  CHECK — Complete graphs, and why handshakes are edges. Three problems, same structures
+  as the Unit 2 opening assessment used, DIFFERENT NUMBERS.
+
+  NUMBERS: assessment used 6 people (15 handshakes, warm), n people with 28 handshakes (hard).
+  This check uses 10 people (45 handshakes, warm), k people with 55 handshakes (stretch),
+  and 12 people (66 handshakes, reach). No number shared with assessment.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check · Complete graphs, and why handshakes are edges — Math Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/quiz.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <nav class="sitenav">
+      <a href="../index.html#units">← All units</a>
+      <a class="here" href="#">Check</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Unit 2 · Check</p>
+      <h1>Complete graphs, and why handshakes are edges</h1>
+      <p class="lede">
+        Three problems. Each one is about a complete graph — every dot connected
+        to every other dot. Spot the handshake pattern, run the formula, and
+        compute without listing. No time limit. Get it wrong as many times as you
+        like before you finish — nothing is checked until the last button.
+      </p>
+    </header>
+
+    <!-- The engine renders everything into this element. Leave it empty. -->
+    <main id="quiz"></main>
+  </div>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    var CONFIG = {
+          "unit": 2,
+          "stage": "check",
+          "slug": "check_complete-graphs-and-why-handshakes-are-edges",
+          "topicLabel": "Complete graphs, and why handshakes are edges",
+          "title": "Complete graphs, and why handshakes are edges",
+          "confidence": true
+    };
+
+    var PROBLEMS = [
+          {
+                "question": "Ten people are at a meeting. Every person shakes hands with every other person exactly once. How many handshakes happen?",
+                "answers": [
+                      "45"
+                ],
+                "hints": [
+                      "Every person shakes 9 hands. That gives 90 — but that is not the answer.",
+                      "A shakes B is the same handshake as B shakes A, so halve it.",
+                      "10 × 9 ÷ 2 = 45."
+                ],
+                "topic": "Complete graphs, and why handshakes are edges",
+                "level": "core"
+          },
+          {
+                "question": "At a gathering, every person shook hands with every other person exactly once, and there were 55 handshakes in total. How many people were at the gathering?",
+                "answers": [
+                      "11"
+                ],
+                "hints": [
+                      "You know how to go from the number of people to the number of handshakes. Run it backwards.",
+                      "With n people the count is n(n − 1) ÷ 2, and that equals 55.",
+                      "So n(n − 1) = 110. Two whole numbers one apart, multiplying to 110."
+                ],
+                "topic": "Complete graphs, and why handshakes are edges",
+                "level": "stretch"
+          },
+          {
+                "question": "Twelve players enter a round-robin tournament — every pair plays exactly one match. How many matches are played in total?",
+                "answers": [
+                      "66"
+                ],
+                "hints": [
+                      "This is the same shape: a complete graph on 12 vertices.",
+                      "Each player plays 11 matches, giving 132 — but each match is counted twice.",
+                      "12 × 11 ÷ 2 = 66."
+                ],
+                "topic": "Complete graphs, and why handshakes are edges",
+                "level": "reach"
+          }
+    ];
+
+    MathQuiz.start(CONFIG, PROBLEMS);
+  </script>
+</body>
+</html>
